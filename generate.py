@@ -1,1 +1,0 @@
-/home/Sales/dev/javascript/perevotech/gui/trunk/generate.py
