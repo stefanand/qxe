@@ -1,0 +1,4 @@
+/**
+ * qxe.theme.classic package
+ *
+ */
