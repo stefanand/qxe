@@ -1,0 +1,40 @@
+{
+  "name"    : "qxe",
+
+  "include" :
+  [
+    {
+      "path" : "${QOOXDOO_PATH}/tool/data/config/application.json"
+    }
+  ],
+
+  "export" :
+  [
+    "api",
+    "api-data",
+    "clean",
+    "distclean",
+    "fix",
+    "info",
+    "inspector",
+    "lint",
+    "migration",
+    "pretty",
+    "test",
+    "test-source",
+    "translation"
+  ],
+
+  "let" :
+  {
+    "APPLICATION"  : "qxe",
+    "APPLICATION_MAIN_CLASS" : "${APPLICATION}.demo.Demo",
+    "QOOXDOO_PATH" : "../../../qooxdoo",
+    //"QXTHEME"      : "test.theme.modern.Theme",
+    "QXTHEME"      : "qxe.theme.Theme",
+    "API_EXCLUDE"  : [ "qx.test.*", "test.demo.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*" ],
+    "LOCALES"      : [ "ar", "ar_JO", "da", "de", "de_DE", "de_AT", "de_CH", "en", "en_GB", "en_US", "es", "es_MX", "es_ES", "et", "fi", "fi_FI", "is", "pt", "pt_BR", "pt_PT", "sv", "sv_SE", "sv_FI" ],
+    "CACHE"        : "${TMPDIR}/qx${QOOXDOO_VERSION}/cache",
+    "ROOT"         : "."
+  }
+}
