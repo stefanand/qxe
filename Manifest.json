@@ -23,7 +23,7 @@
   
   "provides" : 
   {
-    "namespace"   : "qxe.ui.wizard",
+    "namespace"   : "qxe",
     "encoding"    : "utf-8",
     "class"       : "source/class",
     "resource"    : "source/resource",
