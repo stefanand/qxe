@@ -35,13 +35,9 @@ qx.Class.define("qxe.ui.wizard.Page",
    * @param previous {qxe.ui.wizard.IPage} The previous page to navigate to.
    * @param next {qxe.ui.wizard.IPage} The next page to navigate to.
    */
-  construct : function(label, previous, next)
+  construct : function(legend, icon, previous, next)
   {
     this.base(arguments);
-
-		this.setLabel(label);
-		this.setPrevious(previous);
-		this.setNext(next);
   },
 
 
@@ -95,17 +91,6 @@ qx.Class.define("qxe.ui.wizard.Page",
     ---------------------------------------------------------------------------
     */
 
-    /**
-     * The label of the page.
-     */
-     label :
-    {
-      check : "String",
-      init : null,
-      nullabe : true,
-      event : "changeLabel"
-    },
-		
     /**
      * Whether to allow to go to the previous wizard pane.
      */
