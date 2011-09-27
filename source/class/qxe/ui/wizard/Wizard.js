@@ -28,7 +28,7 @@
  * and validated. It is possible to navigate between the pages by the previous and
  * next buttons, and by typing in the step number in the field.
  *
- * The following features  re included in the wizard widget:
+ * The following features are included in the wizard widget:
  *  - Easy to implement wizard widget.
  *  - Assemble a Wizard from a series of pages.
  *  - Support for multiple branches (dynamically changing sets of steps)
@@ -119,7 +119,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
         case "stack-pane":
           control = new qx.ui.container.Stack();
           control.setDecorator("main");
-          control.addListener("changeSelection", this._changeSelection, this);
+          control.addListener("changeSelection", this._onChangeSelection, this);
 
           this._add(control);
           break;
@@ -139,14 +139,14 @@ qx.Class.define("qxe.ui.wizard.Wizard",
 
           var spacer1 = new qx.ui.core.Spacer();
           spacer1.setAllowGrowX(true);
-		
+
           control.add(spacer1, {flex : 1});
 
           control.add(this._createChildControl("step-navigation"));
 
           var spacer2 = new qx.ui.core.Spacer();
           spacer2.setAllowGrowX(true);
-		
+
           control.add(spacer2, {flex : 1});
 
           control.add(this._createChildControl("next-button"));
@@ -283,7 +283,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
       }
       else if(index == (stack.getChildren().length - 1))
       {
-	this.getChildControl("next-button").setEnabled(false);
+        this.getChildControl("next-button").setEnabled(false);
       }
       else
       {

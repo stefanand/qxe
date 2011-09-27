@@ -77,7 +77,7 @@ qx.Class.define("qxe.ui.wizard.Page",
      * Next page to navigate to.
      */
     next :
-    {   
+    {
       check : "qxe.ui.wizard.Page",
       nullable : true,
       init : null,
