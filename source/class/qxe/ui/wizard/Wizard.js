@@ -158,7 +158,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
           tooltip = new qx.ui.tooltip.ToolTip(this.tr("Go to previous step."));
 
           control = new qx.ui.form.Button(this.tr("Previous"), "icon/16/actions/go-previous.png");
-          control.addListener("execute", this.previous, this);
+          control.addListener("execute", this._onExecutePrevious, this);
           control.setToolTip(tooltip);
           control.setIconPosition("left");
           break;
@@ -211,7 +211,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
           tooltip = new qx.ui.tooltip.ToolTip(this.tr("Go to next step."));
 
           control = new qx.ui.form.Button(this.tr("Next"), "icon/16/actions/go-next.png");
-          control.addListener("execute", this.next, this);
+          control.addListener("execute", this._onExecuteNext, this);
           control.setToolTip(tooltip);
           control.setIconPosition("right");
           break;
@@ -227,13 +227,12 @@ qx.Class.define("qxe.ui.wizard.Wizard",
     ---------------------------------------------------------------------------
     */
 
-
     /**
      * Add a page to the wizard.
      *
      * @param page {qxe.ui.wizard.Page} The page which should be added.
      */
-    add : function(page)
+    _add : function(page)
     {
       if (qx.core.Environment.get("qx.debug"))
       {
@@ -251,7 +250,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
      *
      * @param page {qxe.ui.wizard.Page} The page to be removed.
      */
-    remove : function(page)
+    _remove : function(page)
     {
       this.getChildControl("stack-pane").remove(page);
     },
@@ -295,6 +294,25 @@ qx.Class.define("qxe.ui.wizard.Wizard",
       this.getChildControl("num-steps").setValue("" + stack.getChildren().length);
     },
 
+    /**
+     * Event handler for <code>execute</code> of the previous button.
+     *
+     * @param e {qx.event.type.Data} Data event.
+     */
+    _onExecutePrevious : function(e)
+    {
+      this.previous();
+    },
+
+    /**
+     * Event handler for <code>execute</code> of the next button.
+     *
+     * @param e {qx.event.type.Data} Data event.
+     */
+    _onExecuteNext : function(e)
+    {
+      this.next();
+    },
 
     /*
     ---------------------------------------------------------------------------
@@ -305,10 +323,11 @@ qx.Class.define("qxe.ui.wizard.Wizard",
     /**
      * Navigate to previous page.
      */
-    previous : function(e)
+    previous : function()
     {
-      var previous = e.getSource().getPrevious();
       var stack = this.getChildControl("stack-pane");
+      var current = stack.getSelection()[0];
+      var previous = current.getPrevious();
 
       if(previous != null)
       {
@@ -316,17 +335,21 @@ qx.Class.define("qxe.ui.wizard.Wizard",
       }
       else
       {
-        stack.previous;
+        if(stack.indexOf(current))
+        {
+          stack.previous();
+        }
       }
     },
 
     /**
      * Navigate to next page.
      */
-    next : function(e)
+    next : function()
     {
-      var next = e.getSource().getNext();
       var stack = this.getChildControl("stack-pane");
+      var current = stack.getSelection()[0];
+      var next = current.getNext();
 
       if(next != null)
       {
@@ -334,7 +357,10 @@ qx.Class.define("qxe.ui.wizard.Wizard",
       }
       else
       {
-        stack.next;
+        if(stack.indexOf(current))
+        {
+          stack.next();
+        }
       }
     },
 
@@ -343,7 +369,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
      */
     enablePages : function()
     {
-      var children = this.getChildren();
+      var children = this.getChildControl("stack-pane").getChildren();
 
       for(var i = 0, l = children.length; i < l; i++)
       {
