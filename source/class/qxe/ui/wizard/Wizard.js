@@ -232,7 +232,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
      *
      * @param page {qxe.ui.wizard.Page} The page which should be added.
      */
-    _add : function(page)
+    add : function(page)
     {
       if (qx.core.Environment.get("qx.debug"))
       {
@@ -250,7 +250,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
      *
      * @param page {qxe.ui.wizard.Page} The page to be removed.
      */
-    _remove : function(page)
+    remove : function(page)
     {
       this.getChildControl("stack-pane").remove(page);
     },
