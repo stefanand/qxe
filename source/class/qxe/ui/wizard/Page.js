@@ -16,7 +16,8 @@
 ************************************************************************ */
 
 /**
- * 
+ * A wizard consists of a collection of pages which are all one step in the
+ * wizard.
  */
 qx.Class.define("qxe.ui.wizard.Page",
 {
@@ -31,11 +32,10 @@ qx.Class.define("qxe.ui.wizard.Page",
   */
 
   /**
-   * @param label {String} The label of the page.
-   * @param previous {qxe.ui.wizard.IPage} The previous page to navigate to.
-   * @param next {qxe.ui.wizard.IPage} The next page to navigate to.
+   * @param legend {String} The label of the page.
+   * @param icon {String} The icon of the page.
    */
-  construct : function(legend, icon, previous, next)
+  construct : function(legend, icon)
   {
     this.base(arguments);
   },
