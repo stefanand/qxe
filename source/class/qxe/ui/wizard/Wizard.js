@@ -83,6 +83,38 @@ qx.Class.define("qxe.ui.wizard.Wizard",
     {
       refine : true,
       init : "wizard"
+    },
+
+    /**
+     * Controller of the wizard.
+     */
+    controller :
+    {
+      check : "qx.data.controller.Object",
+      init : new qx.data.controller.Object(),
+      event : "changeController",
+      apply : "_applyController"
+    },
+
+    /**
+     * Validator of the wizard.
+     */
+    validator :
+    {
+      check : "qx.ui.form.validation.Manager",
+      init : new qx.ui.form.validation.Manager(),
+      event : "changeValidator",
+      apply : "_applyValidator"
+    },
+
+    /**
+     * Resetter of the wizard.
+     */
+    resetter :
+    {
+      check : "qx.ui.form.Resetter",
+      init : new qx.ui.form.Resetter(),
+      event : "changeResetter"
     }
   },
 
@@ -95,6 +127,9 @@ qx.Class.define("qxe.ui.wizard.Wizard",
 
   members :
   {
+    // create the data model
+    __skeleton : {},
+
     /*
     ---------------------------------------------------------------------------
       WIDGET API
@@ -223,6 +258,59 @@ qx.Class.define("qxe.ui.wizard.Wizard",
 
     /*
     ---------------------------------------------------------------------------
+      APPLY ROUTINES
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Apply method for the controller.
+     *
+     * The controller connects all fields of the wizard.
+     *
+     * @param value {boolean} The new value.
+     * @param old {boolean} The old value.
+     */
+    _applyController : function(value, old)
+    {
+      // create the controller and connect all fields
+//      var controller = new qx.data.controller.Object();
+    },
+
+    /**
+     * Apply method for the validator.
+     *
+     * Validates all attached fields of the wizard.
+     *
+     * @param value {boolean} The new value.
+     * @param old {boolean} The old value.
+     */
+    _applyValidator : function(value, old)
+    {
+      if(value)
+      {
+        value.setRequiredFieldMessage(this.tr("This field is required."));
+        value.setInvalidMessage(this.tr("The validation of data failed."));
+
+        old = null;
+      }
+    },
+
+    /**
+     * Apply method for the resetter.
+     *
+     * Resets all attached fields of the wizard.
+     *
+     * @param value {boolean} The new value.
+     * @param old {boolean} The old value.
+     */
+    _applyResetter : function(value, old)
+    {
+//      var resetter = this.__resetter = new qx.ui.form.Resetter();
+//      old = null;
+    },
+
+    /*
+    ---------------------------------------------------------------------------
       CHILDREN HANDLING
     ---------------------------------------------------------------------------
     */
@@ -263,6 +351,47 @@ qx.Class.define("qxe.ui.wizard.Wizard",
     getChildren : function()
     {
       return this.getChildControl("stack-pane").getChildren();
+    },
+
+    /**
+     * Add children widgets.
+     *
+     * @return {qxe.ui.wizard.Page[]} List of children.
+     */
+    addControlFields : function(items)
+      var skeleton = this.__skeleton;
+
+      // Concatenate each page's json skeleton to the model skeleton
+      for(var key in items)
+      {
+        skeleton[key] = items[key];
+      }
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      EVENT LISTENERS
+    ---------------------------------------------------------------------------
+    */
+
+
+    _onAppearOnce : function()
+    {
+      var model = qx.data.marshal.Json.createModel(this.__skeleton, true);
+
+      this.getController().setModel(model);
+
+      // validate on every change of the model
+      model.addListener("changeBubble", function(e) {
+        this.getValidator().validate();
+      }, this);
+
+      // invoke the inital validate
+      this.getValidator().validate();
+
+      // switch the submit button on and off
+      this.getValidator().bind("valid", this.__submitB, "enabled");
     },
 
     /**
