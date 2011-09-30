@@ -361,6 +361,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
      * @return {qxe.ui.wizard.Page[]} List of children.
      */
     addControlFields : function(items)
+    {
       var skeleton = this.__skeleton;
 
       // Concatenate each page's json skeleton to the model skeleton
