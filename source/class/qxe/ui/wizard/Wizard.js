@@ -61,6 +61,8 @@ qx.Class.define("qxe.ui.wizard.Wizard",
 
     this._createChildControl("stack-pane");
     this._createChildControl("navigation-pane");
+
+    this.addListenerOnce("appear", this._onAppearOnce, this);
   },
 
 
@@ -376,6 +378,11 @@ qx.Class.define("qxe.ui.wizard.Wizard",
     */
 
 
+    /**
+     * Event handler for <code>onappear</code>.
+     *
+     * @param e {qx.event.type.Data} Data event.
+     */
     _onAppearOnce : function()
     {
       var model = qx.data.marshal.Json.createModel(this.__skeleton, true);
