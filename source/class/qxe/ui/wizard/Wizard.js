@@ -472,7 +472,6 @@ qx.Class.define("qxe.ui.wizard.Wizard",
       }
       else
       {
-this.debug(stack.indexOf(current));
         if(stack.indexOf(current))
         {
           stack.previous();
@@ -495,8 +494,7 @@ this.debug(stack.indexOf(current));
       }
       else
       {
-this.debug(stack.indexOf(current));
-        if(stack.indexOf(current) < (stack.getchildren().length - 1))
+        if(stack.indexOf(current) < (stack.getChildren().length - 1))
         {
           stack.next();
         }
