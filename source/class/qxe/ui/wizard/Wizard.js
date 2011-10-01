@@ -465,7 +465,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
       var stack = this.getChildControl("stack-pane");
       var current = stack.getSelection()[0];
       var previous = current.getPrevious();
-
+this.debug(current + "     " + previous);
       if(previous != null)
       {
         stack.setSelection([previous]);
@@ -487,6 +487,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
       var stack = this.getChildControl("stack-pane");
       var current = stack.getSelection()[0];
       var next = current.getNext();
+this.debug(current + "     " + next);
 
       if(next != null)
       {
