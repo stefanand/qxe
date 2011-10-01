@@ -465,13 +465,14 @@ qx.Class.define("qxe.ui.wizard.Wizard",
       var stack = this.getChildControl("stack-pane");
       var current = stack.getSelection()[0];
       var previous = current.getPrevious();
-this.debug(current + "     " + previous);
+
       if(previous != null)
       {
         stack.setSelection([previous]);
       }
       else
       {
+this.debug(stack.indexOf(current));
         if(stack.indexOf(current))
         {
           stack.previous();
@@ -487,7 +488,6 @@ this.debug(current + "     " + previous);
       var stack = this.getChildControl("stack-pane");
       var current = stack.getSelection()[0];
       var next = current.getNext();
-this.debug(current + "     " + next);
 
       if(next != null)
       {
@@ -495,7 +495,8 @@ this.debug(current + "     " + next);
       }
       else
       {
-        if(stack.indexOf(current))
+this.debug(stack.indexOf(current));
+        if(stack.indexOf(current) < (stack.getchildren().length - 1))
         {
           stack.next();
         }
