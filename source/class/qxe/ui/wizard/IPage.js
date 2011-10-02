@@ -22,28 +22,5 @@ qx.Interface.define("qxe.ui.wizard.IPage",
 {
   members :
   {
-    /**
-     *
-     */
-    _addValidators : function(validator)
-    {
-      this.assertInstance(validator, qx.ui.form.validation.Manager);
-    },
-
-    /**
-     *
-     */
-    _addSerializers : function(controller)
-    {
-      this.assertInstance(controller, qx.data.controller.Object);
-    },
-
-    /**
-     *
-     */
-    _addResetter : function(resetter)
-    {
-      this.assertInstance(resetter, qx.ui.form.Resetter);
-    }
   }
 });

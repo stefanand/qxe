@@ -117,6 +117,17 @@ qx.Class.define("qxe.ui.wizard.Wizard",
       check : "qx.ui.form.Resetter",
       init : new qx.ui.form.Resetter(),
       event : "changeResetter"
+    },
+
+    /**
+     * Whether to allow to finish the wizard. 
+     * The finish property is set to true when the validation has passed and coming to the last page.
+     */
+    allowFinish :
+    {
+      check : "Boolean",
+      init : false,
+      event : "changeAllowFinish"
     }
   },
 
@@ -336,7 +347,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
     },
 
     /**
-     * Remove a page from the Wizard.
+     * Remove a page from the wizard.
      *
      * @param page {qxe.ui.wizard.Page} The page to be removed.
      */
@@ -346,7 +357,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
     },
 
     /**
-     * Return Wizard's children widgets.
+     * Return child pages.
      *
      * @return {qxe.ui.wizard.Page[]} List of children.
      */
@@ -356,15 +367,15 @@ qx.Class.define("qxe.ui.wizard.Wizard",
     },
 
     /**
-     * Add children widgets.
+     * Add fields for model.
      *
-     * @return {qxe.ui.wizard.Page[]} List of children.
+     * @param e {json} Fields to append to model.
      */
     addControlFields : function(items)
     {
       var skeleton = this.__skeleton;
 
-      // Concatenate each page's json skeleton to the model skeleton
+      // Append items (json format) to the model skeleton
       for(var key in items)
       {
         skeleton[key] = items[key];
