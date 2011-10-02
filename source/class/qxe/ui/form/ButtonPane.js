@@ -17,6 +17,17 @@
 
 /* ************************************************************************
 
+#asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
+#asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
+#asset(qx/icon/${qx.icontheme}/16/actions/dialog-apply.png)
+#asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
+//submit
+# asset(qx/icon/${qx.icontheme}/16/actions/document-send.png)
+// yes
+// no
+// clean
+# asset(qx/icon/${qx.icontheme}/16/actions/document-revert.png)
+
 ************************************************************************ */
 
 /**
@@ -51,6 +62,62 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     if(spacing != null)
     {
       this.setSpacing(spacing);
+    }
+  },
+
+
+  /*
+  *****************************************************************************
+     STATICS
+  *****************************************************************************
+  */
+
+  statics :
+  {
+    // Buttons
+    OK : {
+      name : "OK",
+      label : qx.locale.Manager.marktr("OK"),
+      icon : "qx/icon/16/actions/dialog-ok.png",
+      toolTip : null,
+      toolTipIcon : "qx/icon/16/actions/help-about.png",
+      toolTipText : qx.locale.Manager.marktr("Accept the dialog.")
+    },
+
+    CANCEL : {
+      name : "CANCEL",
+      label : qx.locale.Manager.marktr("Cancel"),
+      icon : "qx/icon/16/actions/dialog-cancel.png",
+      toolTip : null,
+      toolTipIcon : "qx/icon/16/actions/help-about.png",
+      toolTipText : qx.locale.Manager.marktr("Cancel the dialog.")
+    },
+
+    HELP : {
+      name : "HELP",
+      label : qx.locale.Manager.marktr("Help"),
+      icon : "qx/icon/16/actions/help-about.png",
+      toolTip : null,
+      toolTipIcon : "qx/icon/16/actions/help-about.png",
+      toolTipText : qx.locale.Manager.marktr("Get help about the dialog.")
+    },
+
+    YES : {
+      name : "YES",
+      label : qx.locale.Manager.marktr("Yes"),
+      icon : "",
+      toolTip : null,
+      toolTipIcon : "qx/icon/16/actions/help-about.png",
+      toolTipText : qx.locale.Manager.marktr("Accept the dialog.")
+    },
+
+    NO : {
+      name : "NO",
+      label : qx.locale.Manager.marktr("NO"),
+      icon : "",
+      toolTip : null,
+      toolTipIcon : "qx/icon/16/actions/help-about.png",
+      toolTipText : qx.locale.Manager.marktr("Accept the dialog.")
     }
   },
 
