@@ -230,7 +230,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     {
       if (qx.core.Environment.get("qx.debug"))
       {
-        if (!(page instanceof qx.ui.form.Button))
+        if (!(button instanceof qx.ui.form.Button))
         {
           throw new Error("Incompatible child for ButtonPane: " + button);
         }
@@ -290,7 +290,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      */
     _constrainButtons : function(constraint)
     {
-      item = 0;
+      var item = 0;
 
       // Windows versions
       if(qx.core.Environment.get("os.name") == "win")
