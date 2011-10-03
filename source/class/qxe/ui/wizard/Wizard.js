@@ -267,7 +267,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
           break;
 
         case "button-pane":
-          control = new qxe.ui.form.ButtonPane(qxe.ui.form.ButtonPane.CUSTOM);
+          control = new qxe.ui.form.ButtonPane();
           // ??? control.setAlignX("center");
           control._getLayout().setAlignX("center");
           control.setMargin(5);

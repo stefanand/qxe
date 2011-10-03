@@ -124,19 +124,6 @@ qx.Class.define("qxe.ui.form.ButtonPane",
 
   /*
   *****************************************************************************
-     EVENTS
-  *****************************************************************************
-  */
-
-  events :
-  {
-    /** Fired if the {@link #execute} method is invoked.*/
-    "execute" : "qx.event.type.Event"
-  },
-
-
-  /*
-  *****************************************************************************
      PROPERTIES
   *****************************************************************************
   */
@@ -270,8 +257,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
       if(constraint != null)
       {
 // check valid constraints
-        button.setUserData("constraint", constraint);
-        index = this._constrainButtons(constraint);
+//        button.setUserData("constraint", constraint);
+//        index = this._constrainButtons(constraint);
       }
 
       this._addAt(button, index);
