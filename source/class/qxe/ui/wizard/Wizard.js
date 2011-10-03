@@ -275,6 +275,8 @@ qx.Class.define("qxe.ui.wizard.Wizard",
           control.add(this._createChildControl("affirm-button"), "affirm");
           control.add(this._createChildControl("reset-button"));
           control.add(this._createChildControl("cancel-button"), "cancel");
+
+          this._add(control);
           break;
 
         case "affirm-button":
