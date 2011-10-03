@@ -21,12 +21,6 @@
 #asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
 #asset(qx/icon/${qx.icontheme}/16/actions/dialog-apply.png)
 #asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
-//submit
-# asset(qx/icon/${qx.icontheme}/16/actions/document-send.png)
-// yes
-// no
-// clean
-# asset(qx/icon/${qx.icontheme}/16/actions/document-revert.png)
 
 ************************************************************************ */
 
@@ -45,11 +39,14 @@ qx.Class.define("qxe.ui.form.ButtonPane",
   *****************************************************************************
   */
 
+  /**
+   * @param orientation {String} Orientation of the button pane
+   * @param spacing {Integer} The spacing between buttons of the button pane
+   */
   construct : function(orientation, spacing)
   {
     this.base(arguments);
 
-    // Configure orientation
     if(orientation != null)
     {
       this.setOrientation(orientation);
@@ -75,49 +72,49 @@ qx.Class.define("qxe.ui.form.ButtonPane",
   statics :
   {
     // Buttons
+    /** The OK button */     
     OK : {
-//      name : "OK",
       label : qx.locale.Manager.marktr("OK"),
-      icon : "qx/icon/16/actions/dialog-ok.png",
+      icon : "icon/16/actions/dialog-ok.png",
       toolTip : null,
-      toolTipIcon : "qx/icon/16/actions/help-about.png",
+      toolTipIcon : "icon/16/actions/help-about.png",
       toolTipText : qx.locale.Manager.marktr("Accept the dialog.")
     },
 
+    /** The Cancel button */
     CANCEL : {
-//      name : "CANCEL",
       label : qx.locale.Manager.marktr("Cancel"),
-      icon : "qx/icon/16/actions/dialog-cancel.png",
+      icon : "icon/16/actions/dialog-cancel.png",
       toolTip : null,
-      toolTipIcon : "qx/icon/16/actions/help-about.png",
+      toolTipIcon : "icon/16/actions/help-about.png",
       toolTipText : qx.locale.Manager.marktr("Cancel the dialog.")
     },
 
+    /** The Help button */
     HELP : {
-//      name : "HELP",
       label : qx.locale.Manager.marktr("Help"),
-      icon : "qx/icon/16/actions/help-about.png",
+      icon : "icon/16/actions/help-about.png",
       toolTip : null,
-      toolTipIcon : "qx/icon/16/actions/help-about.png",
+      toolTipIcon : "icon/16/actions/help-about.png",
       toolTipText : qx.locale.Manager.marktr("Get help about the dialog.")
     },
 
+    /** The YES button */
     YES : {
-//      name : "YES",
       label : qx.locale.Manager.marktr("Yes"),
-      icon : "",
+      icon : "icon/16/actions/dialog-ok.png",
       toolTip : null,
-      toolTipIcon : "qx/icon/16/actions/help-about.png",
-      toolTipText : qx.locale.Manager.marktr("Accept the dialog.")
+      toolTipIcon : "icon/16/actions/help-about.png",
+      toolTipText : qx.locale.Manager.marktr("Answer yes to the dialog.")
     },
 
+    /** The NO button */
     NO : {
-//      name : "NO",
-      label : qx.locale.Manager.marktr("NO"),
-      icon : "",
+      label : qx.locale.Manager.marktr("No"),
+      icon : "icon/16/actions/dialog-cancel.png",
       toolTip : null,
-      toolTipIcon : "qx/icon/16/actions/help-about.png",
-      toolTipText : qx.locale.Manager.marktr("Accept the dialog.")
+      toolTipIcon : "icon/16/actions/help-about.png",
+      toolTipText : qx.locale.Manager.marktr("Answer no to the dialog.")
     }
   },
 
@@ -138,7 +135,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     },
 
     /**
-     * The button pane orientation
+     * The orientation.
      */
     orientation :
     {
@@ -185,7 +182,12 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     ---------------------------------------------------------------------------
     */
 
-    // property apply
+    /**
+     * Apply method for the orientation.
+     *
+     * @param value {boolean} The new value.
+     * @param old {boolean} The old value.
+     */
     _applyOrientation : function(value, old)
     {
       // Dispose old layout
@@ -215,13 +217,25 @@ qx.Class.define("qxe.ui.form.ButtonPane",
       }
     },
 
+    /**
+     * Apply method for spacing between buttons.
+     *
+     * @param value {boolean} The new value.
+     * @param old {boolean} The old value.
+     */
     _applySpacing : function(value, old)
     {
       var layout = this._getLayout();
       value == null ? layout.resetSpacing() : layout.setSpacing(value);
     },
 
-    _applySizeConstraint : function()
+    /**
+     * Apply method for size constraint.
+     *
+     * @param value {boolean} The new value.
+     * @param old {boolean} The old value.
+     */
+    _applySizeConstraint : function(value, old)
     {
     },
 
@@ -240,7 +254,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      * Windows, affirmative button appears on the right hand side of cancel button.
      * On Mac OS X, affirmative button will appear on the left hand side of cancel button.
      *
-     * @param button {[ "affirmative" | "cancel" | "help" | "other" ]} The constraint used for the button.
+     * @param button {qx.ui.form.Button} The button to add.
+     * @param constraint {[ "affirmative" | "cancel" | "help" | "other" ]} The constraint used for the button.
      */
     add : function(button, constraint)
     {
@@ -302,17 +317,19 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      * Windows, affirmative button appears on the right hand side of cancel button.
      * On Mac OS X, affirmative button will appear on the left hand side of cancel button.
      *
-     * @param constraint {qx.ui.form.Button} The button to be removed.
+     * @param constraint {[ "affirmative" | "cancel" | "help" | "other" ]} The constraint for buttons.
      */
     _constrainButtons : function(constraint)
     {
       var item = 0;
 
       // Windows versions
+      // affirm button to the right of the cancel button.
       if(qx.core.Environment.get("os.name") == "win")
       {
       }
       // All others osx, linux etc.
+      // affirm button to the left of the cancel button.
       else
       {
       }
@@ -373,31 +390,9 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     addSpacer : function()
     {
       var spacer = new qx.ui.core.Spacer;
-      this._add(spacer, {flex:1});
+      this._add(spacer, {flex : 1});
 
       return spacer;
-    },
-
-    /**
-     * Read button resource.
-     *
-     * @return {qx.core.Object} The button resource object.
-     */
-    getResources : function(bitValue)
-    {
-      var buttons = [];
-
-      for(var key in this.BUTTONS)
-      {
-        var button = this.BUTTONS[key];
-
-        if(bitValue & button.bit)
-        {
-          buttons.push(button);
-        }
-      }
-
-      return buttons;
     }
   }
 });

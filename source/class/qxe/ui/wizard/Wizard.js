@@ -20,6 +20,12 @@
 #asset(qx/icon/${qx.icontheme}/16/actions/go-previous.png)
 #asset(qx/icon/${qx.icontheme}/16/actions/go-next.png)
 
+#asset(qx/icon/${qx.icontheme}/16/actions/document-send.png)
+#asset(qx/icon/${qx.icontheme}/16/actions/document-revert.png)
+#asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
+
+#asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
+
 ************************************************************************ */
 
 /**
@@ -41,6 +47,20 @@
  *  - Pages can be validated as the user interacts, or when the user presses next.
  *  - Support for long running operations with progress indication.
  *  - Support for end-of-wizard summary panels
+ *
+ * @childControl statusbar {qx.ui.container.Composite} statusbar container which shows the statusbar text
+ *
+ * @childControl stack-pane {qx.ui.container.Stack} stack container keeping all the pages
+ * @childControl navigation-pane {qx.ui.container.Composite} container for navigation buttons
+ * @childControl previous-button {qx.ui.form.Button} button to navigate to previous page
+ * @childControl step-navigation {qx.ui.container.Composite} container for step navigation
+ * @childControl current-step {qx.ui.form.TextField} textfield containing current step
+ * @childControl num-steps {qx.ui.form.TextField} textfield containing total number of steps
+ * @childControl next-button {qx.ui.form.Button} button to navigate to next page
+ * @childControl button-pane {qxe.ui.form.ButtonPane} button pane for wizard actions
+ * @childControl affirm-button {qx.ui.form.Button} button for finishing the wizard
+ * @childControl reset-button {qx.ui.form.Button} button to reset fields of the wizard
+ * @childControl cancel-button {qx.ui.form.Button} button to cancel the wizard
  */
 qx.Class.define("qxe.ui.wizard.Wizard",
 {
@@ -283,8 +303,8 @@ qx.Class.define("qxe.ui.wizard.Wizard",
           control = new qx.ui.form.Button();
           control.setUserData("name", "FINISH");
           control.setLabel(this.tr("Finish"));
-          control.setIcon(""),
-          control.setToolTipIcon("qx/icon/16/actions/help-about.png");
+          control.setIcon("icon/16/actions/document-send.png"),
+          control.setToolTipIcon("icon/16/actions/help-about.png");
           control.setToolTipText(this.tr("Finish wizard."));
           control.setEnabled(false);
           break;
@@ -293,8 +313,8 @@ qx.Class.define("qxe.ui.wizard.Wizard",
           control = new qx.ui.form.Button();
           control.setUserData("name", "RESET");
           control.setLabel(this.tr("Reset"));
-          control.setIcon(""),
-          control.setToolTipIcon("qx/icon/16/actions/help-about.png");
+          control.setIcon("icon/16/actions/document-revert.png"),
+          control.setToolTipIcon("icon/16/actions/help-about.png");
           control.setToolTipText(this.tr("Reset the fields of the wizard."));
           control.setEnabled(false);
           break;
@@ -427,17 +447,16 @@ qx.Class.define("qxe.ui.wizard.Wizard",
 
     /*
     ---------------------------------------------------------------------------
-      EVENT LISTENERS
+      BASIC EVENT HANDLERS
     ---------------------------------------------------------------------------
     */
-
 
     /**
      * Event handler for <code>onappear</code>.
      *
      * @param e {qx.event.type.Data} Data event.
      */
-    _onAppearOnce : function()
+    _onAppearOnce : function(e)
     {
       var model = qx.data.marshal.Json.createModel(this.__skeleton, true);
 
@@ -568,6 +587,9 @@ qx.Class.define("qxe.ui.wizard.Wizard",
     }
   },
 
+  /**
+   * Destruct function.
+   */
   destruct : function()
   {
     this.__skeleton = null;
