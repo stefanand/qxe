@@ -245,44 +245,6 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     */
 
     /**
-     * Create a button for the button pane.
-     *
-     * @param value {qx.ui.form.Button} The button which should be added.
-     * @return {qx.ui.form.Button[]} The newly added button(s).
-     */
-    createButton : function(value)
-    {
-      if(typeof value === "object")
-      {
-        value = [value];
-      }
-
-      var instance = qx.locale.Manager.getInstance();
-      var buttons = [];
-      var button;
-
-      for(var i = 0, len = value.length; i < len; i++)
-      {
-        button = new qx.ui.form.Button();
-        button.setUserData("name", value[i].name || null);
-        button.setLabel(instance.translate(value[i].label, []).toString() || null);
-        button.setIcon(value[i].icon || null);
-        button.setToolTip(value[i].toolTip || null);
-        button.setToolTipIcon(value[i].toolTipIcon || null);
-        button.setToolTipText(instance.translate(value[i].toolTipText, []).toString() || null);
-        button.addListener("execute", function(e) {
-          this.fireDataEvent("execute", e.getTarget());
-        }, this);
-
-        this.add(button);
-
-        buttons[i] = button;
-      }
-
-      return buttons;
-    },
-
-    /**
      * Adds button to buttonpane with specified constraint.
      * The valid constraints are "affirmative", "cancel", "help" and "other".
      *

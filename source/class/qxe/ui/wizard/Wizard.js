@@ -61,6 +61,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
 
     this._createChildControl("stack-pane");
     this._createChildControl("navigation-pane");
+    this._createChildControl("button-pane");
 
     this.addListenerOnce("appear", this._onAppearOnce, this);
   },
@@ -156,6 +157,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
       var layout;
       var widget;
       var tooltip;
+      var def;
 
       switch(id)
       {
@@ -262,6 +264,44 @@ qx.Class.define("qxe.ui.wizard.Wizard",
           control.addListener("execute", this._onExecuteNext, this);
           control.setToolTip(tooltip);
           control.setIconPosition("right");
+          break;
+
+        case "button-pane":
+          control = new qxe.ui.form.ButtonPane(qxe.ui.form.ButtonPane.CUSTOM);
+          // ??? control.setAlignX("center");
+          control._getLayout().setAlignX("center");
+          control.setMargin(5);
+
+          control.add(this._createChildControl("affirm-button"), "affirm")
+          control.add(this._createChildControl("reset-button"))
+          control.add(this._createChildControl("cancel-button"), "cancel");
+          break;
+
+        case "affirm-button":
+          control = new qx.ui.form.Button();
+          control.setUserData("name", "FINISH");
+          control.setLabel(this.tr("Finish"));
+          control.setIcon(""),
+          control.setToolTipIcon("qx/icon/16/actions/help-about.png");
+          control.setToolTipText(this.tr("Finish wizard."));
+          control.setEnabled(false);
+          break;
+
+        case "reset-button":
+          control = new qx.ui.form.Button();
+          control.setUserData("name", "RESET");
+          control.setLabel(this.tr("Reset"));
+          control.setIcon(""),
+          control.setToolTipIcon("qx/icon/16/actions/help-about.png");
+          control.setToolTipText(this.tr("Reset the fields of the wizard."));
+          control.setEnabled(false);
+          break;
+
+        case "cancel-button":
+          control = new qx.ui.form.Button();
+          control.set(qxe.ui.form.ButtonPane.CANCEL);
+          control.setUserData("name", "CANCEL");
+          control.setToolTipText(this.tr("Cancel the wizard."));
           break;
       }
 
@@ -524,6 +564,11 @@ qx.Class.define("qxe.ui.wizard.Wizard",
         children[i].setEnabled();
       }
     }
+  },
+
+  destruct : function()
+  {
+    this.__skeleton = null;
   }
 });
 
