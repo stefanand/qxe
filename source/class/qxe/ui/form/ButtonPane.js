@@ -76,7 +76,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
   {
     // Buttons
     OK : {
-      name : "OK",
+//      name : "OK",
       label : qx.locale.Manager.marktr("OK"),
       icon : "qx/icon/16/actions/dialog-ok.png",
       toolTip : null,
@@ -85,7 +85,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     },
 
     CANCEL : {
-      name : "CANCEL",
+//      name : "CANCEL",
       label : qx.locale.Manager.marktr("Cancel"),
       icon : "qx/icon/16/actions/dialog-cancel.png",
       toolTip : null,
@@ -94,7 +94,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     },
 
     HELP : {
-      name : "HELP",
+//      name : "HELP",
       label : qx.locale.Manager.marktr("Help"),
       icon : "qx/icon/16/actions/help-about.png",
       toolTip : null,
@@ -103,7 +103,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     },
 
     YES : {
-      name : "YES",
+//      name : "YES",
       label : qx.locale.Manager.marktr("Yes"),
       icon : "",
       toolTip : null,
@@ -112,7 +112,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     },
 
     NO : {
-      name : "NO",
+//      name : "NO",
       label : qx.locale.Manager.marktr("NO"),
       icon : "",
       toolTip : null,
