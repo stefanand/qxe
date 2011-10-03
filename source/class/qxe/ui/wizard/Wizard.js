@@ -272,8 +272,8 @@ qx.Class.define("qxe.ui.wizard.Wizard",
           control._getLayout().setAlignX("center");
           control.setMargin(5);
 
-          control.add(this._createChildControl("affirm-button"), "affirm")
-          control.add(this._createChildControl("reset-button"))
+          control.add(this._createChildControl("affirm-button"), "affirm");
+          control.add(this._createChildControl("reset-button"));
           control.add(this._createChildControl("cancel-button"), "cancel");
           break;
 
