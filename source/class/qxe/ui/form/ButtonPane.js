@@ -265,7 +265,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
         }
       }
 
-      var index = this.getChidren().length;
+      var index = this.getChildren().length;
 
       if(constraint != null)
       {
