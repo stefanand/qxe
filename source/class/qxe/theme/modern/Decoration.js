@@ -19,6 +19,49 @@ qx.Theme.define("qxe.theme.modern.Decoration",
 {
   decorations :
   {
+    /*
+    ---------------------------------------------------------------------------
+      DIALOG
+    ---------------------------------------------------------------------------
+    */
+
+    "dialog" :
+    {
+      decorator: qx.ui.decoration.Single,
+
+      style :
+      {
+        backgroundColor : "background-pane",
+
+        width : 1,
+        color : "border-main",
+        widthTop : 0
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
+      DECORATED WINDOW
+    ---------------------------------------------------------------------------
+    */
+
+    "decorated-window-captionbar-active" :
+    {
+      decorator : qx.ui.decoration.Grid,
+
+      style : {
+        baseImage : "decoration/window/captionbar-active.png"
+      }
+    },
+
+    "decorated-window-captionbar-inactive" :
+    {
+      decorator : qx.ui.decoration.Grid,
+
+      style : {
+        baseImage : "decoration/window/captionbar-inactive.png"
+      }
+    }
   }
 });
 

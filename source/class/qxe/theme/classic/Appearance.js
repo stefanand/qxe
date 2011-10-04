@@ -17,9 +17,6 @@
 
 /* ************************************************************************
 
-#asset(qx/icon/Oxygen/16/actions/dialog-cancel.png)
-#asset(qx/icon/Oxygen/16/actions/dialog-ok.png)
-
 # asset(qxe/decoration/Classic/*)
 
 ************************************************************************* */
@@ -40,6 +37,91 @@ qx.Theme.define("qxe.theme.classic.Appearance",
 
     /*
     ---------------------------------------------------------------------------
+      DECORATED WINDOW
+    ---------------------------------------------------------------------------
+    */
+
+    "decorated-window/captionbar" :
+    {
+      style : function(states)
+      {
+        return {
+          padding : 1,
+          backgroundColor : states.active ? "dialog-active-caption" : "dialog-inactive-caption",
+          textColor : states.active ? "dialog-active-caption-text" : "dialog-inactive-caption-text"
+        };
+      }
+    },
+
+    "decorated-window/title" :
+    {
+      style : function(states)
+      {
+        return {
+          cursor : "default",
+          font : "bold",
+          margin : states.rtl ? [ 0, 0, 0, 20] : [ 0, 20, 0, 0],
+          alignY: "middle"
+        };
+      }
+    },
+
+    "decorated-window/close-button" :
+    {
+      include : "button",
+      alias : "button",
+
+      style : function(states)
+      {
+                                var rtl = states.rtl;
+
+        return {
+          margin : rtl ? [ 0, 2, 0, 0 ] : [ 0, 0, 0, 2 ],
+          icon : "decoration/window/close.gif",
+          padding : states.pressed || states.abandoned ? (rtl ? [ 2, 3, 0, 1] : [ 2, 1, 0, 3]) : [ 1, 2 ]
+        };
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
+      DIALOG
+    ---------------------------------------------------------------------------
+    */
+
+    "dialog" :
+    {
+      style : function(states)
+      {
+        return {
+          contentPadding : [ 10, 10, 10, 10 ],
+          backgroundColor : "background",
+          decorator : states.maximized ? undefined : "outset",
+          shadow : states.maximized ? undefined : "shadow-small"
+        };
+      }
+    },
+
+    "dialog/pane" : {},
+
+    /*
+    ---------------------------------------------------------------------------
+      FRAME
+    ---------------------------------------------------------------------------
+    */
+
+    "frame/icon" :
+    {
+      style : function(states)
+      {
+        return {
+          margin : states.rtl ? [ 0, 0, 0, 4] : [ 0, 4, 0, 0]
+        };
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
       OPTION PANE
     ---------------------------------------------------------------------------
     */
@@ -52,7 +134,6 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     ---------------------------------------------------------------------------
     */
 
-    // Inherits from respective parent
     "wizard" : "widget",
     "wizard-page" : "groupbox"
 });

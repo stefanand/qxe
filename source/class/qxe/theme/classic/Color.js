@@ -19,5 +19,15 @@ qx.Theme.define("qxe.theme.classic.Color",
 {
   colors :
   {
+    /*
+    ---------------------------------------------------------------------------
+      DIALOG
+    ---------------------------------------------------------------------------
+    */
+
+    "dialog-active-caption-text" : [ 255, 255, 255 ],
+    "dialog-inactive-caption-text" : [ 255, 255, 255 ],
+    "dialog-active-caption" : [ 51, 94, 168 ],
+    "dialog-inactive-caption" : [ 111, 161, 217 ]
   }
 });
