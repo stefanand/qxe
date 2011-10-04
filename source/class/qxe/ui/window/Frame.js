@@ -174,6 +174,7 @@ qx.Class.define("qxe.ui.window.Frame",
 
     statusBar :
     {
+      check : "qxe.ui.statusbar.StatusBar",
       apply : "_applyStatusBarChange",
       event : "changeStatusBar",
       nullable : true
