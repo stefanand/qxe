@@ -25,6 +25,8 @@ qx.Class.define("qxe.ui.wizard.Page",
 
   implement : qxe.ui.wizard.IPage,
 
+//  type : "abstract",
+
   /*
   *****************************************************************************
      CONSTRUCTOR
