@@ -33,11 +33,10 @@ qx.Class.define("qxe.ui.dialog.Dialog",
 
   /**
    * @param caption {String} The caption text
-   * @param icon {String} The URL of the caption bar icon
    */
-  construct : function(caption, icon)
+  construct : function(caption)
   {
-    this.base(arguments, caption, icon);
+    this.base(arguments, caption);
   },
 
 
@@ -116,6 +115,12 @@ qx.Class.define("qxe.ui.dialog.Dialog",
 
   members :
   {
+    /*
+    ---------------------------------------------------------------------------
+      WIDGET API
+    ---------------------------------------------------------------------------
+    */
+
     // Augmented
     show : function()
     {
@@ -130,6 +135,7 @@ qx.Class.define("qxe.ui.dialog.Dialog",
       this.base(arguments);
     },
 
+    // Augmented
     hide : function()
     {
       if(this.isBlocker())
