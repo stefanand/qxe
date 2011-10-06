@@ -1,14 +1,23 @@
 /* ************************************************************************
 
+   qxe - qooxdoo extension framework
+
    Copyright:
+     2010-2011 Cost Savers, http://www.cost-savers.net
 
    License:
+     LGPL: http://www.gnu.org/licenses/lgpl.html
+     EPL: http://www.eclipse.org/org/documents/epl-v10.php
+     See the LICENSE file in the project's top-level directory for details.
 
    Authors:
+     * Stefan Andersson (sand)
 
 ************************************************************************ */
 
 /* ************************************************************************
+
+#asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
 
 #asset(qxe/demo/*)
 
@@ -57,19 +66,138 @@ qx.Class.define("qxe.demo.Application",
       -------------------------------------------------------------------------
       */
 
-      // Create a button
-      var button1 = new qxe.Contribution("First Contribution", "qxe/test.png");
-
       // Document is the application root
       var doc = this.getRoot();
 			
       // Add button to document at fixed coordinates
-      doc.add(button1, {left: 100, top: 50});
+      doc.add(this.createButtonPane1(), {left: 100, top: 50});
+      doc.add(this.createButtonPane2(), {left: 300, top: 50});
+      doc.add(this.createButtonPane3(), {left: 100, top: 100});
+      doc.add(this.createButtonPane4(), {left: 300, top: 100});
+    },
 
-      // Add an event listener
-      button1.addListener("execute", function(e) {
-        alert("Hello World!");
-      });
+    createButtonPane1 : function()
+    {
+      // Normal horizontal button pane
+      var buttonPane = new qxe.ui.form.ButtonPane();
+
+      var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
+      okB.addListener("execute", function() {
+        alert("You pressed the OK button!");
+      }, this);
+
+      buttonPane.add(okB);
+
+      var cancelB = new qx.ui.form.Button();
+      cancelB.set(qxe.ui.form.ButtonPane.CANCEL);
+      cancelB.addListener("execute", function() {
+        alert("You pressed the Cancel button!");
+      }, this);
+
+      buttonPane.add(cancelB);
+
+      var helpB = new qx.ui.form.Button();
+      helpB.set(qxe.ui.form.ButtonPane.HELP);
+      helpB.addListener("execute", function() {
+        alert("You pressed the Help button!");
+      }, this);
+
+      buttonPane.add(helpB);
+
+      return buttonPane;
+    },
+
+    createButtonPane2 : function()
+    {
+      // Normal horizontal button pane with double spacing
+      var buttonPane = new qxe.ui.form.ButtonPane(null, 8);
+
+      var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
+      okB.addListener("execute", function() {
+        alert("You pressed the OK button!");
+      }, this);
+
+      buttonPane.add(okB);
+
+      var cancelB = new qx.ui.form.Button();
+      cancelB.set(qxe.ui.form.ButtonPane.CANCEL);
+      cancelB.addListener("execute", function() {
+        alert("You pressed the Cancel button!");
+      }, this);
+
+      buttonPane.add(cancelB);
+
+      var helpB = new qx.ui.form.Button();
+      helpB.set(qxe.ui.form.ButtonPane.HELP);
+      helpB.addListener("execute", function() {
+        alert("You pressed the Help button!");
+      }, this);
+    
+      buttonPane.add(helpB);
+
+      return buttonPane;
+    },
+
+    createButtonPane3 : function()
+    {
+      // Normal vertical button pane
+      var buttonPane = new qxe.ui.form.ButtonPane("vertical");
+
+      var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
+      okB.addListener("execute", function() {
+        alert("You pressed the OK button!");
+      }, this);
+
+      buttonPane.add(okB);
+
+      var cancelB = new qx.ui.form.Button();
+      cancelB.set(qxe.ui.form.ButtonPane.CANCEL);
+      cancelB.addListener("execute", function() {
+        alert("You pressed the Cancel button!");
+      }, this);
+
+      buttonPane.add(cancelB);
+
+      var helpB = new qx.ui.form.Button();
+      helpB.set(qxe.ui.form.ButtonPane.HELP);
+      helpB.addListener("execute", function() {
+        alert("You pressed the Help button!");
+      }, this);
+    
+      buttonPane.add(helpB);
+
+      return buttonPane;
+    },
+
+    createButtonPane4 : function()
+    {
+      // Horizontal button pane with constraints
+      var buttonPane = new qxe.ui.form.ButtonPane();
+
+      var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
+      okB.addListener("execute", function() {
+        alert("You pressed the OK button!");
+      }, this);
+
+      buttonPane.add(okB, "affirmative");
+
+      var cancelB = new qx.ui.form.Button();
+      cancelB.set(qxe.ui.form.ButtonPane.CANCEL);
+      cancelB.addListener("execute", function() {
+        alert("You pressed the Cancel button!");
+      }, this);
+
+      buttonPane.add(cancelB, "cancel");
+
+      var helpB = new qx.ui.form.Button();
+      helpB.set(qxe.ui.form.ButtonPane.HELP);
+      helpB.addListener("execute", function() {
+        alert("You pressed the Help button!");
+      }, this);
+    
+      buttonPane.add(helpB, "help");
+
+      return buttonPane;
     }
   }
 });
