@@ -70,10 +70,23 @@ qx.Class.define("qxe.demo.Application",
       var doc = this.getRoot();
 			
       // Add button to document at fixed coordinates
+      doc.add(new qx.ui.basic.Label("Default with custom and predefined buttons"), {left: 100, top: 35});
       doc.add(this.createButtonPane1(), {left: 100, top: 50});
-      doc.add(this.createButtonPane2(), {left: 300, top: 50});
-      doc.add(this.createButtonPane3(), {left: 100, top: 100});
-      doc.add(this.createButtonPane4(), {left: 300, top: 100});
+
+      doc.add(new qx.ui.basic.Label("Spacing 8px with predefined buttons"), {left: 100, top: 85});
+      doc.add(this.createButtonPane2(), {left: 100, top: 100});
+
+      doc.add(new qx.ui.basic.Label("Button constraints with predefined buttons"), {left: 100, top: 135});
+      doc.add(this.createButtonPane3(), {left: 100, top: 150});
+
+      doc.add(new qx.ui.basic.Label("Yes and No predefined buttons"), {left: 100, top: 185});
+      doc.add(this.createButtonPane4(), {left: 100, top: 200});
+
+      doc.add(new qx.ui.basic.Label("Vertical with predefined buttons same width"), {left: 350, top: 35});
+      doc.add(this.createButtonPane5(), {left: 350, top: 50});
+
+      doc.add(new qx.ui.basic.Label("Vertical with predefined buttons and optimized width"), {left: 350, top: 135});
+      doc.add(this.createButtonPane6(), {left: 350, top: 150});
     },
 
     createButtonPane1 : function()
@@ -81,12 +94,12 @@ qx.Class.define("qxe.demo.Application",
       // Normal horizontal button pane
       var buttonPane = new qxe.ui.form.ButtonPane();
 
-      var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
-      okB.addListener("execute", function() {
-        alert("You pressed the OK button!");
+      var sendB = new qx.ui.form.Button("Send", "icon/16/actions/dialog-ok.png");
+      sendB.addListener("execute", function() {
+        alert("You pressed the Send button!");
       }, this);
 
-      buttonPane.add(okB);
+      buttonPane.add(sendB);
 
       var cancelB = new qx.ui.form.Button();
       cancelB.set(qxe.ui.form.ButtonPane.CANCEL);
@@ -140,6 +153,61 @@ qx.Class.define("qxe.demo.Application",
 
     createButtonPane3 : function()
     {
+      // Horizontal button pane with constraints
+      var buttonPane = new qxe.ui.form.ButtonPane();
+
+      var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
+      okB.addListener("execute", function() {
+        alert("You pressed the OK button!");
+      }, this);
+
+      buttonPane.add(okB, "affirmative");
+
+      var cancelB = new qx.ui.form.Button();
+      cancelB.set(qxe.ui.form.ButtonPane.CANCEL);
+      cancelB.addListener("execute", function() {
+        alert("You pressed the Cancel button!");
+      }, this);
+
+      buttonPane.add(cancelB, "cancel");
+
+      var helpB = new qx.ui.form.Button();
+      helpB.set(qxe.ui.form.ButtonPane.HELP);
+      helpB.addListener("execute", function() {
+        alert("You pressed the Help button!");
+      }, this);
+    
+      buttonPane.add(helpB, "help");
+
+      return buttonPane;
+    },
+
+    createButtonPane4 : function()
+    {
+      // Horizontal button pane with constraints
+      var buttonPane = new qxe.ui.form.ButtonPane();
+
+      var yesB = new qx.ui.form.Button();
+      yesB.set(qxe.ui.form.ButtonPane.YES);
+      yesB.addListener("execute", function() {
+        alert("You pressed the Yes button!");
+      }, this);
+
+      buttonPane.add(yesB, "Yes");
+
+      var noB = new qx.ui.form.Button();
+      noB.set(qxe.ui.form.ButtonPane.NO);
+      noB.addListener("execute", function() {
+        alert("You pressed the Yes button!");
+      }, this);
+    
+      buttonPane.add(noB, "No");
+
+      return buttonPane;
+    },
+
+    createButtonPane5 : function()
+    {
       // Normal vertical button pane
       var buttonPane = new qxe.ui.form.ButtonPane("vertical");
 
@@ -169,17 +237,18 @@ qx.Class.define("qxe.demo.Application",
       return buttonPane;
     },
 
-    createButtonPane4 : function()
+    createButtonPane6 : function()
     {
-      // Horizontal button pane with constraints
-      var buttonPane = new qxe.ui.form.ButtonPane();
+      // Normal vertical button pane
+      var buttonPane = new qxe.ui.form.ButtonPane("vertical");
+      buttonPane.setSizeConstraint(true);
 
       var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
       okB.addListener("execute", function() {
         alert("You pressed the OK button!");
       }, this);
 
-      buttonPane.add(okB, "affirmative");
+      buttonPane.add(okB);
 
       var cancelB = new qx.ui.form.Button();
       cancelB.set(qxe.ui.form.ButtonPane.CANCEL);
@@ -187,7 +256,7 @@ qx.Class.define("qxe.demo.Application",
         alert("You pressed the Cancel button!");
       }, this);
 
-      buttonPane.add(cancelB, "cancel");
+      buttonPane.add(cancelB);
 
       var helpB = new qx.ui.form.Button();
       helpB.set(qxe.ui.form.ButtonPane.HELP);
@@ -195,7 +264,7 @@ qx.Class.define("qxe.demo.Application",
         alert("You pressed the Help button!");
       }, this);
     
-      buttonPane.add(helpB, "help");
+      buttonPane.add(helpB);
 
       return buttonPane;
     }

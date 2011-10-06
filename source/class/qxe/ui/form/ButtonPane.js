@@ -115,6 +115,45 @@ qx.Class.define("qxe.ui.form.ButtonPane",
       toolTip : null,
       toolTipIcon : "icon/16/actions/help-about.png",
       toolTipText : qx.locale.Manager.marktr("Answer no to the dialog.")
+    },
+
+    /**
+     * Get an instance of a button pane by definition through json.
+     *
+     * The json structure looks like this:
+     * {
+     *   <button name> : {
+     *     name : "SUBMIT",
+     *     constraint : "affirm",
+     *     label : qx.locale.Manager.marktr("Submit"),
+     *     icon : "icon/16/actions/dialog-ok.png",
+     *     toolTip : null,
+     *     toolTipIcon : "icon/16/actions/help-about.png",
+     *     toolTipText : qx.locale.Manager.marktr("Submit the dialog.")
+     *   },
+     *   <button name> : {
+     *     ...
+     *   },
+     *   ...
+     * }
+     *
+     * @param json {object} The new value.
+     * @return {qxe.ui.form.ButtonPane} The newly created button pane.
+     */
+    getInstance : function(json)
+    {
+      var button;
+      var buttonPane = new qxe.ui.form.ButtonPane(json.orientation, json.spacing);
+
+      for(var key in json)
+      {
+        button = new qx.ui.form.Button();
+        button.set(json.key);
+
+        buttonPane.add(button/*, json.key.name*/);
+      }
+
+      return buttonPane;
     }
   },
 
@@ -155,14 +194,34 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     },
 
     /**
-     * Sets the size constraint. Valid values are "less" and "same".
-     * The size constraint will apply to all components except if the component client property
-     * growX or growY set to true.
+     * The constraint of buttons positioning affirmative button to the right or left of the cancel button
+     * and the help button.
+     *
+     *  true:
+     *    windows -> buttons in following order from left to right: help > cancel > affirmative
+     *    os/x    -> buttons in following order from left to right: affirmative > cancel > help
+     *  false:
+     *    all -> in the order you define them
+     */
+    constraint :
+    {
+      check : "Boolean",
+      init : false,
+      apply : "_applyConstraint"
+    },
+
+    /**
+     * The size constraint of buttons making them grow to same width (false) or optimized (true).
+     *
+     * Horizontal layout has optimized lengths as default while vertical layout has same lengths as default.
+     *
+     *   true  -> optimized lengths
+     *   false -> same lengths
      */
     sizeConstraint :
     {
-      check : ["same", "less"],
-      init : "same",
+      check : "Boolean",
+      init : false,
       apply : "_applySizeConstraint"
     }
   },
@@ -230,13 +289,65 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     },
 
     /**
-     * Apply method for size constraint.
+     * Apply method for constraint.
      *
      * @param value {boolean} The new value.
      * @param old {boolean} The old value.
      */
+    _applyConstraint : function(value, old)
+    {
+      if(value != old)
+      {
+        this._constrainButtons();
+      }
+    },
+
+    /**
+     * Apply method for size constraint.
+     *
+     * Horizontal layout has optimized lengths as default while vertical layout has same lengths as default.
+     *
+     * @param value {boolean} The new value.
+     *                         true  -> optimized lengths
+     *                         false -> same lengths
+     * @param old {boolean} The old value.
+     */
     _applySizeConstraint : function(value, old)
     {
+      if(value != old)
+      {
+        var children = this._getChildren();
+        var len = children.length;
+this.debug("v="+value+"    old="+old+"   c="+children.length);
+
+        if(this.getOrientation() == "horizontal")
+        {
+          var widest = 0;
+          var width;
+
+          // Find the widest button
+          for(var i = 0; i < len; i++)
+          {
+            width = children[i].getWidth();
+
+            widest < width ? widest = width : width;
+          }
+          
+          // Set all button widths to widest
+          for(var i = 0; i < len; i++)
+          {
+            children[i].setWidth(widest);
+          }
+        }
+        else
+        {
+          for(var i = 0, l = children.length; i < l; i++)
+          {
+            children[i].setAllowGrowX(!value);
+            children[i].setAllowShrinkX(value);
+          }
+        }
+      }
     },
 
     /*
@@ -269,7 +380,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
 
       var index = this._getChildren().length;
 
-      if(constraint != null)
+      if(this.getConstraint() && constraint != null)
       {
 // check valid constraints
 //        button.setUserData("constraint", constraint);
