@@ -10,7 +10,7 @@
 
 qx.Theme.define("qxe.demo.theme.Color",
 {
-  extend : qx.theme.modern.Color,
+  extend : qxe.theme.modern.Color,
 
   colors :
   {

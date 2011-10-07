@@ -198,8 +198,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      * and the help button.
      *
      *  true:
-     *    windows -> buttons in following order from left to right: help > cancel > affirmative
-     *    os/x    -> buttons in following order from left to right: affirmative > cancel > help
+     *    windows -> buttons in following order from left to right: other > help > cancel > affirmative
+     *    os/x    -> buttons in following order from left to right: affirmative > cancel > help > other
      *  false:
      *    all -> in the order you define them
      */
@@ -235,6 +235,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
 
   members :
   {
+    __buttonOrder : [],
+
     /*
     ---------------------------------------------------------------------------
       APPLY ROUTINES
@@ -314,12 +316,225 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      */
     _applySizeConstraint : function(value, old)
     {
-      if(value != old)
+      if(value != old && this._getChildren())
       {
-        var children = this._getChildren();
-        var len = children.length;
-this.debug("v="+value+"    old="+old+"   c="+children.length);
+        this.invalidateLayoutCache();
+      }
+    },
 
+    /*
+    ---------------------------------------------------------------------------
+      CHILD HANDLING
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Adds button to buttonpane with specified constraint.
+     * The valid constraints are "affirmative", "cancel" and "help".
+     *
+     * The main purpose of the constraints is to determine how the buttons are
+     * laid out on different platforms according to the OS convention. For example, on
+     * Windows, affirmative button appears on the right hand side of cancel button.
+     * On Mac OS X, affirmative button will appear on the left hand side of cancel button.
+     *
+     * @param button {qx.ui.form.Button} The button to add.
+     * @param constraint {[ "affirmative" | "cancel" | "help" ]} The constraint used for the button.
+     */
+    add : function(button, constraint)
+    {
+      if (qx.core.Environment.get("qx.debug"))
+      {
+        if (!(button instanceof qx.ui.form.Button))
+        {
+          throw new Error("Incompatible child for ButtonPane: " + button);
+        }
+      }
+
+      if(this.__buttonOrder.indexOf(button) != -1)
+      {
+        this.__buttonOrder.push(button);
+      }
+
+      var children = this._getChildren();
+      var index = children.length;
+
+      if(constraint != null)
+      {
+        var constraints = this._getConstraints();
+
+        if(constraint.match("affirmative|cancel|help") && !constraints[constraint])
+        {
+          button.setUserData("constraint", constraint);
+        }
+        else
+        {
+          this.debug("Illegal or double constraint " + constraint + ".");
+        }
+
+        if(this.getConstraint())
+        {
+          var win = (qx.core.Environment.get("os.name") == "win");
+
+          if(constraint == "affirmative")
+          {
+            win || index == 0 ? this._addAt(button, index) : this._addBefore(button, children[0]);
+          }
+          else
+          {
+            var affirmative = constraints["affirmative"];
+
+            if(constraint == "cancel")
+            {
+              win && !affirmative ? this._addAt() : this._addBefore(button, win ? index - !!affirmative - 1 : index - !!affirmative - 1);
+            }
+            else
+            {
+              var cancel = (constraints["cancel"] ? 1 : 0);
+  
+              if(constraint == "help")
+              {
+                index = win ? index - affirmative - cancel - 1 : 0;
+              }
+            }
+          }
+        }
+      }
+
+      this._addAt(button, index);
+    },
+
+    /**
+     * Remove a button from the button pane.
+     *
+     * @param button {qx.ui.form.Button} The button to be removed.
+     */
+    remove : function(button)
+    {
+//      this.__buttonOrder[button] = null;
+      this._remove(button);
+    },
+
+    /**
+     * Add a spacer to the button pane. The spacer has a flex
+     * value of one and will stretch to the available space.
+     *
+     * @return {qx.ui.core.Spacer} The newly added spacer object. A reference
+     * to the spacer is needed to remove this spacer from the layout.
+     */
+    addSpacer : function()
+    {
+      var spacer = new qx.ui.core.Spacer;
+      this._add(spacer, {flex:1});
+
+      return spacer;
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      LAYOUT INTERFACE
+    ---------------------------------------------------------------------------
+    */
+
+    // overridden
+    renderLayout : function(left, top, width, height)
+    {
+      this._sizeConstrainButtons(this.getSizeConstraint());
+
+      return this.base(arguments, left, top, width, height);
+    },
+
+    /*
+    ---------------------------------------------------------------------------
+      INTERNAL ROUTINES
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Get all constrained buttons.
+     *
+     * @return {Array#map} the constrained buttons.
+     */
+    _getConstraints : function()
+    {
+      var constraint;
+      var constraints = [];
+      var children = this._getChildren();
+
+      for(var i = 0, l = children.length; i < l; i++)
+      {
+        constraint = children[i].getUserData("constraint");
+
+        if(!constraints[constraint])
+        {
+          constraints[constraint] = children[i];
+        }
+      }
+
+      return constraints;
+    },
+
+    /**
+     * The main purpose of the constraints is to determine how the buttons are
+     * laid out on different platforms according to the OS convention. For example, on
+     * Windows, affirmative button appears on the right hand side of cancel button.
+     * On Mac OS X, affirmative button will appear on the left hand side of cancel button.
+     *
+     * @param constraint {[ "affirmative" | "cancel" | "help" | "other" ]} The constraint for buttons.
+     */
+    _constrainButtons : function(constraint)
+    {
+/*
+      var item = 0;
+
+      // Windows versions
+      // affirm button to the right of the cancel button.
+      if(qx.core.Environment.get("os.name") == "win")
+      {
+          var affirmative = constraints["affirmative"];
+
+          if(children.indexOf(affirmative) > 0)
+          {
+            this._remove(affirmative);
+            this._addAt(affirmative, 0);
+          }
+
+          var cancel = constraints["cancel"];
+
+          if(children.indexOf(cancel) != -1 && children.indexOf(cancel) != 1)
+          {
+            this._remove(cancel);
+            this._addAt(cancel, 1 - (affirmative ? 1 : 0));
+          }
+
+          var help = constraints["help"];
+
+          if(children.indexOf(help) != -1 && children.indexOf(help) != 1)
+          {
+            this._remove(help);
+            this._addAt(help, 2 - (affirmative ? 1 : 0) - (cancel ? 1 : 0));
+          }
+      }
+      // All others osx, linux etc.
+      // affirm button to the left of the cancel button.
+      else
+      {
+      }
+
+      return item;
+*/
+    },
+
+    /**
+     * Resize the buttons according to sizeConstraint.
+     */
+    _sizeConstrainButtons : function(value)
+    {
+      var children = this._getChildren();
+      var len = children.length;
+
+      if(len)
+      {
         if(this.getOrientation() == "horizontal")
         {
           var widest = 0;
@@ -349,105 +564,6 @@ this.debug("v="+value+"    old="+old+"   c="+children.length);
         }
       }
     },
-
-    /*
-    ---------------------------------------------------------------------------
-      CHILD HANDLING
-    ---------------------------------------------------------------------------
-    */
-
-    /**
-     * Adds button to buttonpane with specified constraint.
-     * The valid constraints are "affirmative", "cancel", "help" and "other".
-     *
-     * The main purpose of the constraints is to determine how the buttons are
-     * laid out on different platforms according to the OS convention. For example, on
-     * Windows, affirmative button appears on the right hand side of cancel button.
-     * On Mac OS X, affirmative button will appear on the left hand side of cancel button.
-     *
-     * @param button {qx.ui.form.Button} The button to add.
-     * @param constraint {[ "affirmative" | "cancel" | "help" | "other" ]} The constraint used for the button.
-     */
-    add : function(button, constraint)
-    {
-      if (qx.core.Environment.get("qx.debug"))
-      {
-        if (!(button instanceof qx.ui.form.Button))
-        {
-          throw new Error("Incompatible child for ButtonPane: " + button);
-        }
-      }
-
-      var index = this._getChildren().length;
-
-      if(this.getConstraint() && constraint != null)
-      {
-// check valid constraints
-//        button.setUserData("constraint", constraint);
-//        index = this._constrainButtons(constraint);
-      }
-
-      this._addAt(button, index);
-    },
-
-    /**
-     * Remove a button from the button pane.
-     *
-     * @param button {qx.ui.form.Button} The button to be removed.
-     */
-    remove : function(button)
-    {
-      this._remove(button);
-    },
-
-    /**
-     * Add a spacer to the button pane. The spacer has a flex
-     * value of one and will stretch to the available space.
-     *
-     * @return {qx.ui.core.Spacer} The newly added spacer object. A reference
-     * to the spacer is needed to remove this spacer from the layout.
-     */
-    addSpacer : function()
-    {
-      var spacer = new qx.ui.core.Spacer;
-      this._add(spacer, {flex:1});
-
-      return spacer;
-    },
-
-
-    /*
-    ---------------------------------------------------------------------------
-      INTERNAL ROUTINES
-    ---------------------------------------------------------------------------
-    */
-
-    /**
-     * The main purpose of the constraints is to determine how the buttons are
-     * laid out on different platforms according to the OS convention. For example, on
-     * Windows, affirmative button appears on the right hand side of cancel button.
-     * On Mac OS X, affirmative button will appear on the left hand side of cancel button.
-     *
-     * @param constraint {[ "affirmative" | "cancel" | "help" | "other" ]} The constraint for buttons.
-     */
-    _constrainButtons : function(constraint)
-    {
-      var item = 0;
-
-      // Windows versions
-      // affirm button to the right of the cancel button.
-      if(qx.core.Environment.get("os.name") == "win")
-      {
-      }
-      // All others osx, linux etc.
-      // affirm button to the left of the cancel button.
-      else
-      {
-      }
-
-      return item;
-    },
-
 
     /*
     ---------------------------------------------------------------------------

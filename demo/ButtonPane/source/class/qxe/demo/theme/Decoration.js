@@ -10,7 +10,7 @@
 
 qx.Theme.define("qxe.demo.theme.Decoration",
 {
-  extend : qx.theme.modern.Decoration,
+  extend : qxe.theme.modern.Decoration,
 
   decorations :
   {

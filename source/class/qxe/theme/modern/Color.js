@@ -17,6 +17,8 @@
 
 qx.Theme.define("qxe.theme.modern.Color",
 {
+  extend : qx.theme.modern.Color,
+
   colors :
   {
   }

@@ -31,7 +31,7 @@
     "APPLICATION_MAIN_CLASS" : "${APPLICATION}.demo.Demo",
     "QOOXDOO_PATH" : "../../../qooxdoo",
     //"QXTHEME"      : "test.theme.modern.Theme",
-    "QXTHEME"      : "qxe.theme.Theme",
+    "QXTHEME"      : "qxe.theme.modern.Theme",
     "API_EXCLUDE"  : [ "qx.test.*", "test.demo.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*" ],
     "LOCALES"      : [ "ar", "ar_JO", "da", "de", "de_DE", "de_AT", "de_CH", "en", "en_GB", "en_US", "es", "es_MX", "es_ES", "et", "fi", "fi_FI", "is", "pt", "pt_BR", "pt_PT", "sv", "sv_SE", "sv_FI" ],
     "CACHE"        : "${TMPDIR}/qx${QOOXDOO_VERSION}/cache",

@@ -28,6 +28,8 @@ qx.Theme.define("qxe.theme.modern.Appearance",
 {
   title : "qxe modern appearance theme",
 
+  extend : qx.theme.modern.Appearance,
+
   appearances :
   {
     /*
@@ -36,7 +38,7 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     ---------------------------------------------------------------------------
     */
 
-		"button-pane" : "widget",
+    "button-pane" : "widget",
 
     /*
     ---------------------------------------------------------------------------
@@ -133,7 +135,7 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     ---------------------------------------------------------------------------
     */
 
-		"option-pane" : "widget",
+    "option-pane" : "widget",
 
     /*
     ---------------------------------------------------------------------------

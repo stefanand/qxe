@@ -82,10 +82,10 @@ qx.Class.define("qxe.demo.Application",
       doc.add(new qx.ui.basic.Label("Yes and No predefined buttons"), {left: 100, top: 185});
       doc.add(this.createButtonPane4(), {left: 100, top: 200});
 
-      doc.add(new qx.ui.basic.Label("Vertical with predefined buttons same width"), {left: 350, top: 35});
+      doc.add(new qx.ui.basic.Label("Vertical predefined buttons same width"), {left: 350, top: 35});
       doc.add(this.createButtonPane5(), {left: 350, top: 50});
 
-      doc.add(new qx.ui.basic.Label("Vertical with predefined buttons and optimized width"), {left: 350, top: 135});
+      doc.add(new qx.ui.basic.Label("Vertical predefined buttons and optimized width"), {left: 350, top: 135});
       doc.add(this.createButtonPane6(), {left: 350, top: 150});
     },
 
@@ -193,7 +193,7 @@ qx.Class.define("qxe.demo.Application",
         alert("You pressed the Yes button!");
       }, this);
 
-      buttonPane.add(yesB, "Yes");
+      buttonPane.add(yesB, "affirmative");
 
       var noB = new qx.ui.form.Button();
       noB.set(qxe.ui.form.ButtonPane.NO);
@@ -201,7 +201,7 @@ qx.Class.define("qxe.demo.Application",
         alert("You pressed the Yes button!");
       }, this);
     
-      buttonPane.add(noB, "No");
+      buttonPane.add(noB, "cancel");
 
       return buttonPane;
     },
