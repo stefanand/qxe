@@ -5,7 +5,7 @@ if (!window.qx) window.qx = {};
 qx.$$start = new Date();
   
 if (!qx.$$environment) qx.$$environment = {};
-var envinfo = {"qx.application":"qxe.demo.Application","qx.revision":"21509:21511M","qx.theme":"qxe.demo.theme.Theme","qx.version":"1.6"};
+var envinfo = {"qx.application":"qxe.demo.Application","qx.revision":"21509:21512M","qx.theme":"qxe.demo.theme.Theme","qx.version":"1.6"};
 for (var k in envinfo) qx.$$environment[k] = envinfo[k];
 
 if (!qx.$$libraries) qx.$$libraries = {};

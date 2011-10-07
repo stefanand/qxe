@@ -155,6 +155,7 @@ qx.Class.define("qxe.demo.Application",
     {
       // Horizontal button pane with constraints
       var buttonPane = new qxe.ui.form.ButtonPane();
+      buttonPane.setSizeConstraint(false);
 
       var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
       okB.addListener("execute", function() {
@@ -241,7 +242,7 @@ qx.Class.define("qxe.demo.Application",
     {
       // Normal vertical button pane
       var buttonPane = new qxe.ui.form.ButtonPane("vertical");
-      buttonPane.setSizeConstraint(true);
+      buttonPane.setSizeConstraint(false);
 
       var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
       okB.addListener("execute", function() {

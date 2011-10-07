@@ -213,15 +213,18 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     /**
      * The size constraint of buttons making them grow to same width (false) or optimized (true).
      *
-     * Horizontal layout has optimized lengths as default while vertical layout has same lengths as default.
+     * qx.ui.layout.HBox has minimum width as default
+     * qx.ui.layout.VBox has maximum width as default.
      *
-     *   true  -> optimized lengths
-     *   false -> same lengths
+     * This has been change for the button pane to be minimum width as default.
+     *
+     *   true  -> minimum width
+     *   false -> maximum width (flex:1)
      */
     sizeConstraint :
     {
       check : "Boolean",
-      init : false,
+      init : true,
       apply : "_applySizeConstraint"
     }
   },
@@ -527,34 +530,36 @@ qx.Class.define("qxe.ui.form.ButtonPane",
 
     /**
      * Resize the buttons according to sizeConstraint.
+     *
+     * @param value {boolean} True if size constrained.
      */
     _sizeConstrainButtons : function(value)
     {
       var children = this._getChildren();
       var len = children.length;
 
-      if(len)
+      if(!value && len && this.getOrientation() == "horizontal")
       {
-        if(this.getOrientation() == "horizontal")
+        var widest = 0;
+        var width;
+
+        // Find the widest button
+        for(var i = 0; i < len; i++)
         {
-          var widest = 0;
-          var width;
+          width = children[i].getSizeHint().width;
 
-          // Find the widest button
-          for(var i = 0; i < len; i++)
-          {
-            width = children[i].getWidth();
-
-            widest < width ? widest = width : width;
-          }
-          
-          // Set all button widths to widest
-          for(var i = 0; i < len; i++)
-          {
-            children[i].setWidth(widest);
-          }
+          widest = widest < width ? width : widest;
         }
-        else
+ 
+        // Set all button widths to widest
+        for(var i = 0; i < len; i++)
+        {
+          children[i].setWidth(widest);
+        }
+      }
+      else
+      {
+        if(value && len)
         {
           for(var i = 0, l = children.length; i < l; i++)
           {
