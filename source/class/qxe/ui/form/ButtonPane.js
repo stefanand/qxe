@@ -123,13 +123,13 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      * The json structure looks like this:
      * {
      *   <button name> : {
-     *     name : "SUBMIT",
-     *     constraint : "affirm",
+     *     constraint : "affirmative",
      *     label : qx.locale.Manager.marktr("Submit"),
      *     icon : "icon/16/actions/dialog-ok.png",
      *     toolTip : null,
      *     toolTipIcon : "icon/16/actions/help-about.png",
-     *     toolTipText : qx.locale.Manager.marktr("Submit the dialog.")
+     *     toolTipText : qx.locale.Manager.marktr("Submit the dialog."),
+     *     userData : ["constraint", "affirmative"] // http://bugzilla.qooxdoo.org/show_bug.cgi?id=5692
      *   },
      *   <button name> : {
      *     ...
@@ -147,10 +147,15 @@ qx.Class.define("qxe.ui.form.ButtonPane",
 
       for(var key in json)
       {
-        button = new qx.ui.form.Button();
-        button.set(json.key);
-
-        buttonPane.add(button/*, json.key.name*/);
+        if(json[key])
+        {
+          button = new qx.ui.form.Button();
+          button.setUserData("name", key);
+          button.set(json[key]);
+          // set does not take functions with >1 parameter
+          // Bug: http://bugzilla.qooxdoo.org/show_bug.cgi?id=5692
+          buttonPane.add(button, json[key].userData ? json[key].userData[1] : null);
+        }
       }
 
       return buttonPane;

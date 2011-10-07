@@ -18,6 +18,8 @@
 /* ************************************************************************
 
 #asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
+#asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
+#asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
 
 #asset(qxe/demo/*)
 
@@ -82,16 +84,18 @@ qx.Class.define("qxe.demo.Application",
       doc.add(new qx.ui.basic.Label("Yes and No predefined buttons"), {left: 100, top: 185});
       doc.add(this.createButtonPane4(), {left: 100, top: 200});
 
+      doc.add(new qx.ui.basic.Label("JSON definition"), {left: 100, top: 235});
+      doc.add(this.createButtonPane5(), {left: 100, top: 250});
+
       doc.add(new qx.ui.basic.Label("Vertical predefined buttons same width"), {left: 350, top: 35});
-      doc.add(this.createButtonPane5(), {left: 350, top: 50});
+      doc.add(this.createButtonPane6(), {left: 350, top: 50});
 
       doc.add(new qx.ui.basic.Label("Vertical predefined buttons and optimized width"), {left: 350, top: 135});
-      doc.add(this.createButtonPane6(), {left: 350, top: 150});
+      doc.add(this.createButtonPane7(), {left: 350, top: 150});
     },
 
     createButtonPane1 : function()
     {
-      // Normal horizontal button pane
       var buttonPane = new qxe.ui.form.ButtonPane();
 
       var sendB = new qx.ui.form.Button("Send", "icon/16/actions/dialog-ok.png");
@@ -122,7 +126,6 @@ qx.Class.define("qxe.demo.Application",
 
     createButtonPane2 : function()
     {
-      // Normal horizontal button pane with double spacing
       var buttonPane = new qxe.ui.form.ButtonPane(null, 8);
 
       var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
@@ -153,7 +156,6 @@ qx.Class.define("qxe.demo.Application",
 
     createButtonPane3 : function()
     {
-      // Horizontal button pane with constraints
       var buttonPane = new qxe.ui.form.ButtonPane();
       buttonPane.setSizeConstraint(false);
 
@@ -185,7 +187,6 @@ qx.Class.define("qxe.demo.Application",
 
     createButtonPane4 : function()
     {
-      // Horizontal button pane with constraints
       var buttonPane = new qxe.ui.form.ButtonPane();
 
       var yesB = new qx.ui.form.Button();
@@ -209,7 +210,32 @@ qx.Class.define("qxe.demo.Application",
 
     createButtonPane5 : function()
     {
-      // Normal vertical button pane
+      var def = {
+        OK : qxe.ui.form.ButtonPane.OK,
+        CANCEL : {
+          label : qx.locale.Manager.marktr("Cancel"),
+          icon : "icon/16/actions/dialog-cancel.png",
+          toolTip : null,
+          toolTipIcon : "icon/16/actions/help-about.png",
+          toolTipText : qx.locale.Manager.marktr("Cancel the dialog."),
+          userData : [ "constraint" , "cancel" ]
+        },
+        HELP : {
+          label : qx.locale.Manager.marktr("Help"),
+          icon : "icon/16/actions/help-about.png",
+          toolTip : null,
+          toolTipIcon : "icon/16/actions/help-about.png",
+          toolTipText : qx.locale.Manager.marktr("Get help about the dialog.")
+        }
+      };
+
+      var buttonPane = new qxe.ui.form.ButtonPane.getInstance(def);
+
+      return buttonPane;
+    },
+
+    createButtonPane6 : function()
+    {
       var buttonPane = new qxe.ui.form.ButtonPane("vertical");
 
       var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
@@ -238,9 +264,8 @@ qx.Class.define("qxe.demo.Application",
       return buttonPane;
     },
 
-    createButtonPane6 : function()
+    createButtonPane7 : function()
     {
-      // Normal vertical button pane
       var buttonPane = new qxe.ui.form.ButtonPane("vertical");
       buttonPane.setSizeConstraint(false);
 
