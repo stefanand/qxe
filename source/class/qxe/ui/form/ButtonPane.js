@@ -152,7 +152,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
           button = new qx.ui.form.Button();
           button.setUserData("name", key);
           button.set(json[key]);
-          // set does not take functions with >1 parameter
+          // The set() function  does not take functions with >1 parameter
           // Bug: http://bugzilla.qooxdoo.org/show_bug.cgi?id=5692
           buttonPane.add(button, json[key].userData ? json[key].userData[1] : null);
         }
@@ -306,9 +306,21 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      */
     _applyConstraint : function(value, old)
     {
-      if(value != old)
+      if(value)
       {
         this._constrainButtons();
+      }
+      else
+      {
+        this.removeAll();
+
+        var buttonOrder = this.__buttonOrder;
+
+        // Restore initial button order
+        for(var i = 0, l = this._getChildren().length; i < l; i++)
+        {
+          this.add(buttonOrder[i]);
+        }
       }
     },
 
@@ -490,7 +502,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      *
      * @param constraint {[ "affirmative" | "cancel" | "help" | "other" ]} The constraint for buttons.
      */
-    _constrainButtons : function(constraint)
+    _constrainButtons : function()
     {
 /*
       var item = 0;
@@ -615,22 +627,15 @@ qx.Class.define("qxe.ui.form.ButtonPane",
       }
 
       return button;
-    },
-
-    /**
-     * Add a spacer to the button pane. The spacer has a flex
-     * value of one and will stretch to the available space.
-     *
-     * @return {qx.ui.core.Spacer} The newly added spacer object. A reference
-     * to the spacer is needed to remove this spacer from the layout.
-     */
-    addSpacer : function()
-    {
-      var spacer = new qx.ui.core.Spacer;
-      this._add(spacer, {flex : 1});
-
-      return spacer;
     }
+  },
+
+  /**
+   * Destruct function.
+   */
+  destruct : function()
+  {
+    this._disposeObjects("__buttonOrder");
   }
 });
 
