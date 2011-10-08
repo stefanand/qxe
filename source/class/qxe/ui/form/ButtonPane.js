@@ -500,17 +500,15 @@ qx.Class.define("qxe.ui.form.ButtonPane",
       var children = this._getChildren();
       var index = children.length;
 
-      if(index > 0)
-      {
-        // Then add the button to the new position according to the standard of the OS
-        var win = (qx.core.Environment.get("os.name") == "win");
+      // Then add the button to the new position according to the standard of the OS
+      var win = (qx.core.Environment.get("os.name") == "win");
 
-        if(constraint == "affirmative")
-        {
-           this._addAt(button, win ? index : 0);
-        }
-        else
-        {
+      if(constraint == "affirmative")
+      {
+        this._addAt(button, win ? index : 0);
+      }
+      else
+      {
         var constraints = this._getConstraints();
         var affirmative = constraints["affirmative"];
 
