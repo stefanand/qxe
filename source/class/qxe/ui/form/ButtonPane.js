@@ -360,7 +360,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     */
 
     /**
-     * Adds button to buttonpane with specified constraint.
+     * Add button to a button pane with specified constraint.
      * The valid constraints are "affirmative", "cancel" and "help".
      *
      * The main purpose of the constraints is to determine how the buttons are
@@ -386,8 +386,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
         this.__buttonOrder.push(button);
       }
 
-      var children = this._getChildren();
-      var index = children.length;
+      var index = this._getChildren().length;
 
       if(constraint != null)
       {
@@ -404,30 +403,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
 
         if(this.getConstraint())
         {
-          var win = (qx.core.Environment.get("os.name") == "win");
-
-          if(constraint == "affirmative")
-          {
-            win || index == 0 ? this._addAt(button, index) : this._addBefore(button, children[0]);
-          }
-          else
-          {
-            var affirmative = constraints["affirmative"];
-
-            if(constraint == "cancel")
-            {
-              win && !affirmative ? this._addAt() : this._addBefore(button, win ? index - !!affirmative - 1 : index - !!affirmative - 1);
-            }
-            else
-            {
-              var cancel = (constraints["cancel"] ? 1 : 0);
-  
-              if(constraint == "help")
-              {
-                index = win ? index - affirmative - cancel - 1 : 0;
-              }
-            }
-          }
+          index = this._constrainButton(button, constrain);
         }
       }
 
@@ -441,7 +417,9 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      */
     remove : function(button)
     {
-//      this.__buttonOrder[button] = null;
+      var buttonOrder = this.__buttonOrder;
+      buttonOrder.splice(buttonOrder.indexOf(button), 1);
+
       this._remove(button);
     },
 
@@ -511,49 +489,59 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      * Windows, affirmative button appears on the right hand side of cancel button.
      * On Mac OS X, affirmative button will appear on the left hand side of cancel button.
      *
-     * @param constraint {[ "affirmative" | "cancel" | "help" | "other" ]} The constraint for buttons.
+     * @param button {qx.ui.form.Button} The button to constrain.
+     * @param constraint {[ "affirmative" | "cancel" | "help" | "other" ]} The constraint for the button.
+     */
+    _constrainButton : function(button, constraint)
+    {
+      // First remove the button if it has been added
+      this.remove(button);
+
+      var children = this._getChildren();
+      var index = children.length;
+
+      if(index > 0)
+      {
+        // Then add the button to the new position according to the standard of the OS
+        var win = (qx.core.Environment.get("os.name") == "win");
+
+        if(constraint == "affirmative")
+        {
+           this._addAt(button, win ? index : 0);
+        }
+        else
+        {
+        var constraints = this._getConstraints();
+        var affirmative = constraints["affirmative"];
+
+        if(constraint == "cancel")
+        {
+          win ? this._addAfter(button, children[index - !!affirmative]) : this._addBefore(button, children[!!affirmative]);
+        }
+        else
+        {
+          var cancel = (constraints["cancel"] ? 1 : 0);
+  
+          if(constraint == "help")
+          {
+            win ? this._addAfter(button, children[index - !!affirmative - !!cancel]) : this._addBefore(button, children[!!affirmative + !!cancel]);
+          }
+        }
+      }
+    },
+
+    /**
+     * Re-constrain all buttons.
      */
     _constrainButtons : function()
     {
-/*
-      var item = 0;
+      var children = this._getChildren();
+      var l = children.length;
 
-      // Windows versions
-      // affirm button to the right of the cancel button.
-      if(qx.core.Environment.get("os.name") == "win")
+      for(var i = 0; i < l; i++)
       {
-          var affirmative = constraints["affirmative"];
-
-          if(children.indexOf(affirmative) > 0)
-          {
-            this._remove(affirmative);
-            this._addAt(affirmative, 0);
-          }
-
-          var cancel = constraints["cancel"];
-
-          if(children.indexOf(cancel) != -1 && children.indexOf(cancel) != 1)
-          {
-            this._remove(cancel);
-            this._addAt(cancel, 1 - (affirmative ? 1 : 0));
-          }
-
-          var help = constraints["help"];
-
-          if(children.indexOf(help) != -1 && children.indexOf(help) != 1)
-          {
-            this._remove(help);
-            this._addAt(help, 2 - (affirmative ? 1 : 0) - (cancel ? 1 : 0));
-          }
+        this._constrainButton(children[i], children[i].getUserData("constraint"));
       }
-      // All others osx, linux etc.
-      // affirm button to the left of the cancel button.
-      else
-      {
-      }
-
-      return item;
-*/
     },
 
     /**
