@@ -32,7 +32,7 @@
  * The following features are included in the option pane:
  * - predefined panes; information, warning, error and message.
  * - predefined buttons can be added.
- * - customize label, icon message and buttons easily.
+ * - customize icon, label, image, message and buttons easily.
  *
  * @childControl pane {qx.ui.container.Composite} a pane which holds the content
  * @childControl image {qx.ui.basic.Image} an image for the pane
@@ -47,7 +47,7 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
    * @param message {String} The message to display
    * @param messageType {qx.core.Object} The message type definition
    */
-  construct : function(message, messageType)
+  construct : function(message, messageType, optionType)
   {
     this.base(arguments);
 
@@ -55,12 +55,14 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
     this._setLayout(new qx.ui.layout.VBox());
 
     this._createChildControl("pane");
-
+/*
     if(message != null)
     {
       this.setMessage(message);
     }
-
+*/
+    this._createPane(message, messageType, optionType);
+/*
     // Configure type
     if (messageType != null)
     {
@@ -70,6 +72,7 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
     {
       this.initMessageType();
     }
+*/
   },
 
 
@@ -81,13 +84,12 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
 
   statics :
   {
-    // Panes
+    // Predefined message types
     /** The information pane */
     INFO : {
       icon : "qxe/decoration/Modern/dialog/icon/16/information.png",
       caption : qx.locale.Manager.marktr("Information Message"),
       image : "qxe/decoration/Modern/dialog/icon/48/information.png",
-      message : null,
       buttons : qxe.ui.form.ButtonPane.OK
     },
 
@@ -96,7 +98,6 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
       icon : "qxe/decoration/Modern/dialog/icon/16/warning.png",
       caption : qx.locale.Manager.marktr("Warning Message"),
       image : "qxe/decoration/Modern/dialog/icon/48/warning.png",
-      message : null,
       buttons : qxe.ui.form.ButtonPane.OK
     },
 
@@ -105,7 +106,6 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
       icon : "qxe/decoration/Modern/dialog/icon/16/error.png",
       caption : qx.locale.Manager.marktr("Error Message"),
       image : "qxe/decoration/Modern/dialog/icon/48/error.png",
-      message : null,
       buttons : qxe.ui.form.ButtonPane.OK
     },
 
@@ -114,8 +114,42 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
       icon : "qxe/decoration/Modern/dialog/icon/16/message.png",
       caption : qx.locale.Manager.marktr("Message"),
       image : "qxe/decoration/Modern/dialog/icon/48/message.png",
-      message : null,
       buttons : qxe.ui.form.ButtonPane.OK
+    },
+
+    // Predefined option types
+    OK_HELP : {
+      OK : qxe.ui.form.ButtonPane.OK,
+      HELP : qxe.ui.form.ButtonPane.HELP
+    },
+
+    /**
+     * Get an instance of a button pane by definition through json.
+     *
+     * The json structure looks like this:
+     * {
+     *   <option pane name> : {
+     *     icon : "icon/16/actions/dialog-ok.png",
+     *     caption : "Warning",
+     *     image : qx.locale.Manager.marktr("Submit"),
+     *     message : "",
+     *     buttons : qxe.ui.form.ButtonPane.OK
+     *   },
+     *   <option pane name> : {
+     *     ...
+     *   },
+     *   ...
+     * }
+     *
+     * @param json {object} The new value.
+     * @return {qxe.ui.dialog.OptionPane} The newly created option pane.
+     */
+    getInstance : function(json)
+    {
+      var optionPane = new qxe.ui.dialog.OptionPane();
+      optionPane.set(json);
+
+      return optionPane;
     }
   },
 
@@ -169,13 +203,13 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
       var control;
       var layout;
       var widget;
-      var rtl = (qx.locale.Manager.getInstance().getDirection() == "right-to-left");
+//rtl      var rtl = (qx.locale.Manager.getInstance().getDirection() == "right-to-left");
 
       switch(id)
       {
         case "pane":
           layout = new qx.ui.layout.HBox();
-          layout.setReversed(rtl);
+//rtl          layout.setReversed(rtl);
 
           control = new qx.ui.container.Composite(layout);
 
@@ -206,13 +240,39 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
           break;
 
         case "button-pane":
-          control = new qxe.ui.form.ButtonPane(qxe.ui.form.ButtonPane.CUSTOM);
+          control = new qxe.ui.form.ButtonPane();
           control.setMargin(5);
           control._getLayout().setAlignX("center");
           break;
       }
 
       return control || this.base(arguments, id);
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      INTERNAL ROUTINES
+    ---------------------------------------------------------------------------
+    */
+
+    _createPane : function(message, messageType, optionType)
+    {
+      if (qx.core.Environment.get("qx.debug"))
+      {
+        if (!(messageType instanceof Object))
+        {
+          throw new Error("No message type defined!");
+        }
+      }
+
+      this.getChildControl("image").setSource(messageType.image);
+      this.getChildControl("message").setValue(message || "");
+
+      if(optionType != null)
+      {
+        this.getChildControl("button-pane").set(optionType);
+      }
     },
 
 
@@ -231,7 +291,7 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
     _applyMessageType : function(value, old)
     {
       this.getChildControl("image").setSource(value.image);
-      this.getChildControl("buttons").setType(value.buttons);
+      this.getChildControl("button-pane").setType(value.buttons);
     },
 
 
@@ -248,7 +308,7 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
      */
     setMessage : function(message)
     {
-      this.getChildControl("message").setValue(message);
+//      this.getChildControl("message").setValue(message);
     }
   }
 });

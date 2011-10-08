@@ -282,7 +282,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
       if (value === "horizontal")
       {
         var layout = new qx.ui.layout.HBox(this.getSpacing());
-        layout.setReversed(qx.locale.Manager.getInstance().getDirection() == "right-to-left");
+//rtl        layout.setReversed(qx.locale.Manager.getInstance().getDirection() == "right-to-left");
         this._setLayout(layout);
 
         this.setAllowStretchX(true);
@@ -403,7 +403,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
 
         if(this.getConstraint())
         {
-          index = this._constrainButton(button, constrain);
+          index = this._constrainButton(button, constraint);
         }
       }
 

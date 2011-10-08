@@ -24,7 +24,7 @@
 ************************************************************************ */
 
 /**
- * This is the main application class of your custom application "qxe"
+ * This is the main application class of your custom application "qxe OptionPane"
  */
 qx.Class.define("qxe.demo.Application",
 {
@@ -69,7 +69,7 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
-      var optionPane = new qxe.ui.dialog.OptionPane();
+      var optionPane = new qxe.ui.dialog.OptionPane("This is a warning!", qxe.ui.dialog.OptionPane.WARN, qxe.ui.form.ButtonPane.OK);
 
       doc.add(optionPane);
     }
