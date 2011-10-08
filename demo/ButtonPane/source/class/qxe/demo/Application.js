@@ -230,6 +230,15 @@ qx.Class.define("qxe.demo.Application",
       };
 
       var buttonPane = new qxe.ui.form.ButtonPane.getInstance(def);
+      buttonPane.getButtonByName("OK").addListener("execute", function() {
+        alert("You pressed the OK button!");
+      }, this);
+      buttonPane.getButtonByName("CANCEL").addListener("execute", function() {
+        alert("You pressed the Cancel button!");
+      }, this);
+      buttonPane.getButtonByName("HELP").addListener("execute", function() {
+        alert("You pressed the Help button!");
+      }, this);
 
       return buttonPane;
     },

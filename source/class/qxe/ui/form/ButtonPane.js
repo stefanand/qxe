@@ -28,6 +28,17 @@
  * A button pane is a pane with a number of buttons. It can be a standardised
  * button pane with preset combinations of buttons. It can also be totally customised.
  * All buttons are kept together in a Widget container with preset spacing.
+ *
+ * A button pane has the following features:
+ * - horizontal and vertical orientation
+ * - create from json objects
+ * - predefined buttons like ok, cancel, help, yes and no
+ * - button spacing
+ * - buttons kept together
+ * - individual button access
+ * - button constrain for Windows and OS/X respectively and default none (original button order)
+ * - button size constraint
+ * - add spacer between buttons
  */
 qx.Class.define("qxe.ui.form.ButtonPane",
 {
@@ -635,7 +646,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
    */
   destruct : function()
   {
-    this._disposeObjects("__buttonOrder");
+    this._disposeArray("__buttonOrder");
   }
 });
 
