@@ -26,7 +26,7 @@
 ************************************************************************ */
 
 /**
- * This is the main application class of your custom application "qxe"
+ * This is the main application class of your custom application "qxe ButtonPane"
  */
 qx.Class.define("qxe.demo.Application",
 {

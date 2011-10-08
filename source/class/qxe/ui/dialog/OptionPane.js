@@ -27,7 +27,12 @@
 ************************************************************************ */
 
 /**
- * An option pane.
+ * An option pane is an easy way of popping up a message.
+ *
+ * The following features are included in the option pane:
+ * - predefined panes; information, warning, error and message.
+ * - predefined buttons can be added.
+ * - customize label, icon message and buttons easily.
  *
  * @childControl pane {qx.ui.container.Composite} a pane which holds the content
  * @childControl image {qx.ui.basic.Image} an image for the pane
