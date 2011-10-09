@@ -46,6 +46,7 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
   /**
    * @param message {String} The message to display
    * @param messageType {qx.core.Object} The message type definition
+   * @param optionType {qx.core.Object} The option type definition
    */
   construct : function(message, messageType, optionType)
   {
@@ -55,24 +56,8 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
     this._setLayout(new qx.ui.layout.VBox());
 
     this._createChildControl("pane");
-/*
-    if(message != null)
-    {
-      this.setMessage(message);
-    }
-*/
+
     this._createPane(message, messageType, optionType);
-/*
-    // Configure type
-    if (messageType != null)
-    {
-      this.setMessageType(messageType);
-    }
-    else
-    {
-      this.initMessageType();
-    }
-*/
   },
 
 
@@ -256,6 +241,12 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
     ---------------------------------------------------------------------------
     */
 
+    /**
+     * Create option pane.
+     *
+     * @param value {boolean} The new value.
+     * @param old {boolean} The old value.
+     */
     _createPane : function(message, messageType, optionType)
     {
       if (qx.core.Environment.get("qx.debug"))
@@ -271,7 +262,7 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
 
       if(optionType != null)
       {
-        this.getChildControl("button-pane").set(optionType);
+        this.getChildControl("button-pane")._import(optionType);
       }
     },
 
@@ -302,13 +293,33 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
     */
 
     /**
+     * Setting the image.
+     *
+     * @param image {qx.ui.basic.Image} The image used.
+     */
+    setImage : function(value)
+    {
+      this.getChildControl("image").setSource(value);
+    },
+
+    /**
      * Setting the message.
      *
      * @param message {String} The message to set.
      */
-    setMessage : function(message)
+    setMessage : function(value)
     {
-//      this.getChildControl("message").setValue(message);
+      this.getChildControl("message").setValue(value || "");
+    },
+
+    /**
+     * Setting the message.
+     *
+     * @param optionType {Object} The json object of buttons for a button pane.
+     */
+    setOptionType : function(value)
+    {
+      this.getChildControl("button-pane")._import(value);
     }
   }
 });

@@ -155,19 +155,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     {
       var button;
       var buttonPane = new qxe.ui.form.ButtonPane(json.orientation, json.spacing);
-
-      for(var key in json)
-      {
-        if(json[key])
-        {
-          button = new qx.ui.form.Button();
-          button.setUserData("name", key);
-          button.set(json[key]);
-          // The set() function  does not take functions with >1 parameter
-          // Bug: http://bugzilla.qooxdoo.org/show_bug.cgi?id=5692
-          buttonPane.add(button, json[key].userData ? json[key].userData[1] : null);
-        }
-      }
+      buttonPane._import(json);
 
       return buttonPane;
     }
@@ -458,6 +446,29 @@ qx.Class.define("qxe.ui.form.ButtonPane",
       INTERNAL ROUTINES
     ---------------------------------------------------------------------------
     */
+
+    /**
+     * Get all constrained buttons.
+     *
+     * @param json {Object} The json definition of button pane.
+     */
+    _import : function(json)
+    {
+      var button;
+
+      for(var key in json)
+      {
+        if(json[key])
+        {
+          button = new qx.ui.form.Button();
+          button.setUserData("name", key);
+          button.set(json[key]);
+          // The set() function  does not take functions with >1 parameter
+          // Bug: http://bugzilla.qooxdoo.org/show_bug.cgi?id=5692
+          this.add(button, json[key].userData ? json[key].userData[1] : null);
+        }
+      }
+    },
 
     /**
      * Get all constrained buttons.
