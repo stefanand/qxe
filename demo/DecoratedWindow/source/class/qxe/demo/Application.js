@@ -17,6 +17,8 @@
 
 /* ************************************************************************
 
+#asset(qxe/decoration/Modern/dialog/icon/16/information.png)
+
 #asset(qxe/demo/*)
 
 ************************************************************************ */
@@ -67,21 +69,21 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
-      var window;
+      var decoratedWindow;
 
       var button = new qx.ui.form.Button("Press!");
       button.addListener("execute", function(e) {
-        if(!window)
+        if(!decoratedWindow)
         {
           var label = new qx.ui.basic.Label("Just a label");
 
-          window = new qxe.ui.window.Window();
-          window.setLayout(new qx.ui.layout.Basic());
-          window.setHeight(100);
-          window.setWidth(100);
-          window.add(label);
-          window.moveTo(110, 60);
-          window.show();
+          decoratedWindow = new qxe.ui.window.DecoratedWindow("Testing window", "qxe/decoration/Modern/dialog/icon/16/information.png");
+          decoratedWindow.setLayout(new qx.ui.layout.Basic());
+          decoratedWindow.setHeight(100);
+          decoratedWindow.setWidth(100);
+          decoratedWindow.add(label);
+          decoratedWindow.moveTo(110, 60);
+          decoratedWindow.show();
         }
       }, this);
 

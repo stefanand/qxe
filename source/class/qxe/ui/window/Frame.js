@@ -38,7 +38,6 @@
  *
  * @state maximized Whether the window is maximized
  *
- * @childControl icon {qx.ui.basic.Image} icon at the left of the captionbar
  * @childControl minimize-button {qx.ui.form.Button} button to minimize the window
  * @childControl restore-button {qx.ui.form.Button} button to restore the window
  * @childControl maximize-button {qx.ui.form.Button} button to maximize the window
@@ -168,6 +167,30 @@ qx.Class.define("qxe.ui.window.Frame",
 
     /*
     ---------------------------------------------------------------------------
+      DISABLE CAPTIONBAR FEATURES
+    ---------------------------------------------------------------------------
+    */
+
+    /** Should the user have the ability to maximize the window */
+    allowMaximize :
+    {
+      check : "Boolean",
+      init : true,
+      apply : "_applyCaptionBarChange"
+    },
+
+
+    /** Should the user have the ability to minimize the window */
+    allowMinimize :
+    {
+      check : "Boolean",
+      init : true,
+      apply : "_applyCaptionBarChange"
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
       STATUSBAR CONFIG
     ---------------------------------------------------------------------------
     */
@@ -190,6 +213,12 @@ qx.Class.define("qxe.ui.window.Frame",
 
   members :
   {
+    /** {Integer} Original top value before maximation had occoured */
+    __restoredTop : null,
+
+    /** {Integer} Original left value before maximation had occoured */
+    __restoredLeft : null,
+
     // overridden
     /**
      * @lint ignoreReferenceField(_forwardStates)
@@ -213,11 +242,6 @@ qx.Class.define("qxe.ui.window.Frame",
 
       switch(id)
       {
-        case "icon":
-          control = new qx.ui.basic.Image(this.getIcon());
-          this.getChildControl("captionbar").add(control, {row: 0, column:0});
-          break;
-
         case "statusbar":
           control = new qx.ui.container.Composite(new qx.ui.layout.HBox());
           control.add(this.getStatusBar(), {flex: 1});
@@ -266,14 +290,6 @@ qx.Class.define("qxe.ui.window.Frame",
     {
       var btn;
 
-      var icon = this.getIcon();
-      if (icon) {
-        this.getChildControl("icon").setSource(icon);
-        this._showChildControl("icon");
-      } else {
-        this._excludeChildControl("icon");
-      }
-
       if (this.getShowMinimize())
       {
         this._showChildControl("minimize-button");
@@ -320,6 +336,54 @@ qx.Class.define("qxe.ui.window.Frame",
       }
     },
 
+    /**
+     * Set the window's position relative to its parent
+     *
+     * @param left {Integer} The left position
+     * @param top {Integer} The top position
+     */
+    moveTo : function(left, top)
+    {
+      if (this.isMaximized()) {
+        return;
+      }
+
+      this.base(arguments, left, top);
+    },
+
+    /**
+     * Return <code>true</code> if the window is in maximized state,
+     * but note that the window in maximized state could also be invisible, this
+     * is equivalent to minimized. So use the {@link qx.ui.window.Window#getMode}
+     * to get the window mode.
+     *
+     * @return {Boolean} <code>true</code> if the window is maximized,
+     *   <code>false</code> otherwise.
+     */
+    isMaximized : function()
+    {
+      return this.hasState("maximized");
+    },
+
+    /**
+     * Return the window mode as <code>String</code>:
+     * <code>"maximized"</code>, <code>"normal"</code> or <code>"minimized"</code>.
+     *
+     * @return {String} The window mode as <code>String</code> value.
+     */
+    getMode : function()
+    {
+      if(!this.isVisible()) {
+        return "minimized";
+      } else {
+        if(this.isMaximized()) {
+          return "maximized";
+        } else {
+          return "normal";
+        }
+      }
+    },
+
     /*
     ---------------------------------------------------------------------------
       PROPERTY APPLY ROUTINES
@@ -330,6 +394,26 @@ qx.Class.define("qxe.ui.window.Frame",
     _applyStatusBarChange : function(value, old)
     {
       this._updateStatusBar();
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      BASIC EVENT HANDLERS
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Maximizes the window or restores it if it is already
+     * maximized.
+     *
+     * @param e {qx.event.type.Mouse} double click event
+     */
+    _onCaptionMouseDblClick : function(e)
+    {
+      if (this.getAllowMaximize()) {
+        this.isMaximized() ? this.restore() : this.maximize();
+      }
     },
 
     /*

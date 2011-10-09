@@ -46,45 +46,11 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     ---------------------------------------------------------------------------
     */
 
-    "decorated-window/captionbar" :
-    {
-      style : function(states)
-      {
-        return {
-          decorator : states.active ? "decorated-window-captionbar-active" : "decorated-window-captionbar-inactive",
-          textColor : states.active ? "white" : "text-gray",
-          minHeight : 26,
-          padding   : states.rtl ? [ 0, 0, 0, 2 ] : [ 0, 2, 0, 0 ]
-        };
-      }
-    },
-
-    "decorated-window/title" :
-    {
-      style : function(states)
-      {
-        return {
-          alignY : "middle",
-          font   : "bold",
-          margin : states.rtl ? [ 0, 6, 0, 12] : [ 0, 12, 0, 6]
-        };
-      }
-    },
-
-    "decorated-window/close-button" :
-    {
-      alias : "atom",
-
-      style : function(states)
-      {
-        return {
-          icon : states.active ? states.hovered ? "decoration/window/close-active-hovered.png" :
-                                                  "decoration/window/close-active.png" :
-                                                  "decoration/window/close-inactive.png",
-          margin : states.rtl ? [ 4, 0, 2, 8 ] : [ 4, 8, 2, 0 ]
-        };
-      }
-    },
+    "decorated-window" : "window",
+    "decorated-window/captionbar" : "window/captionbar",
+    "decorated-window/icon" : "window/icon",
+    "decorated-window/title" : "window/title",
+    "decorated-window/close-button" : "window/close-button",
 
     /*
     ---------------------------------------------------------------------------
@@ -92,26 +58,7 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     ---------------------------------------------------------------------------
     */
 
-    "dialog" :
-    {
-      style : function(states)
-      {
-        return {
-          shadow : "shadow-window",
-          contentPadding : [ 10, 10, 10, 10 ]
-        };
-      }
-    },
-
-    "dialog/pane" :
-    {
-      style : function(states)
-      {
-        return {
-          decorator : "dialog"
-        };
-      }
-    },
+    "dialog" : "window",
 
     /*
     ---------------------------------------------------------------------------
@@ -119,15 +66,10 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     ---------------------------------------------------------------------------
     */
 
-    "frame/icon" :
-    {
-      style : function(states)
-      {
-        return {
-          margin : states.rtl ? [ 5, 6, 3, 0 ] : [ 5, 0, 3, 6 ]
-        };
-      }
-    },
+    "frame" : "window",
+    "frame/minimize-button" : "window/minimize-button",
+    "frame/restore-button" : "window/restore-button",
+    "frame/maximize-button" : "window/maximize-button",
 
     /*
     ---------------------------------------------------------------------------

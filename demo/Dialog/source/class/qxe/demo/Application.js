@@ -67,16 +67,22 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
+      var dialog;
+
       var button = new qx.ui.form.Button("Press!");
       button.addListener("execute", function(e) {
-        var label = new qx.ui.basic.Label("Just a label");
+        if(!dialog)
+        {
+          var label = new qx.ui.basic.Label("Just a label");
 
-        var dialog = new qxe.ui.dialog.Dialog("Testing dialog");
-        dialog.setSize(100, 100);
-        dialog.add(label);
-        dialog.show();
-
-        this.getApplicationRoot().add(dialog);
+          dialog = new qxe.ui.dialog.Dialog("Testing dialog");
+          dialog.setLayout(new qx.ui.layout.Basic());
+          dialog.setHeight(100);
+          dialog.setWidth(100);
+          dialog.add(label);
+          dialog.moveTo(110, 60);
+          dialog.show();
+        }
       }, this);
 
       doc.add(button, {left: 100, top: 50});

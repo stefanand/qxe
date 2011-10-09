@@ -39,6 +39,7 @@
  * @state active Whether the window is activated
  *
  * @childControl captionbar {qx.ui.container.Composite} Container for all widgets inside the captionbar
+ * @childControl icon {qx.ui.basic.Image} icon at the left of the captionbar
  * @childControl title {qx.ui.basic.Label} caption of the window
  * @childControl close-button {qx.ui.form.Button} button to close the window
  */
@@ -69,7 +70,6 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
 
     // force creation of captionbar
     this._createChildControl("captionbar");
-    this._createChildControl("pane");
 
     // apply constructor parameters
     if (icon != null) {
@@ -83,7 +83,7 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
     // Update captionbar
     this._updateCaptionBar();
 
-    // change the reszie frames appearance
+    // change the resize frames appearance
     this._getResizeFrame().setAppearance("window-resize-frame");
   },
 
@@ -115,14 +115,6 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
       BASIC OPTIONS
     ---------------------------------------------------------------------------
     */
-
-    /** Should the window be always on top */
-    alwaysOnTop :
-    {
-      check : "Boolean",
-      init : false,
-      event : "changeAlwaysOnTop"
-    },
 
     /** The text of the caption */
     caption :
@@ -202,7 +194,7 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
           layout.setRowFlex(0, 1);
           layout.setColumnFlex(1, 1);
           control = new qx.ui.container.Composite(layout);
-          this._add(control);
+          this._addBefore(control, this.getChildControl("pane"));
 
           // captionbar events
           control.addListener("dblclick", this._onCaptionMouseDblClick, this);
@@ -211,13 +203,17 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
           this._activateMoveHandle(control);
           break;
 
+        case "icon":
+          control = new qx.ui.basic.Image(this.getIcon());
+          this.getChildControl("captionbar").add(control, {row: 0, column:0});
+          break;
+
         case "title":
           control = new qx.ui.basic.Label(this.getCaption());
           control.setWidth(0);
           control.setAllowGrowX(true);
 
-          var captionBar = this.getChildControl("captionbar");
-          captionBar.add(control, {row: 0, column:1});
+          this.getChildControl("captionbar").add(control, {row: 0, column:1});
           break;
 
         case "close-button":
@@ -235,6 +231,18 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
 
     /*
     ---------------------------------------------------------------------------
+      PROPERTY APPLY ROUTINES
+    ---------------------------------------------------------------------------
+    */
+
+    // property apply
+    _applyCaptionBarChange : function(value, old) {
+      this._updateCaptionBar();
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
       CAPTIONBAR INTERNALS
     ---------------------------------------------------------------------------
     */
@@ -245,6 +253,14 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
     _updateCaptionBar : function()
     {
       var btn;
+
+      var icon = this.getIcon();
+      if (icon) {
+        this.getChildControl("icon").setSource(icon);
+        this._showChildControl("icon");
+      } else {
+        this._excludeChildControl("icon");
+      }
 
       var caption = this.getCaption()
       if (caption) {
@@ -281,9 +297,6 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
      */
     _onCaptionMouseDblClick : function(e)
     {
-      if (this.getAllowMaximize()) {
-        this.isMaximized() ? this.restore() : this.maximize();
-      }
     },
 
 

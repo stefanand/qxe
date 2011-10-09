@@ -69,14 +69,6 @@ qx.Class.define("qxe.ui.dialog.Dialog",
       event : "changeUndecorated"
     },
 
-    /** Should the dialog be resizable */
-    resizable :
-    {
-      check : "Boolean",
-      init : false,
-      event : "changeResizable"
-    },
-
     /** Should the window be modal (this disables minimize and maximize buttons) */
     modal :
     {
@@ -115,6 +107,28 @@ qx.Class.define("qxe.ui.dialog.Dialog",
 
   members :
   {
+    /*
+    ---------------------------------------------------------------------------
+      BASIC EVENT HANDLERS
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Listens to the "focusout" event to deactivate the window (if the
+     * currently focused widget is not a child of the window)
+     *
+     * @param e {qx.event.type.Focus} focus event
+     */
+    _onWindowFocusOut : function(e) {
+      // only needed for non-modal windows
+      if (this.getModal())
+      {
+        return;
+      }
+
+      this.base(arguments, e);
+    },
+
     /*
     ---------------------------------------------------------------------------
       WIDGET API

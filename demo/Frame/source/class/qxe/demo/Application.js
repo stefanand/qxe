@@ -67,21 +67,21 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
-      var window;
+      var frame;
 
       var button = new qx.ui.form.Button("Press!");
       button.addListener("execute", function(e) {
-        if(!window)
+        if(!frame)
         {
           var label = new qx.ui.basic.Label("Just a label");
 
-          window = new qxe.ui.window.Window();
-          window.setLayout(new qx.ui.layout.Basic());
-          window.setHeight(100);
-          window.setWidth(100);
-          window.add(label);
-          window.moveTo(110, 60);
-          window.show();
+          frame = new qxe.ui.window.Frame("Testing frame");
+          frame.setLayout(new qx.ui.layout.Basic());
+          frame.setHeight(100);
+          frame.setWidth(100);
+          frame.add(label);
+          frame.moveTo(110, 60);
+          frame.show();
         }
       }, this);
 

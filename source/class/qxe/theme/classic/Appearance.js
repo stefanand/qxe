@@ -41,47 +41,11 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     ---------------------------------------------------------------------------
     */
 
-    "decorated-window/captionbar" :
-    {
-      style : function(states)
-      {
-        return {
-          padding : 1,
-          backgroundColor : states.active ? "dialog-active-caption" : "dialog-inactive-caption",
-          textColor : states.active ? "dialog-active-caption-text" : "dialog-inactive-caption-text"
-        };
-      }
-    },
-
-    "decorated-window/title" :
-    {
-      style : function(states)
-      {
-        return {
-          cursor : "default",
-          font : "bold",
-          margin : states.rtl ? [ 0, 0, 0, 20] : [ 0, 20, 0, 0],
-          alignY: "middle"
-        };
-      }
-    },
-
-    "decorated-window/close-button" :
-    {
-      include : "button",
-      alias : "button",
-
-      style : function(states)
-      {
-                                var rtl = states.rtl;
-
-        return {
-          margin : rtl ? [ 0, 2, 0, 0 ] : [ 0, 0, 0, 2 ],
-          icon : "decoration/window/close.gif",
-          padding : states.pressed || states.abandoned ? (rtl ? [ 2, 3, 0, 1] : [ 2, 1, 0, 3]) : [ 1, 2 ]
-        };
-      }
-    },
+    "decorated-window" : "window",
+    "decorated-window/captionbar" : "window/captionbar",
+    "decorated-window/icon" : "window/icon",
+    "decorated-window/title" : "window/title",
+    "decorated-window/close-button" : "window/close-button",
 
     /*
     ---------------------------------------------------------------------------
@@ -89,20 +53,7 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     ---------------------------------------------------------------------------
     */
 
-    "dialog" :
-    {
-      style : function(states)
-      {
-        return {
-          contentPadding : [ 10, 10, 10, 10 ],
-          backgroundColor : "background",
-          decorator : states.maximized ? undefined : "outset",
-          shadow : states.maximized ? undefined : "shadow-small"
-        };
-      }
-    },
-
-    "dialog/pane" : {},
+    "dialog" : "window",
 
     /*
     ---------------------------------------------------------------------------
@@ -110,15 +61,10 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     ---------------------------------------------------------------------------
     */
 
-    "frame/icon" :
-    {
-      style : function(states)
-      {
-        return {
-          margin : states.rtl ? [ 0, 0, 0, 4] : [ 0, 4, 0, 0]
-        };
-      }
-    },
+    "frame" : "window",
+    "frame/minimize-button" : "window/minimize-button",
+    "frame/restore-button" : "window/restore-button",
+    "frame/maximize-button" : "window/maximize-button",
 
     /*
     ---------------------------------------------------------------------------

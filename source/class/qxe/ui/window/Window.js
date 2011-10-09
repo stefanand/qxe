@@ -65,6 +65,8 @@ qx.Class.define("qxe.ui.window.Window",
     // configure internal layout
     this._setLayout(new qx.ui.layout.VBox());
 
+    this._createChildControl("pane");
+
     // Activation listener
     this.addListener("mousedown", this._onWindowMouseDown, this, true);
 
@@ -90,6 +92,7 @@ qx.Class.define("qxe.ui.window.Window",
 
   statics :
   {
+
     /** {Class} The default window manager class. */
     DEFAULT_MANAGER_CLASS : qx.ui.window.Manager
   },
@@ -190,13 +193,6 @@ qx.Class.define("qxe.ui.window.Window",
 
   members :
   {
-    /** {Integer} Original top value before maximation had occoured */
-    __restoredTop : null,
-
-    /** {Integer} Original left value before maximation had occoured */
-    __restoredLeft : null,
-
-
     /*
     ---------------------------------------------------------------------------
       WIDGET API
@@ -350,15 +346,12 @@ qx.Class.define("qxe.ui.window.Window",
      */
     moveTo : function(left, top)
     {
-      if (this.isMaximized()) {
-        return;
-      }
-
       this.setLayoutProperties({
         left : left,
         top : top
       });
     },
+
 
     /*
     ---------------------------------------------------------------------------
@@ -420,12 +413,6 @@ qx.Class.define("qxe.ui.window.Window",
      * @param e {qx.event.type.Focus} focus event
      */
     _onWindowFocusOut : function(e) {
-      // only needed for non-modal windows
-      if (this.getModal())
-      {
-        return;
-      }
-
       // get the current focused widget and check if it is a child
       var current = e.getRelatedTarget();
       if (current != null && !qx.ui.core.Widget.contains(this, current))
