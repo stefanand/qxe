@@ -67,9 +67,19 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
-      var optionPane = new qxe.ui.dialog.OptionPane("This is a warning!", qxe.ui.dialog.OptionPane.WARN, {OK : qxe.ui.form.ButtonPane.OK});
+      var button = new qx.ui.form.Button("Press!");
+      button.addListener("execute", function(e) {
+        var label = new qx.ui.basic.Label("Just a label");
 
-      doc.add(optionPane, {left: 100, top: 50});
+        var window = new qxe.ui.window.Window("Testing window");
+        window.setSize(100, 100);
+        window.add(label);
+        window.show();
+
+        this.getApplicationRoot().add(window);
+      }, this);
+
+      doc.add(button, {left: 100, top: 50});
     }
   }
 });

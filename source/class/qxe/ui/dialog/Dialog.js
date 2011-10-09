@@ -70,7 +70,7 @@ qx.Class.define("qxe.ui.dialog.Dialog",
     },
 
     /** Should the dialog be resizable */
-    resizabe :
+    resizable :
     {
       check : "Boolean",
       init : false,
