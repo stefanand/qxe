@@ -17,6 +17,8 @@
 
 /* ************************************************************************
 
+#asset(qxe/decoration/Modern/dialog/icon/16/information.png)
+
 #asset(qxe/demo/*)
 
 ************************************************************************ */
@@ -75,7 +77,7 @@ qx.Class.define("qxe.demo.Application",
         {
           var label = new qx.ui.basic.Label("Just a label");
 
-          frame = new qxe.ui.window.Frame("Testing frame");
+          frame = new qxe.ui.window.Frame("Testing frame", "qxe/decoration/Modern/dialog/icon/16/information.png");
           frame.setLayout(new qx.ui.layout.Basic());
           frame.setHeight(100);
           frame.setWidth(100);

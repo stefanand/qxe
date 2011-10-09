@@ -57,20 +57,20 @@ qx.Class.define("qxe.ui.window.Frame",
   /**
    * @param caption {String} The caption text
    * @param icon {String} The URL of the caption bar icon
-   * @param statusbar {StatusBar} The statusbar of the Frame
+   * @param statusbar {qxe.ui.statusbar.StatusBar} The statusbar of the Frame
    */
   construct : function(caption, icon, statusbar)
   {
     this.base(arguments, caption, icon);
-
-    this._createChildControl("statusbar");
+alert(caption+"    "+icon);
+//    this._createChildControl("statusbar");
 
     if (statusbar != null) {
-      this.setStatusBar(statusbar);
+//      this.setStatusBar(statusbar);
     }
 
     // Update statusbar
-    this._updateStatusBar();
+//    this._updateStatusBar();
   },
 
 
@@ -458,6 +458,117 @@ qx.Class.define("qxe.ui.window.Frame",
     {
       this.maximize();
       this.getChildControl("maximize-button").reset();
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      USER API
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Maximize the window.
+     */
+    maximize : function()
+    {
+      // If the window is already maximized -> return
+      if (this.isMaximized()) {
+        return;
+      }
+
+      // First check if the parent uses a canvas layout
+      // Otherwise maximize() is not possible
+      var parent = this.getLayoutParent();
+      if (parent != null && parent.supportsMaximize())
+      {
+        if (this.fireNonBubblingEvent("beforeMaximize", qx.event.type.Event, [false, true]))
+        {
+          if (!this.isVisible()) {
+            this.open();
+          }
+
+          // store current dimension and location
+          var props = this.getLayoutProperties();
+          this.__restoredLeft = props.left === undefined ? 0 : props.left;
+          this.__restoredTop = props.top === undefined ? 0 : props.top;
+
+          // Update layout properties
+          this.setLayoutProperties({
+            left: null,
+            top: null,
+            edge: 0
+          });
+
+          // Add state
+          this.addState("maximized");
+
+          // Update captionbar
+          this._updateCaptionBar();
+
+          // Fire user event
+          this.fireEvent("maximize");
+        }
+      }
+    },
+
+    /**
+     * Minimized the window.
+     */
+    minimize : function()
+    {
+      if (!this.isVisible()) {
+        return;
+      }
+
+      if (this.fireNonBubblingEvent("beforeMinimize", qx.event.type.Event, [false, true]))
+      {
+        // store current dimension and location
+        var props = this.getLayoutProperties();
+        this.__restoredLeft = props.left === undefined ? 0 : props.left;
+        this.__restoredTop = props.top === undefined ? 0 : props.top;
+
+        this.removeState("maximized");
+        this.hide();
+        this.fireEvent("minimize");
+      }
+    },
+
+
+    /**
+     * Restore the window to <code>"normal"</code>, if it is
+     * <code>"maximized"</code> or <code>"minimized"</code>.
+     */
+    restore : function()
+    {
+      if (this.getMode() === "normal") {
+        return;
+      }
+
+      if (this.fireNonBubblingEvent("beforeRestore", qx.event.type.Event, [false, true]))
+      {
+        if (!this.isVisible()) {
+          this.open();
+        }
+
+        // Restore old properties
+        var left = this.__restoredLeft;
+        var top = this.__restoredTop;
+        this.setLayoutProperties({
+          edge : null,
+          left : left,
+          top : top
+        });
+
+        // Remove maximized state
+        this.removeState("maximized");
+
+        // Update captionbar
+        this._updateCaptionBar();
+
+        // Fire user event
+        this.fireEvent("restore");
+      }
     }
   }
 });
