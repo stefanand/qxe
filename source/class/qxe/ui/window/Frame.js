@@ -62,7 +62,10 @@ qx.Class.define("qxe.ui.window.Frame",
   construct : function(caption, icon, statusbar)
   {
     this.base(arguments, caption, icon);
-alert(caption+"    "+icon);
+
+    // captionbar events
+    this.getChildControl("captionbar").addListener("dblclick", this._onCaptionMouseDblClick, this);
+
 //    this._createChildControl("statusbar");
 
     if (statusbar != null) {
@@ -289,6 +292,8 @@ alert(caption+"    "+icon);
     _updateCaptionBar : function()
     {
       var btn;
+
+      this.base(arguments);
 
       if (this.getShowMinimize())
       {

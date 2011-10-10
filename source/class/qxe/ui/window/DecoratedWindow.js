@@ -196,9 +196,6 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
           control = new qx.ui.container.Composite(layout);
           this._addBefore(control, this.getChildControl("pane"));
 
-          // captionbar events
-          control.addListener("dblclick", this._onCaptionMouseDblClick, this);
-
           // register as move handle
           this._activateMoveHandle(control);
           break;
@@ -281,22 +278,6 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
       {
         this._excludeChildControl("close-button");
       }
-    },
-
-    /*
-    ---------------------------------------------------------------------------
-      BASIC EVENT HANDLERS
-    ---------------------------------------------------------------------------
-    */
-
-    /**
-     * Maximizes the window or restores it if it is already
-     * maximized.
-     *
-     * @param e {qx.event.type.Mouse} double click event
-     */
-    _onCaptionMouseDblClick : function(e)
-    {
     },
 
 

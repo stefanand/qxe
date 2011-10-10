@@ -43,6 +43,13 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
 {
   extend : qx.ui.core.Widget,
 
+
+  /*
+  *****************************************************************************
+     CONSTRUCTOR
+  *****************************************************************************
+  */
+
   /**
    * @param message {String} The message to display
    * @param messageType {qx.core.Object} The message type definition

@@ -35,15 +35,15 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
    * @param caption {string} The caption
    * @param optionPane {qxe.ui.dialog.OptionPane} The option pane
    */
-  construct : function(caption, optionPane)
+  construct : function(message, optionType)
   {
-    this.base(arguments, caption);
+    this.base(arguments, optionType.caption);
 
     this.setLayout(new qx.ui.layout.Basic());
 
-    if(optionPane != null)
+    if(optionType != null)
     {
-      this.setOptionPane(optionPane);
+      this.setOptionPane(optionType);
     }
   },
 
@@ -120,13 +120,13 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
     },
 
     /**
-     * The option pane.
+     * The option type.
      */
-    optionPane :
+    optionType :
     {
       check : "qxe.ui.dialog.OptionPane",
       init : null,
-      apply : "_applyOptionPane"
+      apply : "_applyOptionType"
     }
   },
 
@@ -145,14 +145,14 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
     */
 
     /**
-     * Apply method for the option pane.
+     * Apply method for the option type.
      *
      * The option pane is the inner pane of the dialog.
      *
      * @param value {boolean} The new value.
      * @param old {boolean} The old value.
      */
-    _applyOptionPane : function(value, old)
+    _applyOptionType : function(value, old)
     {
       if (old)
       {
@@ -160,6 +160,34 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
       }
 
       this.add(value);
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      INTERNAL ROUTINES
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Create option dialog.
+     *
+     * @param value {boolean} The new value.
+     * @param old {boolean} The old value.
+     */
+    _createDialog : function(message, optionType)
+    {
+      if (qx.core.Environment.get("qx.debug"))
+      {
+        if (!(optionType instanceof qxe.ui.dialog.OptionPane))
+        {
+          throw new Error("Incompatible child for OptionDialog: " + optionType);
+        }
+      }
+
+      this.setOptionType(optionType);
+
+      optionType.setMessage(message);
     },
 
 
