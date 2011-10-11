@@ -17,6 +17,10 @@
 
 /* ************************************************************************
 
+#asset(qxe/decoration/Modern/dialog/icon/16/message.png)
+#asset(qxe/decoration/Modern/dialog/icon/48/message.png)
+#asset(qxe/decoration/Modern/dialog/icon/48/warning.png)
+
 #asset(qxe/demo/*)
 
 ************************************************************************ */
@@ -69,26 +73,41 @@ qx.Class.define("qxe.demo.Application",
 
 
       doc.add(this.pane1(), {left: 100, top: 50});
-//      doc.add(this.pane2(), {left: 400, top: 50});
+      doc.add(this.pane2(), {left: 300, top: 50});
     },
 
     pane1 : function()
     {
-      var optionPane = new qxe.ui.dialog.OptionPane("This is a warning!", qxe.ui.dialog.OptionPane.WARN, {OK : qxe.ui.form.ButtonPane.OK});
+      var buttonPane = {
+        buttons : {
+          OK : qxe.ui.form.ButtonPane.OK
+        }
+      };
+
+      var optionPane = new qxe.ui.dialog.OptionPane("This is a warning!", "qxe/decoration/Modern/dialog/icon/48/warning.png", buttonPane);
+      optionPane.setBackgroundColor("white");
 
       return optionPane;
     },
 
     pane2 : function()
     {
+      var buttonPane = {
+        buttons : {
+          OK : qxe.ui.form.ButtonPane.OK
+        }
+      };
+
       var def = {
         icon : "qxe/decoration/Modern/dialog/icon/16/message.png",
         caption : qx.locale.Manager.marktr("Message"),
         image : "qxe/decoration/Modern/dialog/icon/48/message.png",
-        buttons : { qxe.ui.form.ButtonPane.OK }
+        message : "This is a message!",
+        buttons : buttonPane
       };
 
       var optionPane = new qxe.ui.dialog.OptionPane.getInstance(def);
+      optionPane.setBackgroundColor("white");
 
       return optionPane;
     }

@@ -38,10 +38,10 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
   construct : function(caption, optionPane)
   {
     this.base(arguments, caption);
-alert("HEJ");
+
     this.setLayout(new qx.ui.layout.Basic());
 
-    this.add(optionPane);
+    this.setOptionPane(optionPane);
   },
 
 
@@ -54,50 +54,22 @@ alert("HEJ");
   statics :
   {
     /**
-     * Get an instance of an option dialog.
+     * Get an instance of an option dialog by definition through json.
      *
-     * @param option {object} The option can be either an OptionPane or a messageType or a json object.
-     * @param message {string} The message to show.
-     * @param parent {object} The parent widget to center on.
-     * @param modal {boolean} The modality of the dialog.
-     * @param blocker {object} The blocker object.
+     * The json structure looks like this:
+     * {
+     *   caption : "a title",
+     *   optionPane : qxe.ui.dialog.OptionPane.INFO,
+     *   message : "This is an info dialoga"
+     * }
      *
-     * @return {qxe.ui.dialog.OptionDialog} The OptionDialog instance.
+     * @param json {object} The new value.
+     * @return {qxe.ui.dialog.OptionDialog} The newly created option dialog.
      */
-    getInstance : function(option, caption, message, optionType, parent, modal, blocker)
+    getInstance : function(json)
     {
-      var optionPane;
-
-      if(option instanceof qxe.ui.dialog.OptionPane)
-      {
-        optionPane = option;
-      }
-      else
-      {
-        // Create an option pane
-        var messageType = (typeof option === "string") ? qxe.ui.dialog.OptionPane[option] : option;
-
-        var messageOP = new qxe.ui.dialog.OptionPane(message, messageType, optionType);
-//        var caption = qx.locale.Manager.getInstance().translate(typeStruct.caption, []).toString() || null;
-      }
-
-      var optionDialog = new qxe.ui.dialog.OptionDialog(caption, optionPane);
-      optionDialog.setModal(modal || false);
-      optionDialog.setBlocker(blocker || false);
-      optionDialog.addListenerOnce("resize", function(e) {
-        if(parent)
-        {
-          optionDialog.center(parent);
-        }
-        else
-        {
-          optionDialog.center(e);
-        }
-      }, optionDialog);
-
-//      qx.core.Init.getApplication().getRoot().add(optionDialog);
-
-      optionDialog.open();
+      var optionDialog = new qxe.ui.dialog.OptionDialog();
+      optionDialog.set(json);
 
       return optionDialog;
     }
@@ -141,47 +113,37 @@ alert("HEJ");
     */
 
     /**
-     * Add option dialog.
+     * Set option pane for dialog.
      *
-     * @param message {string} The message.
-     * @param optionType {boolean} The option pane.
+     * @param optionPane {qxe.ui.dialog.OptionPane} The option pane.
      */
-    add : function(optionPane)
+    setOptionPane : function(optionPane)
     {
       if (qx.core.Environment.get("qx.debug"))
       {
-        if (!(optionPane instanceof qxe.ui.dialog.OptionPane))
+        if (!(optionPane instanceof Object))
         {
           throw new Error("Incompatible child for OptionDialog: " + optionPane);
         }
-
-        if (this._getChildren())
-        {
-          throw new Error("Option pane already exists.");
-        }
       }
 
-      this._add(optionPane);
-    }
-//,
-
-
-    /*
-    ---------------------------------------------------------------------------
-      USER API
-    ---------------------------------------------------------------------------
-    */
+      this.getChildControl("pane").add(optionPane);
+    },
 
     /**
-     * Close the option dialog.
+     * Set message for option pane dialog.
+     *
+     * @param message {string} The message for the option pane dialog.
      */
-/*    close : function()
+    setMessage : function(message)
     {
-      this.base(arguments);
+      var optionPane = this.getChildren()[0];
 
-      qx.core.Init.getApplication().getRoot().remove(this);
+      if(optionPane)
+      {
+        optionPane.setMessage(message);
+      }
     }
-*/
   }
 });
 

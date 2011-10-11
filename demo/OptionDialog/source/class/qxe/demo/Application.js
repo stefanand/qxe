@@ -17,6 +17,8 @@
 
 /* ************************************************************************
 
+#asset(qxe/decoration/Modern/dialog/icon/48/warning.png)
+
 #asset(qxe/demo/*)
 
 ************************************************************************ */
@@ -68,8 +70,8 @@ qx.Class.define("qxe.demo.Application",
       var doc = this.getRoot();
 
       doc.add(this.dialog1(), {left: 100, top: 50});
-//      doc.add(this.dialog2(), {left: 175, top: 50});
-//      doc.add(this.dialog3(), {left: 250, top: 50});
+      doc.add(this.dialog2(), {left: 175, top: 50});
+      doc.add(this.dialog3(), {left: 250, top: 50});
     },
 
     dialog1 : function()
@@ -78,22 +80,26 @@ qx.Class.define("qxe.demo.Application",
 
       var button1 = new qx.ui.form.Button("Press 1!");
       button1.addListener("execute", function(e) {
-        var label = new qx.ui.basic.Label("Just a label");
+        if(!optionDialog)
+        {
+          var buttonPane = {
+            buttons : {
+              OK : qxe.ui.form.ButtonPane.OK
+            }
+          };
 
-        var optionPane = qxe.ui.dialog.OptionPane("This is a test message.", qxe.ui.dialog.OptionPane.INFO);
+          var optionPane = new qxe.ui.dialog.OptionPane("This is a warning!", "qxe/decoration/Modern/dialog/icon/48/warning.png", buttonPane);
 
-        optionDialog = new qxe.ui.dialog.OptionDialog("Testing option dialog", optionPane);
-        optionDialog.setLayout(new qx.ui.layout.Basic());
-        optionDialog.setHeight(100);
-        optionDialog.setWidth(100);
-        optionDialog.add(label);
-        optionDialog.moveTo(110, 60);
-        optionDialog.show();
-
-        this.getApplicationRoot().add(optionDialog);
+          optionDialog = new qxe.ui.dialog.OptionDialog("Testing option dialog", optionPane);
+          optionDialog.setHeight(100);
+          optionDialog.setWidth(100);
+          optionDialog.moveTo(110, 60);
+          optionDialog.show();
+        }
       }, this);
-    }
-/*,
+
+      return button1;
+    },
 
     dialog2 : function()
     {
@@ -101,18 +107,20 @@ qx.Class.define("qxe.demo.Application",
 
       var button2 = new qx.ui.form.Button("Press 2!");
       button2.addListener("execute", function(e) {
-        var label = new qx.ui.basic.Label("Just a label");
+        if(!optionDialog)
+        {
+          var optionPane = qxe.ui.dialog.OptionPane.getInstance(qxe.ui.dialog.OptionPane.INFO);
+          optionPane.setMessage("This is information!");
 
-        optionDialog = new qxe.ui.dialog.OptionDialog("Testing option dialog", qxe.ui.dialog.OptionPane.INFO);
-        optionDialog.setLayout(new qx.ui.layout.Basic());
-        optionDialog.setHeight(100);
-        optionDialog.setWidth(100);
-        optionDialog.add(label);
-        optionDialog.moveTo(110, 60);
-        optionDialog.show();
-
-        this.getApplicationRoot().add(optionDialog);
+          optionDialog = new qxe.ui.dialog.OptionDialog("Testing option dialog", optionPane);
+          optionDialog.setHeight(100);
+          optionDialog.setWidth(100);
+          optionDialog.moveTo(110, 60);
+          optionDialog.show();
+        }
       }, this);
+
+      return button2;
     },
 
     dialog3 : function()
@@ -121,20 +129,24 @@ qx.Class.define("qxe.demo.Application",
 
       var button3 = new qx.ui.form.Button("Press 3!");
       button3.addListener("execute", function(e) {
-        var label = new qx.ui.basic.Label("Just a label");
+        if(!optionDialog)
+        {
+          var def = {
+            caption : "a title",
+            optionPane : qxe.ui.dialog.OptionPane.INFO,
+            message : "This is an info dialog"
+          };
 
-        optionDialog = new qxe.ui.dialog.OptionDialog("Testing option dialog", qxe.ui.dialog.OptionPane.INFO);
-        optionDialog.setLayout(new qx.ui.layout.Basic());
-        optionDialog.setHeight(100);
-        optionDialog.setWidth(100);
-        optionDialog.add(label);
-        optionDialog.moveTo(110, 60);
-        optionDialog.show();
-
-        this.getApplicationRoot().add(optionDialog);
+          optionDialog = qxe.ui.dialog.OptionDialog.getInstance(def);
+          optionDialog.setHeight(100);
+          optionDialog.setWidth(100);
+          optionDialog.moveTo(110, 60);
+          optionDialog.show();
+        }
       }, this);
+
+      return button3;
     }
-*/
   }
 });
 
