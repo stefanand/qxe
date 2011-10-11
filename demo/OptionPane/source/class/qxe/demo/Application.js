@@ -67,9 +67,30 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
+
+      doc.add(this.pane1(), {left: 100, top: 50});
+//      doc.add(this.pane2(), {left: 400, top: 50});
+    },
+
+    pane1 : function()
+    {
       var optionPane = new qxe.ui.dialog.OptionPane("This is a warning!", qxe.ui.dialog.OptionPane.WARN, {OK : qxe.ui.form.ButtonPane.OK});
 
-      doc.add(optionPane, {left: 100, top: 50});
+      return optionPane;
+    },
+
+    pane2 : function()
+    {
+      var def = {
+        icon : "qxe/decoration/Modern/dialog/icon/16/message.png",
+        caption : qx.locale.Manager.marktr("Message"),
+        image : "qxe/decoration/Modern/dialog/icon/48/message.png",
+        buttons : { qxe.ui.form.ButtonPane.OK }
+      };
+
+      var optionPane = new qxe.ui.dialog.OptionPane.getInstance(def);
+
+      return optionPane;
     }
   }
 });

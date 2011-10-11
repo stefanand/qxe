@@ -211,21 +211,25 @@ qx.Class.define("qxe.demo.Application",
     createButtonPane5 : function()
     {
       var def = {
-        OK : qxe.ui.form.ButtonPane.OK,
-        CANCEL : {
-          label : qx.locale.Manager.marktr("Cancel"),
-          icon : "icon/16/actions/dialog-cancel.png",
-          toolTip : null,
-          toolTipIcon : "icon/16/actions/help-about.png",
-          toolTipText : qx.locale.Manager.marktr("Cancel the dialog."),
-          userData : [ "constraint" , "cancel" ]
-        },
-        HELP : {
-          label : qx.locale.Manager.marktr("Help"),
-          icon : "icon/16/actions/help-about.png",
-          toolTip : null,
-          toolTipIcon : "icon/16/actions/help-about.png",
-          toolTipText : qx.locale.Manager.marktr("Get help about the dialog.")
+//        orientation : "horizontal",
+//        spacing : 8,
+        buttons : {
+          OK : qxe.ui.form.ButtonPane.OK,
+          CANCEL : {
+            label : qx.locale.Manager.marktr("Cancel"),
+            icon : "icon/16/actions/dialog-cancel.png",
+            toolTip : null,
+            toolTipIcon : "icon/16/actions/help-about.png",
+            toolTipText : qx.locale.Manager.marktr("Cancel the dialog."),
+            userData : [ "constraint" , "cancel" ]
+          },
+          HELP : {
+            label : qx.locale.Manager.marktr("Help"),
+            icon : "icon/16/actions/help-about.png",
+            toolTip : null,
+            toolTipIcon : "icon/16/actions/help-about.png",
+            toolTipText : qx.locale.Manager.marktr("Get help about the dialog.")
+          }
         }
       };
 

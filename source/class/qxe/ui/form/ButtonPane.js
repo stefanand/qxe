@@ -133,29 +133,34 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      *
      * The json structure looks like this:
      * {
-     *   <button name> : {
-     *     constraint : "affirmative",
-     *     label : qx.locale.Manager.marktr("Submit"),
-     *     icon : "icon/16/actions/dialog-ok.png",
-     *     toolTip : null,
-     *     toolTipIcon : "icon/16/actions/help-about.png",
-     *     toolTipText : qx.locale.Manager.marktr("Submit the dialog."),
-     *     userData : ["constraint", "affirmative"] // http://bugzilla.qooxdoo.org/show_bug.cgi?id=5692
-     *   },
-     *   <button name> : {
+     *   orientation : <"horizontal" | "vertical">,
+     *   spacing : <pixels>,
+     *   buttons : {
+     *     <button name> : {
+     *       constraint : "affirmative",
+     *       label : qx.locale.Manager.marktr("Submit"),
+     *       icon : "icon/16/actions/dialog-ok.png",
+     *       toolTip : null,
+     *       toolTipIcon : "icon/16/actions/help-about.png",
+     *       toolTipText : qx.locale.Manager.marktr("Submit the dialog."),
+     *       userData : ["constraint", "affirmative"] // http://bugzilla.qooxdoo.org/show_bug.cgi?id=5692
+     *     },
+     *     <button name> : {
+     *       ...
+     *     },
      *     ...
-     *   },
-     *   ...
+     *   }
      * }
+     *
+     * Calls setOrientation(), setSpacing() and setButtons() functions.
      *
      * @param json {object} The new value.
      * @return {qxe.ui.form.ButtonPane} The newly created button pane.
      */
     getInstance : function(json)
     {
-      var button;
-      var buttonPane = new qxe.ui.form.ButtonPane(json.orientation, json.spacing);
-      buttonPane._import(json);
+      var buttonPane = new qxe.ui.form.ButtonPane();
+      buttonPane.set(json);
 
       return buttonPane;
     }
@@ -448,11 +453,11 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     */
 
     /**
-     * Get all constrained buttons.
+     * Set all buttons.
      *
      * @param json {Object} The json definition of button pane.
      */
-    _import : function(json)
+    setButtons : function(json)
     {
       var button;
 
