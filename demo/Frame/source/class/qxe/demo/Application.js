@@ -78,7 +78,7 @@ qx.Class.define("qxe.demo.Application",
           var label = new qx.ui.basic.Label("Just a label");
 
           frame = new qxe.ui.window.Frame("Testing frame", "qxe/decoration/Modern/dialog/icon/16/information.png");
-          frame.setLayout(new qx.ui.layout.Basic());
+          frame.setLayout(new qx.ui.layout.Canvas());
           frame.setHeight(100);
           frame.setWidth(100);
           frame.add(label);

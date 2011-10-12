@@ -39,9 +39,12 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
   {
     this.base(arguments, caption);
 
-    this.setLayout(new qx.ui.layout.Basic());
+    this.setLayout(new qx.ui.layout.Canvas());
 
-    this.setOptionPane(optionPane);
+    if(optionPane)
+    {
+     this.setOptionPane(optionPane);
+    }
   },
 
 
@@ -115,7 +118,7 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
     /**
      * Set option pane for dialog.
      *
-     * @param optionPane {qxe.ui.dialog.OptionPane} The option pane.
+     * @param optionPane {qxe.ui.dialog.OptionPane} The option pane object or json definition.
      */
     setOptionPane : function(optionPane)
     {
@@ -127,7 +130,12 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
         }
       }
 
-      this.getChildControl("pane").add(optionPane);
+      if(!(optionPane instanceof qxe.ui.dialog.OptionPane))
+      {
+        optionPane = qxe.ui.dialog.OptionPane.getInstance(optionPane);
+      }
+
+      this.add(optionPane);
     },
 
     /**

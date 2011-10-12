@@ -76,7 +76,7 @@ qx.Class.define("qxe.demo.Application",
           var label = new qx.ui.basic.Label("Just a label");
 
           dialog = new qxe.ui.dialog.Dialog("Testing dialog");
-          dialog.setLayout(new qx.ui.layout.Basic());
+          dialog.setLayout(new qx.ui.layout.Canvas());
           dialog.setHeight(100);
           dialog.setWidth(100);
           dialog.add(label);

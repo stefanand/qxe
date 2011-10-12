@@ -76,7 +76,7 @@ qx.Class.define("qxe.demo.Application",
           var label = new qx.ui.basic.Label("Just a label");
 
           window = new qxe.ui.window.Window();
-          window.setLayout(new qx.ui.layout.Basic());
+          window.setLayout(new qx.ui.layout.Canvas());
           window.setHeight(100);
           window.setWidth(100);
           window.add(label);

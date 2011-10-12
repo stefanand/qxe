@@ -133,7 +133,7 @@ qx.Class.define("qxe.demo.Application",
         {
           var def = {
             caption : "a title",
-            optionPane : qxe.ui.dialog.OptionPane.INFO,
+            optionPane : qxe.ui.dialog.OptionPane.ERR,
             message : "This is an info dialog"
           };
 
