@@ -82,7 +82,7 @@ qx.Class.define("qxe.demo.Application",
 
     createPage1 : function()
     {
-      var page = new qxe.ui.wizard.Page();
+      var page = new qxe.ui.wizard.Page("Step 1");
       page.setLayout(new qx.ui.layout.Canvas());
 
       var composite = new qx.ui.container.Composite(new qx.ui.layout.HBox(4));
@@ -102,7 +102,7 @@ qx.Class.define("qxe.demo.Application",
 
     createPage2 : function()
     {
-      var page = new qxe.ui.wizard.Page();
+      var page = new qxe.ui.wizard.Page("Step 2");
       page.setLayout(new qx.ui.layout.Canvas());
 
       var composite = new qx.ui.container.Composite(new qx.ui.layout.HBox(4));
@@ -122,7 +122,7 @@ qx.Class.define("qxe.demo.Application",
 
     createPage3 : function()
     {
-      var page = new qxe.ui.wizard.Page();
+      var page = new qxe.ui.wizard.Page("Step 3");
       page.setLayout(new qx.ui.layout.Canvas());
 
       var composite = new qx.ui.container.Composite(new qx.ui.layout.HBox(4));
@@ -142,7 +142,7 @@ qx.Class.define("qxe.demo.Application",
 
     createPage4 : function()
     {
-      var page = new qxe.ui.wizard.Page();
+      var page = new qxe.ui.wizard.Page("Step 4");
       page.setLayout(new qx.ui.layout.Canvas());
 
       var composite = new qx.ui.container.Composite(new qx.ui.layout.HBox(4));
@@ -162,7 +162,7 @@ qx.Class.define("qxe.demo.Application",
 
     createPage5 : function()
     {
-      var page = new qxe.ui.wizard.Page();
+      var page = new qxe.ui.wizard.Page("Step 5");
       page.setLayout(new qx.ui.layout.Canvas());
 
       var composite = new qx.ui.container.Composite(new qx.ui.layout.HBox(4));

@@ -39,7 +39,7 @@ qx.Class.define("qxe.ui.wizard.Page",
    */
   construct : function(legend, icon)
   {
-    this.base(arguments);
+    this.base(arguments, legend, icon);
   },
 
 

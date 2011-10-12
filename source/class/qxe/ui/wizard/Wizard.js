@@ -405,7 +405,10 @@ qx.Class.define("qxe.ui.wizard.Wizard",
         }
       }
 
-      this.getChildControl("stack-pane").add(page);
+      var stackPane = this.getChildControl("stack-pane");
+      stackPane.add(page);
+
+      this.getChildControl("num-steps").setValue("" + stackPane.getChildren().length);
     },
 
     /**
@@ -415,7 +418,10 @@ qx.Class.define("qxe.ui.wizard.Wizard",
      */
     remove : function(page)
     {
-      this.getChildControl("stack-pane").remove(page);
+      var stackPane = this.getChildControl("stack-pane");
+      stackPane.remove(page);
+
+      this.getChildControl("num-steps").setValue("" + stackPane.getChildren().length);
     },
 
     /**
