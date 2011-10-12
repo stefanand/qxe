@@ -71,19 +71,113 @@ qx.Class.define("qxe.demo.Application",
 
       var wizard = new qxe.ui.wizard.Wizard();
 
-      var page1 = new qxe.ui.wizard.Page();
-      var page2 = new qxe.ui.wizard.Page();
-      var page3 = new qxe.ui.wizard.Page();
-      var page4 = new qxe.ui.wizard.Page();
-      var page5 = new qxe.ui.wizard.Page();
+      wizard.add(this.createPage1("Step 1"));
+      wizard.add(this.createPage2("Step 2"));
+      wizard.add(this.createPage3("Step 3"));
+      wizard.add(this.createPage4("Step 4"));
+      wizard.add(this.createPage5("Step 5"));
 
-      wizard.add(page1);
-      wizard.add(page2);
-      wizard.add(page3);
-      wizard.add(page4);
-      wizard.add(page5);
+      doc.add(wizard, {left: 100, top: 50});
+    },
 
-      doc.add(wizard);
+    createPage1 : function()
+    {
+      var page = new qxe.ui.wizard.Page();
+      page.setLayout(new qx.ui.layout.Canvas());
+
+      var composite = new qx.ui.container.Composite(new qx.ui.layout.HBox(4));
+
+      var label = new qx.ui.basic.Label("Input label");
+      label.setAlignY("middle");
+
+      var textField = new qx.ui.form.TextField("Input textfield");
+
+      composite.add(label);
+      composite.add(textField);
+
+      page.add(composite, {left: 10, top: 10});
+
+      return page;
+    },
+
+    createPage2 : function()
+    {
+      var page = new qxe.ui.wizard.Page();
+      page.setLayout(new qx.ui.layout.Canvas());
+
+      var composite = new qx.ui.container.Composite(new qx.ui.layout.HBox(4));
+
+      var label = new qx.ui.basic.Label("Input label");
+      label.setAlignY("middle");
+
+      var textField = new qx.ui.form.TextField("Input textfield");
+
+      composite.add(label);
+      composite.add(textField);
+
+      page.add(composite, {left: 10, top: 10});
+
+      return page;
+    },
+
+    createPage3 : function()
+    {
+      var page = new qxe.ui.wizard.Page();
+      page.setLayout(new qx.ui.layout.Canvas());
+
+      var composite = new qx.ui.container.Composite(new qx.ui.layout.HBox(4));
+
+      var label = new qx.ui.basic.Label("Input label");
+      label.setAlignY("middle");
+
+      var textField = new qx.ui.form.TextField("Input textfield");
+
+      composite.add(label);
+      composite.add(textField);
+
+      page.add(composite, {left: 10, top: 10});
+
+      return page;
+    },
+
+    createPage4 : function()
+    {
+      var page = new qxe.ui.wizard.Page();
+      page.setLayout(new qx.ui.layout.Canvas());
+
+      var composite = new qx.ui.container.Composite(new qx.ui.layout.HBox(4));
+
+      var label = new qx.ui.basic.Label("Input label");
+      label.setAlignY("middle");
+
+      var textField = new qx.ui.form.TextField("Input textfield");
+
+      composite.add(label);
+      composite.add(textField);
+
+      page.add(composite, {left: 10, top: 10});
+
+      return page;
+    },
+
+    createPage5 : function()
+    {
+      var page = new qxe.ui.wizard.Page();
+      page.setLayout(new qx.ui.layout.Canvas());
+
+      var composite = new qx.ui.container.Composite(new qx.ui.layout.HBox(4));
+
+      var label = new qx.ui.basic.Label("Input label");
+      label.setAlignY("middle");
+
+      var textField = new qx.ui.form.TextField("Input textfield");
+
+      composite.add(label);
+      composite.add(textField);
+
+      page.add(composite, {left: 10, top: 10});
+
+      return page;
     }
   }
 });
