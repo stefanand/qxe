@@ -22,5 +22,14 @@ qx.Interface.define("qxe.ui.wizard.IPage",
 {
   members :
   {
+    /**
+     * Validate fields of page.
+     *
+     * @param wizard {qxe.ui.wizard.Wizard} Wizard parent object.
+     */
+    validate : function(wizard)
+    {
+//      this.assert
+    }
   }
 });

@@ -79,6 +79,7 @@ qx.Class.define("qxe.demo.Application",
           dialog.setLayout(new qx.ui.layout.Canvas());
           dialog.setHeight(100);
           dialog.setWidth(100);
+          dialog.setBlocking(true);
           dialog.add(label);
           dialog.moveTo(110, 60);
           dialog.show();

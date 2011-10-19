@@ -23,6 +23,7 @@
 qx.Class.define("qxe.ui.dialog.Dialog",
 {
   extend : qxe.ui.window.DecoratedWindow,
+  include : qx.ui.core.MBlocker,
 
 
   /*
@@ -80,29 +81,31 @@ qx.Class.define("qxe.ui.dialog.Dialog",
     /**
      * Block the ui underneath the dialog while displayed.
      */
-    blocker :
+    blocking :
     {
       check : "Boolean",
       init : false
-    },
+    }
+//,
 
     /**
      * Blocker color
      */
-    blockerColor :
+/*    blockerColor :
     {
       check : "String",
       init : "black"
     },
-
+*/
     /**
      * Blocker opacity
      */
-    blockerOpacity :
+/*    blockerOpacity :
     {
       check : "Number",
       init : 0.5
     }
+*/
   },
 
   members :
@@ -138,12 +141,12 @@ qx.Class.define("qxe.ui.dialog.Dialog",
     // Augmented
     show : function()
     {
-      if(this.isBlocker())
+      if(this.getBlocking())
       {
-        var root = this.getApplicationRoot();
-        root.setBlockerOpacity(this.getBlockerOpacity());
-        root.setBlockerColor(this.getBlockerColor());
-        root.blockContent(this.getZIndex() - 1);
+//        var root = this.getApplicationRoot();
+//        root.setBlockerOpacity(this.getBlockerOpacity());
+//        root.setBlockerColor(this.getBlockerColor());
+        this.blockContent(this.getZIndex() - 1);
       }
 
       this.base(arguments);
@@ -152,9 +155,10 @@ qx.Class.define("qxe.ui.dialog.Dialog",
     // Augmented
     hide : function()
     {
-      if(this.isBlocker())
+      if(this.isContentBlocked())
       {
-        this.getApplicationRoot().unblockContent();
+//        this.getApplicationRoot().unblockContent();
+        this.unblockContent();
       }
 
       this.base(arguments);

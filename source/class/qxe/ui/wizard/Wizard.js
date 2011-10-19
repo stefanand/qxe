@@ -481,6 +481,29 @@ qx.Class.define("qxe.ui.wizard.Wizard",
     },
 
     /**
+     * Event handler for <code>onInput</code>.
+     *
+     * @param e {qx.event.type.Data} Data event.
+     */
+    _onInput : function(e)
+    {
+      var fields = this.getValidator().getItems();
+      var len = fields.length;
+      var counter = 0;
+
+      for(var index=0; index<len; index++)
+      {
+        if(fields[index].item.getValue())
+        {
+          counter++;
+        }
+      }
+
+      this.getChildControl("reset-button").setEnabled(counter > 0);
+      this.getChildControl("submit-button").setEnabled(counter == len);
+    },
+
+    /**
      * Event handler for <code>changeSelection</code>.
      *
      * @param e {qx.event.type.Data} Data event.
