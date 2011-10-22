@@ -98,5 +98,6 @@ qx.Theme.define("qxe.theme.classic.Appearance",
 
     "wizard" : "widget",
     "wizard-page" : "groupbox"
+  }
 });
 
