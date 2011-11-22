@@ -19,9 +19,9 @@
 
 #asset(qx/icon/${qx.icontheme}/16/actions/view-refresh.png)
 
-#asset(qxe/icon/security/text.png)
-#asset(qxe/icon/security/audio-volume-high.png)
-#asset(qxe/icon/security/help-browser.png)
+#asset(qxe/icon/ui/control/text.png)
+#asset(qxe/icon/ui/control/audio-volume-high.png)
+#asset(qxe/icon/ui/control/help-browser.png)
 
 ************************************************************************ */
 
@@ -163,8 +163,8 @@ qx.Class.define("qxe.ui.control.Captcha",
 
 				case "sound-button" :
       		control = new qxe.ui.form.MultiStateButton();
-					control.add(null, "qxe/icon/security/text.png", this.tr("Read the captcha code generated."));
-			    control.add(null, "qxe/icon/security/audio-volume-high.png", this.tr("Listen to the captcha code generated."));
+					control.add(null, "qxe/icon/ui/control/text.png", this.tr("Read the captcha code generated."));
+			    control.add(null, "qxe/icon/ui/control/audio-volume-high.png", this.tr("Listen to the captcha code generated."));
 		      control.addListener("execute", this._onExecuteSound, this);
 
 					control.setEnabled(false);
@@ -173,7 +173,7 @@ qx.Class.define("qxe.ui.control.Captcha",
 				case "help-button" :
 					tooltip = new qx.ui.tooltip.ToolTip(this.tr("Context sensitive help."));
 
-      		control = new qx.ui.form.Button(null, "qxe/icon/security/help-browser.png");
+      		control = new qx.ui.form.Button(null, "qxe/icon/ui/control/help-browser.png");
 		      control.addListener("execute", this._onExecuteHelp, this);
 					control.setToolTip(tooltip);
 					break;
