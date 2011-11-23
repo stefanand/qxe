@@ -198,6 +198,14 @@ qx.Class.define("qxe.ui.window.Frame",
     ---------------------------------------------------------------------------
     */
 
+    /** Should the statusbar be shown */
+    showStatusbar :
+    {
+      check : "Boolean",
+      init : false,
+      apply : "_applyShowStatusbar"
+    },
+
     statusBar :
     {
       check : "qxe.ui.statusbar.StatusBar",
@@ -332,6 +340,17 @@ qx.Class.define("qxe.ui.window.Frame",
 
     _updateStatusBar : function()
     {
+      // store the state if the status bar is shown
+      var resizeFrame = this._getResizeFrame();
+
+      if (value) {
+        this.addState("showStatusbar");
+        resizeFrame.addState("showStatusbar");
+      } else {
+        this.removeState("showStatusbar");
+        resizeFrame.removeState("showStatusbar");
+      }
+
       var statusbar = this.getStatusBar();
 
       if (statusbar) {
@@ -394,6 +413,27 @@ qx.Class.define("qxe.ui.window.Frame",
       PROPERTY APPLY ROUTINES
     ---------------------------------------------------------------------------
     */
+
+    // property apply
+    _applyShowStatusbar : function(value, old)
+    {
+      // store the state if the status bar is shown
+      var resizeFrame = this._getResizeFrame();
+
+      if (value) {
+        this.addState("showStatusbar");
+        resizeFrame.addState("showStatusbar");
+      } else {
+        this.removeState("showStatusbar");
+        resizeFrame.removeState("showStatusbar");
+      }
+
+      if (value) {
+        this._showChildControl("statusbar");
+      } else {
+        this._excludeChildControl("statusbar");
+      }
+    },
 
     // property apply
     _applyStatusBarChange : function(value, old)

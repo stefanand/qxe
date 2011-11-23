@@ -18,7 +18,10 @@
      * Jonathan Weiß (jonathan_rass)
 
      * Stefan Andersson (sands)
-       - change of statusbar
+       - change of statusbar implementing qxe.ui.statusbar.StatusBar
+       - statusBarVisible changed to showStatusBar to use the same
+         nomenclature as in qx.ui.window.Window
+       - removed property additionalStatusBarText as it is part of the statusbar now
 
 ************************************************************************ */
 
@@ -207,7 +210,7 @@ qx.Class.define("qxe.ui.table.Table",
     this.__focusedCol = null;
     this.__focusedRow = null;
 
-    this.initStatusBarVisible();
+    this.initShowStatusBar();
 
     // If the table model has an init() method...
     tableModel = this.getTableModel();
@@ -432,20 +435,11 @@ qx.Class.define("qxe.ui.table.Table",
 
 
     /** Whether to show the status bar */
-    statusBarVisible :
+    showStatusBar :
     {
       check : "Boolean",
       init : true,
-      apply : "_applyStatusBarVisible"
-    },
-
-
-    /** The Statusbartext, set it, if you want some more Information */
-    additionalStatusBarText :
-    {
-      nullable : true,
-      init : null,
-      apply : "_applyAdditionalStatusBarText"
+      apply : "_applyShowStatusBar"
     },
 
 
@@ -716,7 +710,6 @@ qx.Class.define("qxe.ui.table.Table",
 
     __selectionManager : null,
 
-    __additionalStatusBarText : null,
     __lastRowCount : null,
     __internalChange : null,
 
@@ -913,7 +906,7 @@ qx.Class.define("qxe.ui.table.Table",
 
 
     // property modifier
-    _applyStatusBarVisible : function(value, old)
+    _applyShowStatusBar : function(value, old)
     {
       if (value) {
         this._showChildControl("statusbar");
@@ -924,14 +917,6 @@ qx.Class.define("qxe.ui.table.Table",
       if (value) {
         this._updateStatusBar();
       }
-    },
-
-
-    // property modifier
-    _applyAdditionalStatusBarText : function(value, old)
-    {
-      this.__additionalStatusBarText = value;
-      this._updateStatusBar();
     },
 
 
@@ -1934,35 +1919,24 @@ qx.Class.define("qxe.ui.table.Table",
      */
     _updateStatusBar : function()
     {
-      var tableModel = this.getTableModel();
-
-      if (this.getStatusBarVisible())
+      if (this.getShowStatusBar())
       {
         var selectedRowCount = this.getSelectionModel().getSelectedCount();
-        var rowCount = tableModel.getRowCount();
-
-        var text;
+        var rowCount = this.getTableModel().getRowCount();
 
         if (rowCount >= 0)
         {
+          var text;
+
           if (selectedRowCount == 0) {
             text = this.trn("one row", "%1 rows", rowCount, rowCount);
           } else {
+            // More logical to use figures instead of text as plural is.
+//            text = this.trn("1 of 1 row", "%1 of %2 rows", rowCount, selectedRowCount, rowCount);
             text = this.trn("one of one row", "%1 of %2 rows", rowCount, selectedRowCount, rowCount);
           }
-        }
 
-        if (this.__additionalStatusBarText)
-        {
-          if (text) {
-            text += this.__additionalStatusBarText;
-          } else {
-            text = this.__additionalStatusBarText;
-          }
-        }
-
-        if (text) {
-          this.getChildControl("statusbar").setValue(text);
+          this.getChildControl("statusbar").getChildControl("message").setValue(text);
         }
       }
     },
