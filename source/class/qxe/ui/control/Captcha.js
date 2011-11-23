@@ -163,11 +163,9 @@ qx.Class.define("qxe.ui.control.Captcha",
 
 				case "sound-button" :
       		control = new qxe.ui.form.MultiStateButton();
-					control.add(null, "qxe/icon/ui/control/text.png", this.tr("Read the captcha code generated."));
-			    control.add(null, "qxe/icon/ui/control/audio-volume-high.png", this.tr("Listen to the captcha code generated."));
+					control.addButtonState(null, "qxe/icon/ui/control/text.png", this.tr("Read the captcha code generated."));
+			    control.addButtonState(null, "qxe/icon/ui/control/audio-volume-high.png", this.tr("Listen to the captcha code generated."));
 		      control.addListener("execute", this._onExecuteSound, this);
-
-					control.setEnabled(false);
 					break;
 
 				case "help-button" :
@@ -304,25 +302,6 @@ qx.Class.define("qxe.ui.control.Captcha",
      */
 		_onExecuteSound : function(e)
 		{
-			var soundB = this.getChildControl("sound-button");
-
-			if(this.hasState("mute"))
-			{
-				soundB.replaceState("mute", "low");
-			}
-			else if(this.hasState("low"))
-			{
-				soundB.replaceState("low", "medium");
-			}
-			else if(this.hasState("medium"))
-			{
-				soundB.replaceState("medium", "high");
-			}
-			else if(this.hasState("high"))
-			{
-				soundB.replaceState("high", "mute");
-			}
-
 			// Put sound system here
 		},
 
