@@ -1,0 +1,134 @@
+/* ************************************************************************
+
+   qxe - qooxdoo extension framework
+
+   Copyright:
+     2010-2011 Cost Savers, http://www.cost-savers.net
+
+   License:
+     LGPL: http://www.gnu.org/licenses/lgpl.html
+     EPL: http://www.eclipse.org/org/documents/epl-v10.php
+     See the LICENSE file in the project's top-level directory for details.
+
+   Authors:
+     * Stefan Andersson (sand)
+
+************************************************************************ */
+
+/**
+ * A digital clock.
+ */
+qx.Class.define("qxe.ui.info.DigitalClock",
+{
+  extend : qxe.ui.info.Clock,
+
+
+  /*
+  *****************************************************************************
+     CONSTRUCTOR
+  *****************************************************************************
+  */
+
+  construct : function()
+  {
+    this.base(arguments);
+
+    // configure internal layout
+    this._setLayout(new qx.ui.layout.HBox());
+
+    this._createChildControl("pane");
+  },
+
+  /*
+  *****************************************************************************
+     PROPERTIES
+  *****************************************************************************
+  */
+
+  properties :
+  {
+    // overridden
+    appearance :
+    {
+      refine : true,
+      init : "digital-clock"
+    },
+
+
+   /*
+    ---------------------------------------------------------------------------
+      FEATURES
+    ---------------------------------------------------------------------------
+    */
+
+    /*
+     * Show a 12 or 24 hour clock.
+     */
+    showHours :
+    {
+      check : [12, 24],
+      init : 12
+    }
+  },
+
+  /*
+  *****************************************************************************
+     MEMBERS
+  *****************************************************************************
+  */
+
+  members :
+  {
+    /*
+    ---------------------------------------------------------------------------
+      WIDGET API
+    ---------------------------------------------------------------------------
+    */
+
+    // overridden
+    _createChildControlImpl : function(id, hash)
+    {
+      var control;
+
+      switch(id)
+      {
+        case "pane":
+          control = new qx.ui.basic.Label();
+
+          this._add(control);
+          break;
+      }
+
+      return control || this.base(arguments, id);
+    },
+
+    // overriden
+    display : function(hours, minutes, seconds)
+    {
+      var am_pm = "";
+
+      if(this.getShowHours() == 12)
+      {
+        am_pm = (hours > 11 ? " PM" : " AM");
+        hours = (hours > 12 ? hours - 12 : hours);
+        hours = (hours == 0 ? 12 : hours);
+        hours = (hours % 12);
+      }
+
+      minutes = ("0" + minutes).slice(("" + minutes).length - 1);
+      seconds = ("0" + seconds).slice(("" + seconds).length - 1);
+
+      var time = hours + ':' + minutes;
+
+      if(this.getShowSeconds())
+      {
+        time += ':' + seconds;
+      }
+
+      time += am_pm;
+
+      this.getChildControl("pane").setValue(time);
+    }
+  }
+});
+

@@ -1936,7 +1936,7 @@ qx.Class.define("qxe.ui.table.Table",
             text = this.trn("one of one row", "%1 of %2 rows", rowCount, selectedRowCount, rowCount);
           }
 
-          this.getChildControl("statusbar").getChildControl("message").setValue(text);
+          this.getChildControl("statusbar").getChildControl("message-pane").setValue(text);
         }
       }
     },

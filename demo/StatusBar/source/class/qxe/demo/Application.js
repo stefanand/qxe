@@ -69,16 +69,16 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
-      var frame = this.createFrame();
+//      var frame = this.createFrame();
 
 
       // Button
-      var button = new qx.ui.form.Button("Click here!");
-      button.addListener("execute", function() {
+//      var button = new qx.ui.form.Button("Click here!");
+//      button.addListener("execute", function() {
         
-      }, this);
+//      }, this);
 
-      doc.add(button, {left: 50, top: 50});
+//      doc.add(button, {left: 50, top: 50});
       doc.add(this.createTable(), {left: 50, top: 50});
     },
 
@@ -87,6 +87,7 @@ qx.Class.define("qxe.demo.Application",
       var statusBar = new qxe.ui.statusbar.StatusBar();
 
       var frame = new qxe.ui.window.Frame("StatusBar Demo");
+//      frame.addStatusBar(statusBar);
 
       return frame;
     },
@@ -122,7 +123,7 @@ qx.Class.define("qxe.demo.Application",
 
       // table
       var table = new qxe.ui.table.Table(tableModel);
-      table.setStatusBar(statusbar);
+      table.addStatusBar(statusbar);
 
       table.set({
         width: 600,

@@ -59,18 +59,14 @@ qx.Class.define("qxe.ui.window.Frame",
    * @param icon {String} The URL of the caption bar icon
    * @param statusbar {qxe.ui.statusbar.StatusBar} The statusbar of the Frame
    */
-  construct : function(caption, icon, statusbar)
+  construct : function(caption, icon)
   {
     this.base(arguments, caption, icon);
 
     // captionbar events
     this.getChildControl("captionbar").addListener("dblclick", this._onCaptionMouseDblClick, this);
 
-//    this._createChildControl("statusbar");
-
-    if (statusbar != null) {
-//      this.setStatusBar(statusbar);
-    }
+    this._createChildControl("statusbar");
 
     // Update statusbar
 //    this._updateStatusBar();
@@ -342,7 +338,7 @@ qx.Class.define("qxe.ui.window.Frame",
     {
       // store the state if the status bar is shown
       var resizeFrame = this._getResizeFrame();
-
+/*
       if (value) {
         this.addState("showStatusbar");
         resizeFrame.addState("showStatusbar");
@@ -350,7 +346,7 @@ qx.Class.define("qxe.ui.window.Frame",
         this.removeState("showStatusbar");
         resizeFrame.removeState("showStatusbar");
       }
-
+*/
       var statusbar = this.getStatusBar();
 
       if (statusbar) {

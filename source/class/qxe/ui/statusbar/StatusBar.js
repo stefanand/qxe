@@ -68,13 +68,18 @@ qx.Class.define("qxe.ui.statusbar.StatusBar",
     }
   },
 
-  member :
+  members :
   {
+    /*
+    ---------------------------------------------------------------------------
+      WIDGET API
+    ---------------------------------------------------------------------------
+    */
+
     // overridden
     _createChildControlImpl : function(id)
     {
       var control;
-			var tooltip;
 
       switch(id)
       {
