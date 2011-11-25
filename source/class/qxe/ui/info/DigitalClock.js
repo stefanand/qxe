@@ -115,7 +115,7 @@ qx.Class.define("qxe.ui.info.DigitalClock",
         hours = (hours % 12);
       }
 
-      var padZeros = qx.util.format.StringFormat.padZeros;
+      var padZeros = qxe.util.format.StringFormat.padZeros;
 
       var time = padZeros(hours, 2) + ':' + padZeros(minutes, 2);
 

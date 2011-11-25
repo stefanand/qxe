@@ -18,7 +18,7 @@
 /**
  * A formatter and parser for strings.
  */
-qx.Class.define("qx.util.format.StringFormat",
+qx.Class.define("qxe.util.format.StringFormat",
 {
   extend : qx.core.Object,
 

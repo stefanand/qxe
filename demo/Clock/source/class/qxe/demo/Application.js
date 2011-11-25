@@ -68,12 +68,12 @@ qx.Class.define("qxe.demo.Application",
       var doc = this.getRoot();
 
 //      var analogClock = new qxe.ui.info.AnalogClock();
-//      var binaryClock = new qxe.ui.info.BinaryClock();
+      var binaryClock = new qxe.ui.info.BinaryClock();
       var digitalClock = new qxe.ui.info.DigitalClock();
 
 //      doc.add(analogClock, {left: 50, top: 50});
-//      doc.add(binaryClock, {left: 50, top: 150});
-      doc.add(digitalClock, {left: 50, top: 200});
+      doc.add(binaryClock, {left: 50, top: 150});
+      doc.add(digitalClock, {left: 50, top: 300});
     }
   }
 });
