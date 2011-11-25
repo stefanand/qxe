@@ -5,6 +5,9 @@
   [
     {
       "path" : "${QOOXDOO_PATH}/tool/data/config/application.json"
+    },
+    {
+      "path" : "image.json"
     }
   ],
 
@@ -29,7 +32,8 @@
     "simulation-run",
     "test",
     "test-source",
-    "translation"
+    "translation",
+    "image-combine"
   ],
   
   "default-job" : "source",

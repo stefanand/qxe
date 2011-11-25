@@ -109,20 +109,19 @@ qx.Class.define("qxe.ui.info.DigitalClock",
 
       if(this.getShowHours() == 12)
       {
-        am_pm = (hours > 11 ? " PM" : " AM");
-        hours = (hours > 12 ? hours - 12 : hours);
-        hours = (hours == 0 ? 12 : hours);
+        am_pm = (hours > 11) ? " PM" : " AM";
+        hours = (hours > 12) ? hours - 12 : hours;
+        hours = (hours == 0) ? 12 : hours;
         hours = (hours % 12);
       }
 
-      minutes = ("0" + minutes).slice(("" + minutes).length - 1);
-      seconds = ("0" + seconds).slice(("" + seconds).length - 1);
+      var padZeros = qx.util.format.StringFormat.padZeros;
 
-      var time = hours + ':' + minutes;
+      var time = padZeros(hours, 2) + ':' + padZeros(minutes, 2);
 
       if(this.getShowSeconds())
       {
-        time += ':' + seconds;
+        time += ':' + padZeros(seconds, 2);
       }
 
       time += am_pm;

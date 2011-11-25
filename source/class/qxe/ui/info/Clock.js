@@ -68,8 +68,7 @@ qx.Class.define("qxe.ui.info.Clock",
     interval :
     {
       check : "Number",
-      init : 1000,
-      apply : "_applyInterval"
+      init : 1000
     },
 
     /*
@@ -78,8 +77,18 @@ qx.Class.define("qxe.ui.info.Clock",
     zoneOffset :
     {
       check : "Number",
-      init : -1,
-      apply : "_applyZoneOffset"
+      init : -1
+    },
+
+    /*
+     * The zone method:
+     * true :  zone based on web browser setting
+     * false : zone based on ip address
+     */
+    zoneMethod :
+    {
+      check : "Boolean",
+      init : false
     },
 
     /*
@@ -133,23 +142,6 @@ qx.Class.define("qxe.ui.info.Clock",
     /** Timer id */
     __timerId : null,
 
-
-    /*
-    ---------------------------------------------------------------------------
-      APPLY ROUTINES
-    ---------------------------------------------------------------------------
-    */
-
-    // property modifier
-    _applyInterval : function(value, old)
-    {
-    },
-
-    // property modifier
-    _applyZoneOffset : function(value, old)
-    {
-    },
-
     /*
      * This function shows the Internet Time which is a time scheme designed by Swatch,
      * which divides the 24 hour day into 1000 "beats", measured from midnight in Biel,
@@ -170,20 +162,9 @@ qx.Class.define("qxe.ui.info.Clock",
       var total = ((hour + min + sec + bmt) * (1000 / 1440));
       var intTime = Math.floor(total);
 
-      if (intTime < 0)
-      {
-        intTime = intTime + 1000;
-      }
-
-      if (intTime < 10)
-      {
-        intTime = "00" + intTime;
-      }
-
-      if (intTime < 100)
-      {
-        intTime = "0" + intTime;
-      }
+      intTime = (intTime < 0) ? intTime + 1000 : intTime;
+      intTime = (intTime < 10) ? "00" + intTime : intTime;
+      intTime = (intTime < 100) ? "0" + intTime : intTime;
 
       return intTime;
     },
@@ -209,14 +190,9 @@ qx.Class.define("qxe.ui.info.Clock",
       var seconds = date.getSeconds();
       var offset  = this.getZoneOffset();
 
-      if (hours < offset)
-      {
-        hours = hours + 24 - offset; // If hours < 0 add 24 for correct time
-      }
-      else
-      {
-        hours = hours - offset; // Else just subtract it.
-      }
+      // If hours < 0 add 24 for correct time
+      // Else just subtract it.
+      hours = (hours < offset) ? hours + 24 - offset : hours - offset;
 
       this.display(hours, minutes, seconds);
     },

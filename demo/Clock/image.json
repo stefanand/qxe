@@ -1,0 +1,56 @@
+{
+  "jobs" :
+  {
+    
+    "image-combine" :
+    {
+      "desc" : "LED image combining",
+
+      "let" :
+      {
+        "RESPATH" : "./source/resource"
+      },
+   
+      "cache" :
+      {
+        "compile" : "${CACHE}"
+      },
+
+      "combine-images" :
+      {
+        "images" :
+        {
+          "${RESPATH}/qxe/demo/info/LED.jpg" :
+          {
+            "prefix": [ "${RESPATH}" ],
+            "input" :
+            [
+              {
+                "prefix": [ "${RESPATH}" ],
+                "files" :
+                [
+                  "${RESPATH}/qxe/demo/info/blank.gif",
+                  "${RESPATH}/qxe/demo/info/digit_0.gif",
+                  "${RESPATH}/qxe/demo/info/digit_1.gif",
+                  "${RESPATH}/qxe/demo/info/digit_2.gif",
+                  "${RESPATH}/qxe/demo/info/digit_3.gif",
+                  "${RESPATH}/qxe/demo/info/digit_4.gif",
+                  "${RESPATH}/qxe/demo/info/digit_5.gif",
+                  "${RESPATH}/qxe/demo/info/digit_6.gif",
+                  "${RESPATH}/qxe/demo/info/digit_7.gif",
+                  "${RESPATH}/qxe/demo/info/digit_8.gif",
+                  "${RESPATH}/qxe/demo/info/digit_9.gif",
+                  "${RESPATH}/qxe/demo/info/colon.gif",
+                  "${RESPATH}/qxe/demo/info/am.gif",
+                  "${RESPATH}/qxe/demo/info/pm.gif"
+                ]
+              }
+            ],
+            "layout" : "horizontal"
+          }
+        }
+      }
+    }
+  }  
+}
+
