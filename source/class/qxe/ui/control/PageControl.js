@@ -207,18 +207,14 @@ qx.Class.define("qxe.ui.control.PageControl",
 
     _onGotoPageChangeValue : function(e)
     {
-      var newFrame = e.getData();
+      var newPage = e.getData();
+      var pageContainer = this.__pageContainer;
 
-      if(newFrame.indexOf('+') == 0 || newFrame.indexOf('-') == 0)
+      if(newPage >= 1 && newPage <= pageContainer.getNumPages() && newPage != pageContainer.getCurrentPage())
       {
-        this.__pageContainer.gotoRelativePage(newFrame, false);
+        pageContainer.gotoPage(newPage);
+        this.checkEnable();
       }
-      else
-      {
-        this.__pageContainer.gotoPage(newFrame, false);
-      }
-
-      this.checkEnable();
     },
 
     /**
