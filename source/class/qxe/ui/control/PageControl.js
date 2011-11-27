@@ -54,14 +54,7 @@ qx.Class.define("qxe.ui.control.PageControl",
 
     this._createChildControl("control-pane");
 
-    if(pageContainer != null)
-    {
-      this.__pageContainer = pageContainer;
-    }
-    else
-    {
-      this.__pageContainer = this.getLayoutParent();
-    }
+    this.__pageContainer = pageContainer || this.getLayoutParent();
   },
 
 
