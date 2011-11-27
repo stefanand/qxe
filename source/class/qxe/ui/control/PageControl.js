@@ -200,7 +200,12 @@ qx.Class.define("qxe.ui.control.PageControl",
      */
     _onPreviousPageButtonClick : function(e)
     {
-      this.__pageContainer.gotoRelativePage(-1);
+      var pageContainer = this.__pageContainer;
+
+      if(pageContainer.getCurrentPage() > 1)
+      {
+        pageContainer.gotoRelativePage(-1);
+      }
 
       this.checkEnable();
     },
@@ -224,7 +229,12 @@ qx.Class.define("qxe.ui.control.PageControl",
      */
     _onNextPageButtonClick : function(e)
     {
-      this.__pageContainer.gotoRelativePage(1);
+      var pageContainer = this.__pageContainer;
+
+      if(pageContainer.getCurrentPage() < pageContainer.getNumPages())
+      {
+        pageContainer.gotoRelativePage(1);
+      }
 
       this.checkEnable();
     },
