@@ -37,7 +37,7 @@ qx.Class.define("qxe.ui.info.InternetClock",
     this.base(arguments);
 
     // configure internal layout
-    this._setLayout(new qx.ui.layout.HBox());
+    this._setLayout(new qx.ui.layout.Canvas());
 
     this._createChildControl("pane");
   },
@@ -93,13 +93,13 @@ qx.Class.define("qxe.ui.info.InternetClock",
     display : function(hours, minutes, seconds)
     {
       // Biel MeanTime (BMT) is the universal reference for Internet Time.
-      var bmt = (now.getTimezoneOffset() + 60);  
+      var bmt = (new Date().getTimezoneOffset() + 60);  
 
       var total = ((60 * hours + minutes + seconds/60 + bmt) * (1000 / 1440));
 
       var time = Math.floor(total);
       time = (time < 0) ? time + 1000 : time;
-      time = qxe.util.format.StringFormat.padZeros(time, 4)
+      time = qxe.util.format.StringFormat.padZeros(time, 3)
 
       this.getChildControl("pane").setValue("@" + time);
     }

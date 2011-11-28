@@ -37,7 +37,7 @@ qx.Class.define("qxe.ui.info.DigitalClock",
     this.base(arguments);
 
     // configure internal layout
-    this._setLayout(new qx.ui.layout.HBox());
+    this._setLayout(new qx.ui.layout.Canvas());
 
     this._createChildControl("pane");
   },
