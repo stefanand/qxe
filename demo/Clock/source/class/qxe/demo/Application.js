@@ -17,7 +17,7 @@
 
 /* ************************************************************************
 
-#asset(qxe/demo/info/LED.jpg)
+# asset(qxe/demo/info/LED.jpg)
 
 #asset(qxe/demo/*)
 

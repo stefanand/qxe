@@ -17,7 +17,7 @@
 
 /* ************************************************************************
 
-#asset(qxe/icon/ui/info/led/LED.jpg)
+#asset(qxe/icon/ui/info/led/*)
 
 ************************************************************************ */
 
@@ -192,6 +192,10 @@ qx.Class.define("qxe.ui.info.LEDClock",
       if(am_pm != "")
       {
         children[8].setSource(path + am_pm + ".gif");
+      }
+      else
+      {
+        children[8].setSource(path + "blank.gif");
       }
 		}
   }
