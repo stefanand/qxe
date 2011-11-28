@@ -16,12 +16,12 @@
 ************************************************************************ */
 
 /**
- * A digital clock.
- *
- * - adapt to dst worldwide
- * - adapt to local (browser) respective remote (server) time
+ * This class shows the Internet Time which is a time scheme designed by Swatch,
+ * which divides the 24 hour day into 1000 "beats", measured from midnight in Biel,
+ * Switzerland. As the Internet Time is the same all over the world this script would
+ * be useful if you want to make an appointment. See www.swatch.com. 
  */
-qx.Class.define("qxe.ui.info.DigitalClock",
+qx.Class.define("qxe.ui.info.InternetClock",
 {
   extend : qxe.ui.info.Clock,
 
@@ -54,23 +54,7 @@ qx.Class.define("qxe.ui.info.DigitalClock",
     appearance :
     {
       refine : true,
-      init : "digital-clock"
-    },
-
-
-   /*
-    ---------------------------------------------------------------------------
-      FEATURES
-    ---------------------------------------------------------------------------
-    */
-
-    /*
-     * Show a 12 or 24 hour clock.
-     */
-    showHours :
-    {
-      check : [12, 24],
-      init : 12
+      init : "internet-clock"
     }
   },
 
@@ -108,28 +92,16 @@ qx.Class.define("qxe.ui.info.DigitalClock",
     // overriden
     display : function(hours, minutes, seconds)
     {
-      var am_pm = "";
+      // Biel MeanTime (BMT) is the universal reference for Internet Time.
+      var bmt = (now.getTimezoneOffset() + 60);  
 
-      if(this.getShowHours() == 12)
-      {
-        am_pm = (hours > 11) ? " PM" : " AM";
-        hours = (hours > 12) ? hours - 12 : hours;
-        hours = (hours == 0) ? 12 : hours;
-        hours = (hours % 12);
-      }
+      var total = ((60 * hours + minutes + seconds/60 + bmt) * (1000 / 1440));
 
-      var padZeros = qxe.util.format.StringFormat.padZeros;
+      var time = Math.floor(total);
+      time = (time < 0) ? time + 1000 : time;
+      time = qxe.util.format.StringFormat.padZeros(time, 4)
 
-      var time = padZeros(hours, 2) + ':' + padZeros(minutes, 2);
-
-      if(this.getShowSeconds())
-      {
-        time += ':' + padZeros(seconds, 2);
-      }
-
-      time += am_pm;
-
-      this.getChildControl("pane").setValue(time);
+      this.getChildControl("pane").setValue("@" + time);
     }
   }
 });

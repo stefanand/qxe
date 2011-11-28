@@ -17,6 +17,8 @@
 
 /**
  * An abstract class for all info clock classes.
+ *
+ * - integrate internet time
  */
 qx.Class.define("qxe.ui.info.Clock",
 {
@@ -141,33 +143,6 @@ qx.Class.define("qxe.ui.info.Clock",
     __timer : null,
     /** Timer id */
     __timerId : null,
-
-    /*
-     * This function shows the Internet Time which is a time scheme designed by Swatch,
-     * which divides the 24 hour day into 1000 "beats", measured from midnight in Biel,
-     * Switzerland. As the Internet Time is the same all over the world this script would
-     * be useful if you want to make an appointment. See www.swatch.com. 
-     *
-     * @return {Number} The Internet time.
-     */
-    internetTime : function()
-    {
-      var now = new Date();
-      var hour = now.getHours() * 60;
-      var min = now.getMinutes();
-      var sec = now.getSeconds() / 60;
-      // Biel MeanTime (BMT) is the universal reference for Internet Time.
-      var bmt = (now.getTimezoneOffset() + 60);  
-
-      var total = ((hour + min + sec + bmt) * (1000 / 1440));
-      var intTime = Math.floor(total);
-
-      intTime = (intTime < 0) ? intTime + 1000 : intTime;
-      intTime = (intTime < 10) ? "00" + intTime : intTime;
-      intTime = (intTime < 100) ? "0" + intTime : intTime;
-
-      return intTime;
-    },
 
 
     /*

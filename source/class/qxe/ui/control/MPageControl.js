@@ -174,11 +174,6 @@ qx.Mixin.define("qxe.ui.control.MPageControl",
      */
     getTotalPages : function()
     {
-    },
-
-    enableAll : function()
-    {
-//      this.getChildControl("search-pane").setEnabled(true);
     }
   }
 });
