@@ -71,6 +71,15 @@ qx.Class.define("qxe.ui.info.DigitalClock",
     {
       check : [12, 24],
       init : 12
+    },
+
+    /*
+     * Show a leading zero for one digit hours.
+     */
+    leadingHourZero :
+    {
+      check : "Boolean",
+      init : true
     }
   },
 
@@ -120,7 +129,8 @@ qx.Class.define("qxe.ui.info.DigitalClock",
 
       var padZeros = qxe.util.format.StringFormat.padZeros;
 
-      var time = padZeros(hours, 2) + ':' + padZeros(minutes, 2);
+      var time = (hours < 10 && !this.getLeadingHourZero() ? " " + padZeros(hours, 1) : padZeros(hours, 2));
+      time += ':' + padZeros(minutes, 2);
 
       if(this.getShowSeconds())
       {

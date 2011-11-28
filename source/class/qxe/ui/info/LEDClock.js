@@ -15,8 +15,14 @@
 
 ************************************************************************ */
 
+/* ************************************************************************
+
+#asset(qxe/icon/ui/info/led/LED.jpg)
+
+************************************************************************ */
+
 /**
- * An LED clock.
+ * A LED clock.
  */
 qx.Class.define("qxe.ui.info.LEDClock",
 {
@@ -34,12 +40,9 @@ qx.Class.define("qxe.ui.info.LEDClock",
     this.base(arguments);
 
     // configure internal layout
-    this._setLayout(new qx.ui.layout.HBox());
+    this._setLayout(new qx.ui.layout.Canvas());
 
     this._createChildControl("pane");
-
-    this.__digits = [];
-    this._loadFigures(this.getImagePath() + this.getTemplate() + "/");
 	},
 
 
@@ -67,10 +70,10 @@ qx.Class.define("qxe.ui.info.LEDClock",
     /*
      * Image to use if no font possible.
      */
-    image :
+    imagePath :
     {
       check : "Image",
-      init : ""
+      init : "qxe/icon/ui/info/led/"
     },
 
     /*
@@ -80,6 +83,15 @@ qx.Class.define("qxe.ui.info.LEDClock",
     {
       check : [12, 24],
       init : 12
+    },
+
+    /*
+     * Show a leading zero for one digit hours.
+     */
+    leadingHourZero :
+    {
+      check : "Boolean",
+      init : true
     }
 	},
 
@@ -91,17 +103,6 @@ qx.Class.define("qxe.ui.info.LEDClock",
 
   members :
   {
-    __digits : null,
-
-    __hour1I : null,
-    __hour2I : null,
-    __divisor1I : null,
-    __minute1I : null,
-    __minute2I : null,
-    __divisor2I : null,
-    __second1I : null,
-    __second2I : null,
-
     /*
     ---------------------------------------------------------------------------
       WIDGET API
@@ -116,119 +117,83 @@ qx.Class.define("qxe.ui.info.LEDClock",
       switch(id)
       {
         case "pane":
-          this.__hour1I = new qx.ui.basic.Image();
-          this.__hour2I = new qx.ui.basic.Image();
-          this.__divisor1I = new qx.ui.basic.Image();
-          this.__minute1I = new qx.ui.basic.Image();
-          this.__minute2I = new qx.ui.basic.Image();
-          this.__divisor2I = new qx.ui.basic.Image();
-          this.__second1I = new qx.ui.basic.Image();
-          this.__second2I = new qx.ui.basic.Image();
+          control = new qx.ui.container.Composite(new qx.ui.layout.HBox());
 
-          this._add(this._hour1I, this._hour2I, this._divisor1I, this._minute1I, this._minute2I, this._divisor2I, this._second1I, this._second2I);
+          control.add(new qx.ui.basic.Image());
+          control.add(new qx.ui.basic.Image());
+
+          control.add(new qx.ui.basic.Image());
+
+          control.add(new qx.ui.basic.Image());
+          control.add(new qx.ui.basic.Image());
+
+          control.add(new qx.ui.basic.Image());
+
+          control.add(new qx.ui.basic.Image());
+          control.add(new qx.ui.basic.Image());
+
+          control.add(new qx.ui.basic.Image());
+          this._add(control);
           break;
 			}
 
       return control || this.base(arguments, id);
     },
 
-		_loadFigures : function(imagePath)
-		{
-      for(var i=0; i<10; i++) {
-        this._figures[i] = new QxImagePreloader(imagePath + i + ".png");
-      }
-
-      this._figures[10] = new QxImagePreloader(imagePath + "blank.png");
-      this._figures[11] = new QxImagePreloader(imagePath + "divisor.png");
-		},
-
+    // overridden
 		display : function(hours, minutes, seconds)
 		{
+      var am_pm = "";
+
       if(this.getShowHours() == 12)
       {
+        am_pm = (hours > 11) ? "pm" : "am";
         hours = (hours > 12) ? hours - 12 : hours;
         hours = (hours == 0) ? 12 : hours;
+        hours = (hours % 12);
       }
 
-      var time = ((hours < 10) ? "0" + hours : hours) + '' + ((minutes < 10) ? "0"+minutes : minutes) + '' + ((seconds < 10) ? "0"+seconds : seconds);
+      var padZeros = qxe.util.format.StringFormat.padZeros;
 
-  if(this.getShowHours() == 12)
-  {
-    this._hour1I.setSource(this._figures[time.charAt(0)].getSource());
-  }
-  else
-  {
-    this._hour1I.setSource(this._figures[10].getSource());
-  }
+      var time = padZeros(hours, 2) + padZeros(minutes, 2);
 
-      this._hour2I.setSource(this._figures[time.charAt(1)].getSource());
-      this._divisor1I.setSource(this._figures[11].getSource());
-      this._minute1I.setSource(this._figures[time.charAt(2)].getSource());
-      this._minute2I.setSource(this._figures[time.charAt(3)].getSource());
-      this._divisor2I.setSource(this._figures[11].getSource());
-      this._second1I.setSource(this._figures[time.charAt(4)].getSource());
-      this._second2I.setSource(this._figures[time.charAt(5)].getSource());
+      if(this.getShowSeconds())
+      {
+        time += padZeros(seconds, 2);
+      }
+
+      var children = this.getChildControl("pane").getChildren();
+      var path = this.getImagePath();
+
+      if(this.getLeadingHourZero())
+      {
+        children[0].setSource(path + "digit_" + time.charAt(0) + ".gif");
+      }
+      else
+      {
+        children[0].setSource(path + "blank.gif");
+      }
+
+      children[1].setSource(path + "digit_" + time.charAt(1) + ".gif");
+
+      children[2].setSource(path + "colon.gif");
+
+      children[3].setSource(path + "digit_" + time.charAt(2) + ".gif");
+      children[4].setSource(path + "digit_" + time.charAt(3) + ".gif");
+
+      if(this.getShowSeconds())
+      {
+        children[5].setSource(path + "colon.gif");
+
+        children[6].setSource(path + "digit_" + time.charAt(4) + ".gif");
+        children[7].setSource(path + "digit_" + time.charAt(5) + ".gif");
+      }
+
+      if(am_pm != "")
+      {
+        children[8].setSource(path + am_pm + ".gif");
+      }
 		}
-  },
-
-
-  /*
-  *****************************************************************************
-     DESTRUCTOR
-  *****************************************************************************
-  */
-
-	destruct : function()
-	{
-  if(this._hour1I)
-  {
-    this._hour1I.dispose();
-    this._hour1I = null;
   }
-
-  if(this._hour2I)
-  {
-    this._hour2I.dispose();
-    this._hour2I = null;
-  }
-
-  if(this._divisor1I)
-  {
-    this._divisor1I.dispose();
-    this._divisor1I = null;
-  }
-
-  if(this._minute1I)
-  {
-    this._minute1I.dispose();
-    this._minute1I = null;
-  }
-
-  if(this._minute2I)
-  {
-    this._minute2I.dispose();
-    this._minute2I = null;
-  }
-
-  if(this._divisor2I)
-  {
-    this._divisor2I.dispose();
-    this._divisor2I = null;
-  }
-
-  if(this._second1I)
-  {
-    this._second1I.dispose();
-    this._second1I = null;
-  }
-
-  if(this._second2I)
-  {
-    this._second2I.dispose();
-    this._second2I = null;
-  }
-
-  this._figures = null;
-	}
 });
 

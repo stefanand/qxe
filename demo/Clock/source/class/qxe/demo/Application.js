@@ -17,6 +17,8 @@
 
 /* ************************************************************************
 
+#asset(qxe/demo/info/LED.jpg)
+
 #asset(qxe/demo/*)
 
 ************************************************************************ */
@@ -70,12 +72,20 @@ qx.Class.define("qxe.demo.Application",
       var internetClock = new qxe.ui.info.InternetClock();
 //      var analogClock = new qxe.ui.info.AnalogClock();
       var binaryClock = new qxe.ui.info.BinaryClock();
+
+      var ledClock1 = new qxe.ui.info.LEDClock();
+
+      var ledClock2 = new qxe.ui.info.LEDClock();
+      ledClock2.setImagePath("qxe/demo/info/");
+
       var digitalClock = new qxe.ui.info.DigitalClock();
 
       doc.add(internetClock, {left: 50, top: 50});
 //      doc.add(analogClock, {left: 50, top: 50});
       doc.add(binaryClock, {left: 50, top: 150});
-      doc.add(digitalClock, {left: 50, top: 300});
+      doc.add(ledClock1, {left: 50, top: 275});
+      doc.add(ledClock2, {left: 50, top: 300})
+      doc.add(digitalClock, {left: 50, top: 325});
     }
   }
 });
