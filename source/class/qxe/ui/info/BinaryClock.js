@@ -23,7 +23,13 @@
 ************************************************************************ */
 
 /**
- * ThinkGeek's Binary LED Clock
+ * ThinkGeek's Binary LED Clock displays the time in a graphical binary format.
+ * The following grid is laid out:
+ *   8   8   8
+ *   4 4 4 4 4
+ * 2 2 2 2 2 2
+ * 1 1 1 1 1 1
+ * H H M M S S
  */
 qx.Class.define("qxe.ui.info.BinaryClock",
 {
@@ -42,8 +48,6 @@ qx.Class.define("qxe.ui.info.BinaryClock",
 
     // configure internal layout
     this._setLayout(new qx.ui.layout.Grid(2, 2));
-
-    this.__loadImages();
 	},
 
 
@@ -71,14 +75,7 @@ qx.Class.define("qxe.ui.info.BinaryClock",
 
   members :
   {
-    __images : null,
-
-		__loadImages : function()
-		{
-      qx.io.ImageLoader.load("qxe/icon/ui/info/binary/on.gif");
-      qx.io.ImageLoader.load("qxe/icon/ui/info/binary/off.gif");
-		},
-
+    // overridden
 		display : function(hours, minutes, seconds)
 		{
       this.__resetPane();
@@ -103,7 +100,7 @@ qx.Class.define("qxe.ui.info.BinaryClock",
 
         for (var j = 8; j >= 1; j = j / 2)
         {
-          var widget = layout.getCellWidget(4 - Math.floor(j/2), i - 1);
+          var widget = layout.getCellWidget(3 - Math.log(j)/Math.log(2), i - 1);
 
           if (num - j >= 0 && widget)
           {
@@ -123,12 +120,6 @@ qx.Class.define("qxe.ui.info.BinaryClock",
         [1, 1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1]
       ];
-/*
-   28    48    68
-   24 34 44 54 64
-12 22 32 42 52 62
-11 21 31 41 51 61
-*/
       var cols = 6 - !this.getShowSeconds() * 2;
       var layout = this._getLayout();
 
@@ -152,18 +143,6 @@ qx.Class.define("qxe.ui.info.BinaryClock",
         }
       }
     }
-  },
-
-
-  /*
-  *****************************************************************************
-     DESTRUCTOR
-  *****************************************************************************
-  */
-
-	destruct : function()
-	{
-    this.disposeArray("__images");
-	}
+  }
 });
 

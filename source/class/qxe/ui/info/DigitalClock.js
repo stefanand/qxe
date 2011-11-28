@@ -117,7 +117,7 @@ qx.Class.define("qxe.ui.info.DigitalClock",
     // overriden
     display : function(hours, minutes, seconds)
     {
-      var am_pm = "";
+      var am_pm = "   ";
 
       if(this.getShowHours() == 12)
       {
