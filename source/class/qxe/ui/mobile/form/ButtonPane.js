@@ -58,7 +58,7 @@ qx.Class.define("qxe.ui.mobile.form.ButtonPane",
   {
     this.base(arguments);
 
-    if(orientation != null)
+    if(orientation)
     {
       this.setOrientation(orientation);
     }
@@ -67,7 +67,7 @@ qx.Class.define("qxe.ui.mobile.form.ButtonPane",
       this.initOrientation();
     }
 
-    if(spacing != null)
+    if(spacing)
     {
       this.setSpacing(spacing);
     }

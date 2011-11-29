@@ -153,7 +153,10 @@ qx.Class.define("qxe.ui.control.PageControl",
           control.setAlignY("middle");
           control.setToolTip(tooltip);
 
-          control.setValue(this.__pageContainer.getNumPages());
+          if(this.__pageContainer)
+          {
+            control.setValue(this.__pageContainer.getNumPages());
+          }
           break;
 
         case "next-page-button":

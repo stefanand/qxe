@@ -79,13 +79,13 @@ qx.Class.define("qxe.ui.info.Counter",
       switch(id)
       {
         case "pane":
-          control = new qx.ui.container.Composite(new qx.ui.layout.Grid());
+          control = new qx.ui.container.Composite(new qx.ui.layout.Grid(4, 2));
           control.addListener("appear", this._onAppearCounter, this);
 
-          control.add(this._getChildControl("num-label"), {column: 0, row: 0});
-          control.add(this._getChildControl("num-field"), {column: 1, row: 0});
-          control.add(this._getChildControl("date-label"), {column: 0, row: 1});
-          control.add(this._getChildControl("date-field"), {column: 1, row: 1});
+          control.add(this.getChildControl("num-label"), {column: 0, row: 0});
+          control.add(this.getChildControl("num-field"), {column: 1, row: 0});
+          control.add(this.getChildControl("date-label"), {column: 0, row: 1});
+          control.add(this.getChildControl("date-field"), {column: 1, row: 1});
 
           this._add(control);
           break;
@@ -102,9 +102,7 @@ qx.Class.define("qxe.ui.info.Counter",
           control.setFocusable(false);
           control.setKeepFocus(true);
           control.setTextAlign("right");
-          control.setReadOnly(true);
           control.setWidth(35);
-//          control.setAlignY("middle");
           control.setToolTip(tooltip);
           break;
 
@@ -119,9 +117,6 @@ qx.Class.define("qxe.ui.info.Counter",
           control = new qx.ui.form.DateField();
           control.setFocusable(false);
           control.setKeepFocus(true);
-          control.setReadOnly(true);
-//          control.setWidth(35);
-//          control.setAlignY("middle");
           control.setToolTip(tooltip);
           break;
       }
@@ -136,8 +131,10 @@ qx.Class.define("qxe.ui.info.Counter",
 
     __updateCounter : function()
     {
-      var counter = parseInt(qx.bom.Cookie.get("visitCount"));
-      var lastDate = parseInt(qx.bom.Cookie.get("lastVisit"));
+      var oldCounter = qx.bom.Cookie.get("visitCount");
+      var counter = parseInt(oldCounter ? oldCounter : 0);
+
+      var lastDate = qx.bom.Cookie.get("lastVisit");
 
       ++counter;
 

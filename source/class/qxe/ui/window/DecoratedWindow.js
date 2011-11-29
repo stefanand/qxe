@@ -72,11 +72,11 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
     this._createChildControl("captionbar");
 
     // apply constructor parameters
-    if (icon != null) {
+    if (icon) {
       this.setIcon(icon);
     }
 
-    if (caption != null) {
+    if (caption) {
       this.setCaption(caption);
     }
 

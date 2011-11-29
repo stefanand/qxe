@@ -255,7 +255,7 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
       this.getChildControl("image").setSource(image || null);
       this.getChildControl("message").setValue(message || null);
 
-      if(buttonPane != null)
+      if(buttonPane)
       {
         this.getChildControl("button-pane").set(buttonPane);
       }

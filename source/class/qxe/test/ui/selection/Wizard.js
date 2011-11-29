@@ -63,7 +63,7 @@ qx.Class.define("qxe.test.ui.selection.Wizard",
 
     _getChildren : function()
     {
-      if (this._widget != null)
+      if (this._widget)
       {
         return this._widget.getChildren();
       }
