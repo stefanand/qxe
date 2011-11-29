@@ -5,9 +5,6 @@
   [
     {
       "path" : "${QOOXDOO_PATH}/tool/data/config/application.json"
-    },
-    {
-      "path" : "image.json"
     }
   ],
 
