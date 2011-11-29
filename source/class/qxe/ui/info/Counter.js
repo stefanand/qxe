@@ -102,7 +102,8 @@ qx.Class.define("qxe.ui.info.Counter",
           control.setFocusable(false);
           control.setKeepFocus(true);
           control.setTextAlign("right");
-          control.setWidth(35);
+          control.setWidth(50);
+          control.setAllowGrowX(false);
           control.setToolTip(tooltip);
           break;
 
@@ -114,9 +115,11 @@ qx.Class.define("qxe.ui.info.Counter",
         case "date-field":
           tooltip = new qx.ui.tooltip.ToolTip(this.tr("Last date visit."));
 
-          control = new qx.ui.form.DateField();
+          // Should be DateTimeTextField!
+          control = new qx.ui.form.TextField();
           control.setFocusable(false);
           control.setKeepFocus(true);
+          control.setWidth(200);
           control.setToolTip(tooltip);
           break;
       }
@@ -124,11 +127,26 @@ qx.Class.define("qxe.ui.info.Counter",
       return control || this.base(arguments, id);
     },
 
+
+    /*
+    ---------------------------------------------------------------------------
+      BASIC EVENT HANDLERS
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Update counter on appear event of widget.
+     *
+     * @param e {qx.event.type.Event} appear event
+     */
     _onAppearCounter : function()
     {
       this.__updateCounter();
     },
 
+    /**
+     * Update counter of widget.
+     */
     __updateCounter : function()
     {
       var oldCounter = qx.bom.Cookie.get("visitCount");
@@ -147,9 +165,9 @@ qx.Class.define("qxe.ui.info.Counter",
       var newDate = date.toGMTString();
 
       qx.bom.Cookie.set("visitCount", counter, newDate);
-      qx.bom.Cookie.set("lastVisit", counter, newDate);
+      qx.bom.Cookie.set("lastVisit", date, newDate);
 
-      this.getChildControl("num-field").setValue(counter);
+      this.getChildControl("num-field").setValue("" + counter);
       this.getChildControl("date-field").setValue(lastDate);
     }
   }
