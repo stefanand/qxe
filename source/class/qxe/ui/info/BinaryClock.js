@@ -112,6 +112,9 @@ qx.Class.define("qxe.ui.info.BinaryClock",
       }
 		},
 
+    /**
+     * Creates the binary dots or turns off all binary dots if already created.
+     */
     __resetPane : function()
     {
       var setup = [

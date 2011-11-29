@@ -69,7 +69,7 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
-//      var analogClock = new qxe.ui.info.AnalogClock();
+      var analogClock = new qxe.ui.info.AnalogClock();
       var binaryClock = new qxe.ui.info.BinaryClock();
 
       var ledClock1 = new qxe.ui.info.LEDClock();
@@ -80,7 +80,7 @@ qx.Class.define("qxe.demo.Application",
       var digitalClock = new qxe.ui.info.DigitalClock();
       var internetClock = new qxe.ui.info.InternetClock();
 
-//      doc.add(analogClock, {left: 50, top: 50});
+      doc.add(analogClock, {left: 50, top: 50});
       doc.add(binaryClock, {left: 50, top: 150});
       doc.add(ledClock1, {left: 50, top: 275});
       doc.add(ledClock2, {left: 50, top: 300})
