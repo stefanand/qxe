@@ -144,6 +144,28 @@ qx.Class.define("qxe.ui.statusbar.StatusBar",
     {
       var layout = this._getLayout();
       value == null ? layout.resetSpacing() : layout.setSpacing(value);
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      USER API
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Sets the value of the default message pane.
+     *
+     * @param text {string} The text.
+     */
+    setValue : function(text)
+    {
+      var child = this.getChildControl("message-pane");
+
+      if(child)
+      {
+        child.setValue(text);
+      }
     }
   }
 });

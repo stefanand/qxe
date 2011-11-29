@@ -31,7 +31,7 @@
  * A detailed description can be found in the package description
  * {@link qx.ui.table}.
  *
- * @childControl statusbar {qx.ui.basic.Label} label to show the status of the table
+ * @childControl statusbar {qxe.ui.statusbar.StatusBar} label to show the status of the table
  * @childControl column-button {qx.ui.table.columnmenu.Button} button to open the column menu
  */
 qx.Class.define("qxe.ui.table.Table",
@@ -1936,7 +1936,7 @@ qx.Class.define("qxe.ui.table.Table",
             text = this.trn("one of one row", "%1 of %2 rows", rowCount, selectedRowCount, rowCount);
           }
 
-          this.getChildControl("statusbar").getChildControl("message-pane").setValue(text);
+          this.getChildControl("statusbar").setValue(text);
         }
       }
     },

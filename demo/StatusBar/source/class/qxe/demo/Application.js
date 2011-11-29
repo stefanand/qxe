@@ -111,7 +111,7 @@ qx.Class.define("qxe.demo.Application",
       var statusBar = new qxe.ui.statusbar.StatusBar();
 
       // Create the initial data
-      var rowData = this.createRandomRows(50);
+      var rowData = this.createRandomRows(20);
 
       // table model
       var tableModel = this._tableModel = new qx.ui.table.model.Simple();
@@ -123,11 +123,11 @@ qx.Class.define("qxe.demo.Application",
 
       // table
       var table = new qxe.ui.table.Table(tableModel);
-      table.addStatusBar(statusbar);
+//      table.addStatusBar(statusbar);
 
       table.set({
         width: 600,
-        height: 400,
+        height: 200,
         decorator : null
       });
 
