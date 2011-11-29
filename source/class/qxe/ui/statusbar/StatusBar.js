@@ -38,7 +38,7 @@ qx.Class.define("qxe.ui.statusbar.StatusBar",
 
     this._setLayout(new qx.ui.layout.HBox());
 
-		this._createChildControl("message-pane");
+		this._createChildControl("message");
   },
 
 
@@ -83,7 +83,7 @@ qx.Class.define("qxe.ui.statusbar.StatusBar",
 
       switch(id)
       {
-        case "message-pane":
+        case "message":
 					control = new qxe.ui.statusbar.Message();
 
 					this._add(control);
@@ -160,7 +160,7 @@ qx.Class.define("qxe.ui.statusbar.StatusBar",
      */
     setValue : function(text)
     {
-      var child = this.getChildControl("message-pane");
+      var child = this.getChildControl("message");
 
       if(child)
       {

@@ -40,6 +40,9 @@ qx.Class.define("qxe.demo.Application",
 
   members :
   {
+    __frame1 : null,
+    __frame2 : null,
+
     /**
      * This method contains the initial application code and gets called 
      * during startup of the application
@@ -69,27 +72,54 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
-//      var frame = this.createFrame();
-
-
       // Button
-//      var button = new qx.ui.form.Button("Click here!");
-//      button.addListener("execute", function() {
-        
-//      }, this);
+      var button1 = new qx.ui.form.Button("Frame 1!");
+      button1.addListener("execute", this.createFrame1, this);
 
-//      doc.add(button, {left: 50, top: 50});
-      doc.add(this.createTable(), {left: 50, top: 50});
+      var button2 = new qx.ui.form.Button("Frame 2!");
+      button2.addListener("execute", this.createFrame2, this);
+
+      doc.add(button1, {left: 50, top: 50});
+      doc.add(button2, {left: 150, top: 50});
+      doc.add(this.createTable(), {left: 50, top: 100});
     },
 
-    createFrame : function()
+    createFrame1 : function()
     {
-      var statusBar = new qxe.ui.statusbar.StatusBar();
+      var frame = this.__frame1;
 
-      var frame = new qxe.ui.window.Frame("StatusBar Demo");
-//      frame.addStatusBar(statusBar);
+      if(!frame)
+      {
+        var label = new qx.ui.basic.Label("Just a label");
 
-      return frame;
+        frame = new qxe.ui.window.Frame("Testing frame 1", "qxe/decoration/Modern/dialog/icon/16/information.png");
+        frame.setLayout(new qx.ui.layout.Canvas());
+        frame.setHeight(100);
+        frame.setWidth(100);
+        frame.add(label);
+        frame.moveTo(110, 60);
+        frame.show();
+      }
+    },
+
+    createFrame2 : function()
+    {
+      var frame = this.__frame2;
+
+      if(!frame)
+      {
+        var label = new qx.ui.basic.Label("Just a label");
+        var statusBar = new qxe.ui.statusbar.StatusBar();
+
+        frame = new qxe.ui.window.Frame("Testing frame 2", "qxe/decoration/Modern/dialog/icon/16/information.png");
+        frame.setLayout(new qx.ui.layout.Canvas());
+        frame.setHeight(100);
+        frame.setWidth(100);
+        frame.add(label);
+        frame.moveTo(110, 60);
+        frame.show();
+        frame.addStatusBar(statusBar);
+      }
     },
 
     nextId : 0,
@@ -108,8 +138,6 @@ qx.Class.define("qxe.demo.Application",
 
     createTable : function()
     {
-      var statusBar = new qxe.ui.statusbar.StatusBar();
-
       // Create the initial data
       var rowData = this.createRandomRows(20);
 
@@ -123,11 +151,10 @@ qx.Class.define("qxe.demo.Application",
 
       // table
       var table = new qxe.ui.table.Table(tableModel);
-//      table.addStatusBar(statusbar);
 
       table.set({
         width: 600,
-        height: 200,
+        height: 150,
         decorator : null
       });
 

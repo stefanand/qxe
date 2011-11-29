@@ -190,8 +190,38 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     ---------------------------------------------------------------------------
     */
 
-    "statusbar" : "widget",
-    "statusbar/message-pane" : "widget",
+    "statusbar" :
+    {
+      style : function(states)
+      {
+        var useCSS = qx.core.Environment.get("css.borderradius") &&
+          qx.core.Environment.get("css.gradients") &&
+          qx.core.Environment.get("css.boxshadow");
+        return {
+          padding   : [ 2, 6 ],
+          decorator : useCSS ? "window-statusbar-css" : "window-statusbar",
+          minHeight : 18
+        };
+      }
+    },
+
+    "statusbar/message" :
+    {
+      style : function(states)
+      {
+        return {
+          font : "small"
+        };
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
+      TABLE
+    ---------------------------------------------------------------------------
+    */
+
+    "table/statusbar/message" : "statusbar/message",
 
     /*
     ---------------------------------------------------------------------------

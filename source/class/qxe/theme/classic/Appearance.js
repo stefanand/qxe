@@ -185,8 +185,26 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     ---------------------------------------------------------------------------
     */
 
-    "statusbar" : "widget",
-    "statusbar/message-pane" : "widget",
+    "statusbar" :
+    {
+      style : function(states)
+      {
+        return {
+          decorator : "inset-thin",
+          padding : [ 2, 6 ]
+        };
+      }
+    },
+
+    "statusbar/message" : "label",
+
+    /*
+    ---------------------------------------------------------------------------
+      TABLE
+    ---------------------------------------------------------------------------
+    */
+
+    "table/statusbar/message" : "statusbar/message",
 
     /*
     ---------------------------------------------------------------------------

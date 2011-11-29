@@ -20,8 +20,9 @@
 
    Revision: 28835->
      * Stefan Andersson (sand)
+       - change of statusbar implementing qxe.ui.statusbar.StatusBar
+       - added addStatusBar function
        - removed status text
-       - added functionality for a real statusbar, which can be added
        - removed DEFAULT_WINDOW_MANAGER to Desktop to make Desktop independent 
          Window and open up for different window manager classes.
        ! Try to remove Table's dependence on Window
