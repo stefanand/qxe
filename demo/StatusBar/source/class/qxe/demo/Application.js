@@ -18,6 +18,7 @@
 /* ************************************************************************
 
 #asset(qx/icon/${qx.icontheme}/16/apps/office-calendar.png)
+#asset(qxe/decoration/Modern/dialog/icon/16/information.png)
 
 #asset(qxe/demo/*)
 

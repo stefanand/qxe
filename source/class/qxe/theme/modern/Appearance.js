@@ -127,6 +127,7 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     "frame/minimize-button" : "window/minimize-button",
     "frame/restore-button" : "window/restore-button",
     "frame/maximize-button" : "window/maximize-button",
+    "frame/statusbar/message" : "statusbar/message",
 
     /*
     ---------------------------------------------------------------------------
