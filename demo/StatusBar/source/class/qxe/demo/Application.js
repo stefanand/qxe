@@ -93,7 +93,7 @@ qx.Class.define("qxe.demo.Application",
       {
         var label = new qx.ui.basic.Label("Just a label");
 
-        frame = new qxe.ui.window.Frame("Testing frame 1", "qxe/decoration/Modern/dialog/icon/16/information.png");
+        frame = this.__frame1 = new qxe.ui.window.Frame("Testing frame 1", "qxe/decoration/Modern/dialog/icon/16/information.png");
         frame.setLayout(new qx.ui.layout.Canvas());
         frame.setHeight(100);
         frame.setWidth(100);
@@ -112,7 +112,7 @@ qx.Class.define("qxe.demo.Application",
         var label = new qx.ui.basic.Label("Just a label");
         var statusBar = new qxe.ui.statusbar.StatusBar();
 
-        frame = new qxe.ui.window.Frame("Testing frame 2", "qxe/decoration/Modern/dialog/icon/16/information.png");
+        frame = this.__frame2 = new qxe.ui.window.Frame("Testing frame 2", "qxe/decoration/Modern/dialog/icon/16/information.png");
         frame.setLayout(new qx.ui.layout.Canvas());
         frame.setHeight(100);
         frame.setWidth(100);
