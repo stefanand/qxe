@@ -70,7 +70,7 @@ qx.Class.define("qxe.ui.window.Frame",
     this._createChildControl("statusbar");
 
     // Update statusbar
-//    this._updateStatusBar();
+    this._updateStatusBar();
   },
 
 
@@ -201,7 +201,8 @@ qx.Class.define("qxe.ui.window.Frame",
       check : "Boolean",
       init : false,
       apply : "_applyShowStatusbar"
-    },
+    }
+/*,
 
     statusBar :
     {
@@ -210,6 +211,7 @@ qx.Class.define("qxe.ui.window.Frame",
       event : "changeStatusBar",
       nullable : true
     }
+*/
   },
 
 
@@ -251,8 +253,7 @@ qx.Class.define("qxe.ui.window.Frame",
       switch(id)
       {
         case "statusbar":
-          control = new qx.ui.container.Composite(new qx.ui.layout.HBox());
-          control.add(this.getStatusBar(), {flex: 1});
+          control = new qxe.ui.statusbar.StatusBar();
           this._add(control);
           break;
 
@@ -348,9 +349,7 @@ qx.Class.define("qxe.ui.window.Frame",
         resizeFrame.removeState("showStatusbar");
       }
 */
-      var statusbar = this.getStatusBar();
-
-      if (statusbar) {
+      if (this.hasChildControl("statusbar")) {
         this._showChildControl("statusbar");
       } else {
         this._excludeChildControl("statusbar");
@@ -431,13 +430,13 @@ qx.Class.define("qxe.ui.window.Frame",
         this._excludeChildControl("statusbar");
       }
     },
-
+/*
     // property apply
     _applyStatusBarChange : function(value, old)
     {
       this._updateStatusBar();
     },
-
+*/
 
     /*
     ---------------------------------------------------------------------------
