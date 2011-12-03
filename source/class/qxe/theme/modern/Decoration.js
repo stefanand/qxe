@@ -63,6 +63,22 @@ qx.Theme.define("qxe.theme.modern.Decoration",
       style : {
         baseImage : "decoration/window/captionbar-inactive.png"
       }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
+      WEBDESKTOP
+    ---------------------------------------------------------------------------
+    */
+
+    "webdesktop" :
+    {
+      decorator: qx.ui.decoration.Single,
+
+      style :
+      {
+        backgroundColor : "webdesktop-background"
+      }
     }
   }
 });

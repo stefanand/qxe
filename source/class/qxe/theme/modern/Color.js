@@ -21,5 +21,12 @@ qx.Theme.define("qxe.theme.modern.Color",
 
   colors :
   {
+    /*
+    ---------------------------------------------------------------------------
+      WEBDESKTOP
+    ---------------------------------------------------------------------------
+    */
+
+    "webdesktop-background" : "#DFDFDF" // "background-application"
   }
 });

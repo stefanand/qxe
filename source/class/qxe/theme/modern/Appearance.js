@@ -226,6 +226,28 @@ qx.Theme.define("qxe.theme.modern.Appearance",
 
     /*
     ---------------------------------------------------------------------------
+      WEBDESKTOP
+    ---------------------------------------------------------------------------
+    */
+
+    "webdesktop" :
+    {
+      style : function(states)
+      {
+        return {
+          decorator : "webdesktop"
+//,
+//          allowGrowY : true,
+//          allowGrowX : true
+        };
+      }
+    },
+
+    "webdesktop/desktop-pane" : "desktop",
+    "webdesktop/desktop-object" : "atom",
+
+    /*
+    ---------------------------------------------------------------------------
       WIZARD
     ---------------------------------------------------------------------------
     */
