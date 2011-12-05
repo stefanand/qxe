@@ -23,6 +23,30 @@ qx.Theme.define("qxe.theme.modern.Decoration",
   {
     /*
     ---------------------------------------------------------------------------
+      DECORATED WINDOW
+    ---------------------------------------------------------------------------
+    */
+
+    "decorated-window-captionbar-active" :
+    {
+      decorator : qx.ui.decoration.Grid,
+
+      style : {
+        baseImage : "decoration/window/captionbar-active.png"
+      }
+    },
+
+    "decorated-window-captionbar-inactive" :
+    {
+      decorator : qx.ui.decoration.Grid,
+
+      style : {
+        baseImage : "decoration/window/captionbar-inactive.png"
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
       DIALOG
     ---------------------------------------------------------------------------
     */
@@ -43,25 +67,20 @@ qx.Theme.define("qxe.theme.modern.Decoration",
 
     /*
     ---------------------------------------------------------------------------
-      DECORATED WINDOW
+      DOCUMENTVIEWER
     ---------------------------------------------------------------------------
     */
 
-    "decorated-window-captionbar-active" :
+    "visual-pane" :
     {
-      decorator : qx.ui.decoration.Grid,
+      decorator: qx.ui.decoration.Single,
 
-      style : {
-        baseImage : "decoration/window/captionbar-active.png"
-      }
-    },
-
-    "decorated-window-captionbar-inactive" :
-    {
-      decorator : qx.ui.decoration.Grid,
-
-      style : {
-        baseImage : "decoration/window/captionbar-inactive.png"
+      style :
+      {
+        backgroundColor : "visual-pane-background",
+        widthTop : 1,
+        colorTop : "border-main",
+        style    : "solid"
       }
     },
 

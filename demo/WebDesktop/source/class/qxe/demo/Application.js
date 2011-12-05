@@ -17,6 +17,14 @@
 
 /* ************************************************************************
 
+#asset(qx/icon/${qx.icontheme}/16/actions/*)
+#asset(qx/icon/${qx.icontheme}/16/apps/utilities-help.png)
+#asset(qx/icon/${qx.icontheme}/22/apps/preferences-users.png)
+
+#asset(qx/icon/${qx.icontheme}/16/devices/computer.png)
+#asset(qx/icon/${qx.icontheme}/16/devices/drive-harddisk.png)
+#asset(qx/icon/${qx.icontheme}/16/devices/drive-optical.png)
+
 #asset(qxe/demo/*)
 
 ************************************************************************ */
@@ -69,7 +77,16 @@ qx.Class.define("qxe.demo.Application",
 
       this.createCommands();
 
-      var webDesktop = new qxe.ui.webdesktop.WebDesktop(this.createMenuBar(), this.createTaskBar(), this.createBackground());
+      var webDesktop = new qxe.ui.webdesktop.WebDesktop(this.createMenuToolBar(), this.createTaskBar(), this.createBackground());
+      webDesktop.setContextMenu(this.createContextMenu());
+
+      var desktopObject1 = new qxe.ui.webdesktop.Object("Computer", "icon/16/devices/computer.png");
+      var desktopObject2 = new qxe.ui.webdesktop.Object("Harddisk", "icon/16/devices/drive-harddisk.png");
+      var desktopObject3 = new qxe.ui.webdesktop.Object("CD-ROM", "icon/16/devices/drive-optical.png");
+
+      webDesktop.add(desktopObject1);
+      webDesktop.add(desktopObject2);
+      webDesktop.add(desktopObject3);
 
       doc.add(webDesktop, {edge: 0});
     },
@@ -102,7 +119,7 @@ qx.Class.define("qxe.demo.Application",
       this.debug("Change checked: " + this.getLabel() + " = " + e.getData());
     },
 
-    createMenuBar : function()
+    createMenuToolBar : function()
     {
       var toolbar = new qx.ui.toolbar.ToolBar;
 //      toolbar.setWidth(600);
@@ -432,7 +449,9 @@ qx.Class.define("qxe.demo.Application",
 
     createTaskBar : function()
     {
-      return null;
+      var taskbar = new qxe.ui.taskbar.TaskBar();
+
+      return taskbar;
     },
 
     createBackground : function()
@@ -444,6 +463,25 @@ qx.Class.define("qxe.demo.Application",
       bg.setBackgroundPosition("center", "center");
 
       return bg;
+    },
+
+    createContextMenu : function()
+    {
+      var menu = new qx.ui.menu.Menu;
+ 
+      var cutButton = new qx.ui.menu.Button("Cut", "icon/16/actions/edit-cut.png", this._cutCommand);
+      var copyButton = new qx.ui.menu.Button("Copy", "icon/16/actions/edit-copy.png", this._copyCommand);
+      var pasteButton = new qx.ui.menu.Button("Paste", "icon/16/actions/edit-paste.png", this._pasteCommand);
+ 
+      cutButton.addListener("execute", this.debugButton);
+      copyButton.addListener("execute", this.debugButton);
+      pasteButton.addListener("execute", this.debugButton);
+ 
+      menu.add(cutButton);
+      menu.add(copyButton);
+      menu.add(pasteButton);
+ 
+      return menu;
     }
   }
 });

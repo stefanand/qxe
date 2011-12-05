@@ -19,6 +19,24 @@ qx.Theme.define("qxe.theme.classic.Decoration",
 {
   decorations :
   {
+    /*
+    ---------------------------------------------------------------------------
+      DOCUMENTVIEWER
+    ---------------------------------------------------------------------------
+    */
+
+    "visual-pane" :
+    {
+      decorator: qx.ui.decoration.Single,
+
+      style :
+      {
+        backgroundColor : "visual-pane-background",
+        widthTop : 1,
+        colorTop : "border-main",
+        style    : "solid"
+      }
+    }
   }
 });
 

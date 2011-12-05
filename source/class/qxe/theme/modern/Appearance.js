@@ -119,6 +119,41 @@ qx.Theme.define("qxe.theme.modern.Appearance",
 
     /*
     ---------------------------------------------------------------------------
+      DOCUMENTVIEWER
+    ---------------------------------------------------------------------------
+    */
+
+    "document-viewer" :
+    {
+      style : function(states)
+      {
+        return {
+          decorator : "main",
+          allowGrowY : true
+        };
+      }
+    },
+
+    "document-viewer/visual-pane" :
+    {
+      style : function(states)
+      {
+        return {
+          decorator : "visual-pane"
+        };
+      }
+    },
+
+    "document-viewer/fit-pane" : "toolbar/part",
+    "document-viewer/zoom-pane" : "toolbar/part",
+    "document-viewer/orientation-pane" : "toolbar/part",
+    "document-viewer/location-pane" : "toolbar/part",
+    "document-viewer/tool-pane" : "toolbar/part",
+    "document-viewer/search-pane" : "toolbar/part",
+    "document-viewer/scroll-pane" : "scrollarea",
+
+    /*
+    ---------------------------------------------------------------------------
       FRAME
     ---------------------------------------------------------------------------
     */
@@ -226,6 +261,14 @@ qx.Theme.define("qxe.theme.modern.Appearance",
 
     /*
     ---------------------------------------------------------------------------
+      TASKBAR
+    ---------------------------------------------------------------------------
+    */
+
+    "taskbar" : "toolbar",
+
+    /*
+    ---------------------------------------------------------------------------
       WEBDESKTOP
     ---------------------------------------------------------------------------
     */
@@ -243,9 +286,21 @@ qx.Theme.define("qxe.theme.modern.Appearance",
       }
     },
 
-    "webdesktop/desktop-pane" : "desktop",
-    "webdesktop/desktop-object" : "atom",
+    "webdesktop/pane" : "desktop",
+    "webdesktop/object" : "hover-button",
+/*    {
+      alias : "atom",
+      include : "atom",
 
+      style : function(states)
+      {
+        return {
+          center : true,
+          iconPosition : "top"
+        };
+      }
+    },
+*/
     /*
     ---------------------------------------------------------------------------
       WIZARD
