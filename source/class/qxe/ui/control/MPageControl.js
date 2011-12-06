@@ -28,7 +28,7 @@ qx.Mixin.define("qxe.ui.control.MPageControl",
 
   members :
   {
-    gotoPage : function(page)
+/*    gotoPage : function(page)
     {
 
 //			this.getChildControl("scroll-pane").scrollToY(0);
@@ -47,20 +47,20 @@ qx.Mixin.define("qxe.ui.control.MPageControl",
 
 //      this.getChildControl("scroll-pane").scrollToY(0);
     },
-
+*/
     /**
      * 1. go to top of current page
      * 2. go to top of first page
      */
-    gotoPageTop : function()
+/*    gotoPageTop : function()
     {
     },
-
+*/
     /**
      * 1. go to bottom of current page
      * 2. go to bottom of last page
      */
-    gotoPageBottom : function()
+/*    gotoPageBottom : function()
     {
     },
 
@@ -75,22 +75,22 @@ qx.Mixin.define("qxe.ui.control.MPageControl",
     goDown : function()
     {
     },
-
+*/
     /**
      *
      * fieldChange to prevent reentrance to the textfield of current page
      *
      */
-    gotoRelativePage : function(relativeFrame, fieldChange)
+/*    gotoRelativePage : function(relativeFrame, fieldChange)
     {
     },
-
+*/
     /**
      *
      * fieldChange to prevent reentrance to the textfield of current page
      *
      */
-    gotoPage : function(absoluteFrame, fieldChange)
+/*    gotoPage : function(absoluteFrame, fieldChange)
     {
     },
 
@@ -101,6 +101,7 @@ qx.Mixin.define("qxe.ui.control.MPageControl",
     goPageDown : function()
     {
     },
+*/
 
     _onKeyUp : function(e)
     {
@@ -159,21 +160,6 @@ qx.Mixin.define("qxe.ui.control.MPageControl",
           this.gotoRelativePage(1);
           break;
       }
-    },
-
-    /*
-     * 
-     */
-    getCurrentPage : function()
-    {
-    },
-
-    /*
-     *
-     *
-     */
-    getTotalPages : function()
-    {
     }
   }
 });

@@ -213,7 +213,7 @@ qx.Class.define("qxe.ui.control.PageControl",
 
       if(pageContainer.getCurrentPage() > 1)
       {
-        pageContainer.gotoRelativePage(-1);
+        pageContainer.gotoPage(pageContainer.getCurrentPage() - 1);
       }
 
       this.checkEnable();
@@ -239,10 +239,11 @@ qx.Class.define("qxe.ui.control.PageControl",
     _onNextPageButtonClick : function(e)
     {
       var pageContainer = this.__pageContainer;
+      var currentPage = pageContainer.getCurrentPage();
 
-      if(pageContainer.getCurrentPage() < pageContainer.getTotalPages())
+      if(currentPage < pageContainer.getTotalPages())
       {
-        pageContainer.gotoRelativePage(1);
+        pageContainer.gotoPage(currentPage + 1);
       }
 
       this.checkEnable();
@@ -297,16 +298,6 @@ qx.Class.define("qxe.ui.control.PageControl",
         this.getChildControl("last-page-button").setEnabled(true);
         this.getChildControl("next-page-button").setEnabled(true);
       }
-    },
-
-    /**
-     * Go to page in the document.
-     *
-     * @param value {Number} page number
-     */
-    setValue : function(value)
-    {
-      this.getChildControl("current-page-field").setValue("" + value)
     }
   }
 });

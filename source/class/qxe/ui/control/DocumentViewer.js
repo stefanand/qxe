@@ -123,7 +123,7 @@
  * @appearance textfield
  *
  * @childControl control-bar {qx.ui.container.Composite} container which holds the control-pane and visual-pane
- * @childControl control-pane {qx.ui.container.Composite} container shows the print-button and which holds the fit-pane, zoom-pane, orientation-pane, location-pane, tool-pane and search-pane
+ * @childControl control-pane {qx.ui.container.Composite} container shows the print-button and which holds the fit-pane, zoom-pane, orientation-pane, page-control, tool-pane and search-pane
  * @childControl print-button {qx.ui.toolbar.Button} prints the document in the visual-pane
  * @childControl fit-pane {qx.ui.container.Composite} container shows the thumb-view-button, fit-width-button, fit-page-button and full-screen-button
  * @childControl thumb-view-button {qx.ui.toolbar.RadioButton} shows all pages of the document in the visual-pane
@@ -153,7 +153,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
   ],
   include :
   [
-//    qxe.ui.control.MPageControl,
+    qxe.ui.control.MPageControl,
     qx.ui.core.MRemoteChildrenHandling,
     qx.ui.core.MRemoteLayoutHandling,
     qx.ui.core.MContentPadding
@@ -840,7 +840,17 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
     },
 
 
+    /*
+    ---------------------------------------------------------------------------
+      ACTION EVENT HANDLERS
+    ---------------------------------------------------------------------------
+    */
 
+    /**
+     * Listens to the "loaded" event sent when the flash has been fully loaded.
+     *
+     * @param e {qx.event.type.Event} loaded event
+     */
     _onTimeout : function(e)
     {
       if (qx.core.Environment.get("qx.debug"))
@@ -851,6 +861,11 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 //      this.getChildControl("initiator").terminate();
     },
 
+    /**
+     * Listens to the "timeout" event sent when loading of the flash has timed out.
+     *
+     * @param e {qx.event.type.Event} timeout event
+     */
     _onLoaded : function(e)
     {
       if (qx.core.Environment.get("qx.debug"))
@@ -862,22 +877,17 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       var flashFE = flash.getFlashElement();
 
       // Set height and width so we get scrollbars
-      var width = flashFE.TGetPropertyAsNumber("/", 8);
-      var height = flashFE.TGetPropertyAsNumber("/", 9);
-this.debug(width + "    " + height);
-      flash.setWidth(width);
-      flash.setHeight(height);
+      flash.setWidth(flashFE.TGetPropertyAsNumber("/", 8));
+      flash.setHeight(flashFE.TGetPropertyAsNumber("/", 9));
 
       var xScale = flashFE.TGetPropertyAsNumber("/", 2);
       var yScale = flashFE.TGetPropertyAsNumber("/", 3);
 
       this.getChildControl("zoom-page-field").setValue("" + ((xScale + yScale)/2));
 
-      var currentFrame = flashFE.TGetPropertyAsNumber("/", 4);
-      var totalFrames = flashFE.TGetPropertyAsNumber("/", 5);
-
-      this.getChildControl("page-control").setValue("" + currentFrame);
-      this.getChildControl("num-pages-field").setValue("" + totalFrames);
+      var pageControl = this.getChildControl("page-control");
+      pageControl.getChildControl("current-page-field").setValue("" + this.getCurrentPage());
+      pageControl.getChildControl("num-pages-field").setValue("" + this.getTotalPages());
 
       this.enableAll();
 
@@ -905,81 +915,6 @@ this.debug(width + "    " + height);
         }
 //            // If 0% zoom then no panning and everything is contained within the scroll area else this:
 //            alert(flashFE.TGetPropertyAsNumber("/", 1));
-      }
-    },
-
-    _onKeyUp : function(e)
-    {
-      var key = (e.isCtrlPressed() ? "Ctrl-" : "") + (e.isShiftPressed() ? "Shift-" : "") + (e.getType() !== "keyinput" ? e.getKeyIdentifier() : "");
-
-      switch(key)
-      {
-        case "Home":
-          this.getChildControl("scroll-pane").scrollToY(0);
-          break;
-
-        case "Ctrl-Home":
-          this.gotoPageTop();
-          break;
-
-        case "Ctrl-Shift-Home":
-          this.gotoStart();
-          break;
-
-        case "End":
-          var flashS = this.getChildControl("scroll-pane");
-          var maxPosition = flashS.getChildControl("pane").getScrollMaxY();
-
-          flashS.scrollToY(maxPosition);
-          break;
-
-        case "Ctrl-End":
-          this.gotoPageBottom();
-          break;
-
-        case "Ctrl-Shift-End":
-          this.gotoEnd();
-          break;
-
-        case "Up":
-          this.goUp();
-          break;
-
-        case "Down":
-          this.goDown();
-          break;
-
-        case "PageUp":
-          this.goPageUp();
-          break;
-
-        case "Ctrl-PageUp":
-          this.gotoRelativePage(-1);
-          break;
-
-        case "PageDown":
-          this.goPageDown();
-          break;
-
-        case "Ctrl-PageDown":
-          this.gotoRelativePage(1);
-          break;
-
-        case "Left":
-          this.getChildControl("scroll-pane").scrollByX(-1);
-          break;
-
-        case "Ctrl-Left":
-          this.scrollLeft();
-          break;
-
-        case "Right":
-          this.getChildControl("scroll-pane").scrollByX(1);
-          break;
-
-        case "Ctrl-Right":
-          this.scrollRight();
-          break;
       }
     },
 
@@ -1095,23 +1030,6 @@ this.debug(width + "    " + height);
     },
 
     /**
-     *
-     * fieldChange to prevent reentrance to the textfield of current page
-     *
-     */
-    gotoRelativePage : function(relativeFrame, fieldChange)
-    {
-      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        var currentFrame = flash.getFlashElement().TGetPropertyAsNumber("/", 4);
-
-        this.gotoPage(currentFrame + relativeFrame, fieldChange);
-      }
-    },
-
-    /**
      * Go to page in the document.
      *
      * @param value {Number} page number
@@ -1139,7 +1057,7 @@ this.debug(width + "    " + height);
 
             if(typeof(fieldChange) === "undefined" || fieldChange)
             {
-              this.getChildControl("page-control").setValue("" + absoluteFrame);
+              this.getChildControl("page-control").getChildControl("current-page-field").setValue("" + absoluteFrame);
             }
           }
           else
@@ -1245,7 +1163,7 @@ this.debug(width + "    " + height);
       this.getChildControl("fit-pane").setEnabled(true);
       this.getChildControl("zoom-pane").setEnabled(true);
       this.getChildControl("orientation-pane").setEnabled(true);
-      this.getChildControl("location-pane").setEnabled(true);
+      this.getChildControl("page-control").setEnabled(true);
       this.getChildControl("tool-pane").setEnabled(true);
       this.getChildControl("search-pane").setEnabled(true);
     },
@@ -1312,7 +1230,7 @@ this.debug(width + "    " + height);
         }
         else
         {
-          this.getChildControl("location-pane").setEnabled(false);
+          this.getChildControl("page-control").setEnabled(false);
         }
       }
     },
@@ -1435,14 +1353,6 @@ Statistics
     getFlashElement : function()
     {
       return this.getChildControl("flash").getFlashElement();
-    },
-
-    getCurrentPage : function()
-    {
-    },
-
-    getNumPages : function()
-    {
     }
   }
 });
