@@ -38,6 +38,10 @@
 qx.Class.define("qxe.ui.control.PageControl",
 {
   extend : qx.ui.core.Widget,
+//  implement : [
+//    qxe.ui.control.IPageControl
+//  ],
+
 
   /*
   *****************************************************************************
@@ -155,7 +159,7 @@ qx.Class.define("qxe.ui.control.PageControl",
 
           if(this.__pageContainer)
           {
-            control.setValue(this.__pageContainer.getNumPages());
+            control.setValue(this.__pageContainer.getTotalPages());
           }
           break;
 
@@ -220,7 +224,7 @@ qx.Class.define("qxe.ui.control.PageControl",
       var newPage = e.getData();
       var pageContainer = this.__pageContainer;
 
-      if(newPage >= 1 && newPage <= pageContainer.getNumPages() && newPage != pageContainer.getCurrentPage())
+      if(newPage >= 1 && newPage <= pageContainer.getTotalPages() && newPage != pageContainer.getCurrentPage())
       {
         pageContainer.gotoPage(newPage);
         this.checkEnable();
@@ -236,7 +240,7 @@ qx.Class.define("qxe.ui.control.PageControl",
     {
       var pageContainer = this.__pageContainer;
 
-      if(pageContainer.getCurrentPage() < pageContainer.getNumPages())
+      if(pageContainer.getCurrentPage() < pageContainer.getTotalPages())
       {
         pageContainer.gotoRelativePage(1);
       }
@@ -252,7 +256,7 @@ qx.Class.define("qxe.ui.control.PageControl",
     _onLastPageButtonClick : function(e)
     {
       var pageContainer = this.__pageContainer;
-      pageContainer.gotoPage(pageContainer.getNumPages());
+      pageContainer.gotoPage(pageContainer.getTotalPages());
 
       this.checkEnable();
     },
@@ -283,7 +287,7 @@ qx.Class.define("qxe.ui.control.PageControl",
         this.getChildControl("previous-page-button").setEnabled(true);
       }
 
-      if(currentPage == pageContainer.getNumPages())
+      if(currentPage == pageContainer.getTotalPages())
       {
         this.getChildControl("last-page-button").setEnabled(false);
         this.getChildControl("next-page-button").setEnabled(false);
@@ -293,6 +297,16 @@ qx.Class.define("qxe.ui.control.PageControl",
         this.getChildControl("last-page-button").setEnabled(true);
         this.getChildControl("next-page-button").setEnabled(true);
       }
+    },
+
+    /**
+     * Go to page in the document.
+     *
+     * @param value {Number} page number
+     */
+    setValue : function(value)
+    {
+      this.getChildControl("current-page-field").setValue("" + value)
     }
   }
 });

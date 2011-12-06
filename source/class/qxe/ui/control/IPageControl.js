@@ -33,7 +33,7 @@ qx.Interface.define("qxe.ui.control.IPageControl",
       USER API
     ---------------------------------------------------------------------------
     */
-
+/*
     gotoFirstPage : function()
     {
     },
@@ -47,20 +47,20 @@ qx.Interface.define("qxe.ui.control.IPageControl",
     {
       this.gotoRelativePage(1);
     },
-
+*/
     /**
      * 1. go to top of current page
      * 2. go to top of first page
      */
-    gotoPageTop : function()
+/*    gotoPageTop : function()
     {
     },
-
+*/
     /**
      * 1. go to bottom of current page
      * 2. go to bottom of last page
      */
-    gotoPageBottom : function()
+/*    gotoPageBottom : function()
     {
     },
 
@@ -75,25 +75,26 @@ qx.Interface.define("qxe.ui.control.IPageControl",
     goDown : function()
     {
     },
-
+*/
     /**
      *
      * fieldChange to prevent reentrance to the textfield of current page
      *
      */
-    gotoRelativePage : function(relativeFrame, fieldChange)
+/*    gotoRelativePage : function(relativeFrame, fieldChange)
     {
     },
-
+*/
     /**
+     * Go to page in the document.
      *
-     * fieldChange to prevent reentrance to the textfield of current page
-     *
+     * @param num {Number} page number
      */
-    gotoPage : function(absoluteFrame, fieldChange)
+    gotoPage : function(num)
     {
+      this.assertInteger(num);
     },
-
+/*
     goPageUp : function()
     {
     },
@@ -101,19 +102,22 @@ qx.Interface.define("qxe.ui.control.IPageControl",
     goPageDown : function()
     {
     },
-
-    /*
-     * 
+*/
+    /**
+     * Get the current page of the document.
+     *
+     * @return {Number} current page
      */
     getCurrentPage : function()
     {
     },
 
-    /*
+    /**
+     * Get the total number of pages of the document.
      *
-     *
+     * @return {Number} total number of pages
      */
-    getNumPages : function()
+    getTotalPages : function()
     {
     }
   }
