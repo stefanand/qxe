@@ -25,69 +25,6 @@
  - fix for checking FRAMESLOADED instead of always 100% through getPercentLoaded() i.e. not all frames need to be loaded
    only the frame you want to look at.
 
- Flash functions:
-
-  Back()
-  CallFunction(request)
-  DisableLocalSecurity()
-  EnforceLocalSecurity()
-  FlashVersion()
-  Forward()
-  GetVariable(variable)
-  IsPlaying()
-  LoadMovie(layer, url)
-  Pan(x,y,mode)
-  Play()
-  Rewind()
-  SetReturnValue(value)
-  SetVariable(name, value)
-  SetZoomRect(left,top,right,bottom)
-  Stop()
-  StopPlay()
-
-  http://www.adobe.com/support/flash/publishexport/scriptingwithflash/index.html
-  
-  flashFE.TGetProperty("/", n);
-  
-  Property        Property number    Constant        Get  Set
-  -----------------------------------------------------------
-  X POSITION (_x)      0              X_POS           ÷    ÷
-  Y POSITION (_y)      1              Y_POS           ÷    ÷
-  X SCALE              2              X_SCALE         ÷    ÷
-  Y SCALE              3              Y_SCALE         ÷    ÷
-  CURRENTFRAME         4              CURRENT_FRAME   ÷
-  TOTALFRAMES          5              TOTAL_FRAMES    ÷
-  ALPHA                6              ALPHA           ÷    ÷
-  VISIBILITY           7              VISIBLE         ÷    ÷
-  WIDTH                8              WIDTH           ÷
-  HEIGHT               9              HEIGHT          ÷
-  ROTATION            10              ROTATE          ÷    ÷
-  TARGET              11              TARGET          ÷
-  FRAMESLOADED        12              FRAMES_LOADED   ÷
-  NAME                13              NAME            ÷    ÷
-  DROPTARGET          14              DROP_TARGET     ÷
-  URL(_url)           15              URL             ÷
-  
-  The following table shows global properties:
-  
-  Global Property  Property number    Constant       Get  Set
-  -----------------------------------------------------------
-  HIGHQUALITY         16              HIGH_QUALITY    ÷    ÷
-  FOCUSRECT           17              FOCUS_RECT      ÷    ÷
-  SOUNDBUFTIME        18              SOUND_BUF_TIME  ÷    ÷
-  
- 
-  Converting a .pdf file to .swf
-  -----------------------------
-  Using swftools by:
- 
-  pdf2swf -T4 -o file.swf file.pdf
- 
-  we tried version 9 by -T9 instead of -T4 because of allow access public but then an "undefined error" JScript 
-  occurred in IE8.
- 
-  Conclusion: Use -T4 and there is no access violations either.
-
 ************************************************************************ */
 
 /* ************************************************************************
@@ -153,6 +90,8 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
   ],
   include :
   [
+    // Should be in the qx.ui.embed.Flash class
+    qxe.ui.embed.MFlashScripting,
     qxe.ui.control.MPageControl,
     qx.ui.core.MRemoteChildrenHandling,
     qx.ui.core.MRemoteLayoutHandling,
@@ -364,6 +303,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
           control = new qx.ui.toolbar.Part();
           control.setEnabled(false);
           radioGroup = new qx.ui.form.RadioGroup();
+//          radioGroup.addListener("changeSelection", this._onChangeSelection, this);
 
           widget = this._createChildControl("thumb-view-button");
           control.add(widget);
@@ -372,6 +312,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
           widget = this._createChildControl("fit-width-button");
           control.add(widget);
           radioGroup.add(widget);
+          radioGroup.setSelection([widget]);
 
           widget = this._createChildControl("fit-page-button");
           control.add(widget);
@@ -604,7 +545,13 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       BASIC EVENT HANDLERS
     ---------------------------------------------------------------------------
     */
-
+/*
+    _onChangeSelection : function(e)
+    {
+alert("Hallå");
+//e.getTarget().setSelection([this.getChildControl("fit-width-button")]);
+    },
+*/
     /**
      * Listens to the "execute" event to print the document.
      *
@@ -620,8 +567,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
         if(flashFE.print)
         {
-          // Calling a custom flash method over ExternalInterface which in turn calls
-          // flash.PrintJob and its dialog.
+          // Calling a custom flash method over ExternalInterface
           flashFE.print();
         }
         else
@@ -646,6 +592,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
         if(flashFE.showThumbnails)
         {
+          // Calling a custom flash method over ExternalInterface
           flashFE.showThumbnails();
         }
         else
@@ -666,7 +613,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
       if(flash.isLoaded())
       {
-        flash.getFlashElement().TSetProperty("/", 8, this.getChildControl("scroll-pane").getPaneSize().width);
+        qxe.ui.embed.MFlashScripting.setXScale(flash.getWidth());
       }
     },
 
@@ -681,7 +628,9 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
       if(flash.isLoaded())
       {
-        flash.getFlashElement().TSetProperty("/", 9, this.getChildControl("scroll-pane").getPaneSize().height);
+this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane").getPaneSize().height+"   "+flash.getFlashElement().getXScale());
+        qxe.ui.embed.MFlashScripting.setXScale(50);
+//        qxe.ui.embed.MFlashScripting.setYScale(200);
       }
     },
 
@@ -700,6 +649,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
         if(flashFE.showFullScreen)
         {
+          // Calling a custom flash method over ExternalInterface
           flashFE.showFullScreen();
         }
         else
@@ -716,7 +666,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
      */
     _onZoomInButtonClick : function(e)
     {
-      this.zoom(100 - this.getZoomFraction());
+      qxe.ui.embed.MFlashScripting.zoom(100 - this.getZoomFraction());
     },
 
     /**
@@ -731,7 +681,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       if(flash.isLoaded())
       {
         // Relative change in percent: 50% -> doubles the size, 200% -> halfs the size
-        flash.getFlashElement().Zoom(e.getData());
+        qxe.ui.embed.MFlashScripting.zoom(e.getData());
       }
     },
 
@@ -742,7 +692,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
      */
     _onZoomOutButtonClick : function(e)
     {
-      this.zoom(100 + this.getZoomFraction());
+      qxe.ui.embed.MFlashScripting.zoom(100 + this.getZoomFraction());
     },
 
     /**
@@ -756,11 +706,8 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
       if(flash.isLoaded())
       {
-        var flashFE = flash.getFlashElement();
-
-        var rotation = flashFE.TGetPropertyAsNumber("/", 10);
-
-        flashFE.TSetProperty("/", 10, rotation + 90);
+        var script = qxe.ui.embed.MFlashScripting;
+        script.setRotation(script.getRotation() + 90);
       }
     },
 
@@ -775,11 +722,8 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
       if(flash.isLoaded())
       {
-        var flashFE = flash.getFlashElement();
-
-        var rotation = flashFE.TGetPropertyAsNumber("/", 10);
-
-        flashFE.TSetProperty("/", 10, rotation - 90);
+        var script = qxe.ui.embed.MFlashScripting;
+        script.setRotation(script.getRotation() - 90);
       }
     },
 
@@ -828,8 +772,9 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       {
         var flashFE = flash.getFlashElement();
 
-        if(flashFE.search != null)
+        if(flashFE.search)
         {
+          // Calling a custom flash method over ExternalInterface
           flashFE.search();
         }
         else
@@ -874,14 +819,16 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       }
 
       var flash = this.getChildControl("flash");
-      var flashFE = flash.getFlashElement();
+
+      qxe.ui.embed.MFlashScripting.FLASH_ELEMENT = flash.getFlashElement();
 
       // Set height and width so we get scrollbars
-      flash.setWidth(flashFE.TGetPropertyAsNumber("/", 8));
-      flash.setHeight(flashFE.TGetPropertyAsNumber("/", 9));
+      var script = qxe.ui.embed.MFlashScripting;
+      flash.setWidth(script.getWidth());
+      flash.setHeight(script.getHeight());
 
-      var xScale = flashFE.TGetPropertyAsNumber("/", 2);
-      var yScale = flashFE.TGetPropertyAsNumber("/", 3);
+      var xScale = script.getXScale();
+      var yScale = script.getYScale();
 
       this.getChildControl("zoom-page-field").setValue("" + ((xScale + yScale)/2));
 
@@ -903,13 +850,12 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       if(flash.isLoaded())
       {
         // Secures that the subscriber scrolls all pages and all lines of the document displayed.
-        var flashFE = flash.getFlashElement();
-        var currentFrame = flashFE.TGetPropertyAsNumber("/", 4);
-        var totalFrames = flashFE.TGetPropertyAsNumber("/", 5);
+        var currentPage = this.getCurrentPage();
+        var totalPages = this.getTotalPages();
 
         var pane = this.getChildControl("scroll-pane").getChildControl("pane");
 
-        if(currentFrame == totalFrames && pane.getScrollY() == pane.getScrollMaxY())
+        if(currentPage == totalPages && pane.getScrollY() == pane.getScrollMaxY())
         {
           this.setScrolledAll(true);
         }
@@ -940,10 +886,9 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
       if(flash.isLoaded())
       {
-        var flashFE = flash.getFlashElement();
         // Relative change in percent: 50% -> doubles the size, 200% -> halfs the size
         var zoomValue = 100 + this.getZoomFraction();
-        flashFE.Zoom(zoomValue);
+        qxe.ui.embed.MFlashScripting.zoom(zoomValue);
 
         this.getChildControl("zoom-page-field").setValue("" + zoomValue);
       }
@@ -980,9 +925,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
         if(flashS.getScrollY() == scrollMaxY)
         {
-          var totalFrames = flash.getFlashElement().TGetPropertyAsNumber("/", 5);
-
-          this.gotoPage(totalFrames);
+          this.gotoPage(this.getTotalPages());
         }
 
         flashS.scrollToY(scrollMaxY);
@@ -991,7 +934,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
     gotoEnd : function()
     {
-      this.gotoPage(this.getChildControl("flash").getFlashElement().TGetPropertyAsNumber("/", 5));
+      this.gotoPage(this.getTotalPages());
 
       var flashS = this.getChildControl("scroll-pane");
       flashS.scrollToY(flashS.getChildControl("pane").getScrollMaxY());
@@ -1036,38 +979,32 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
      *
      * fieldChange to prevent reentrance to the textfield of current page
      */
-    gotoPage : function(absoluteFrame, fieldChange)
+    gotoPage : function(absolutePage, fieldChange)
     {
       var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
-        var totalFrames = this.getTotalPages();
+        var totalPages = this.getTotalPages();
  
-        if(absoluteFrame > 0 && absoluteFrame <= totalFrames)
+        if(absolutePage > 0 && absolutePage <= totalPages)
         {
-          var flashFE = flash.getFlashElement();
-          var framesLoaded = flashFE.TGetPropertyAsNumber("/", 12);
+          qxe.ui.embed.MFlashScripting.gotoFrame(absolutePage - 1)
 
-          if(absoluteFrame <= framesLoaded)
+//          this._setLocationButtons();
+
+          if(typeof(fieldChange) === "undefined" || fieldChange)
           {
-            flashFE.GotoFrame(absoluteFrame - 1)
-
-//            this._setLocationButtons();
-
-            if(typeof(fieldChange) === "undefined" || fieldChange)
-            {
-              this.getChildControl("page-control").getChildControl("current-page-field").setValue("" + absoluteFrame);
-            }
+            this.getChildControl("page-control").getChildControl("current-page-field").setValue("" + absolutePage);
           }
           else
           {
-            this.debug("Page " + (absoluteFrame + 1) + " has not been loaded yet.");
+            this.debug("Page " + (absolutePage + 1) + " has not been loaded yet.");
           }
         }
         else
         {
-          this.debug("Page " + (absoluteFrame + 1) + " is outside page range.");
+          this.debug("Page " + (absolutePage + 1) + " is outside page range.");
         }
       }
     },
@@ -1090,7 +1027,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
         }
         else
         {
-          if(flash.getFlashElement().TGetPropertyAsNumber("/", 4) > 1)
+          if(this.getCurrentPage() > 1)
           {
             this.gotoRelativePage(-1);
             flashS.scrollToY(flashS.getChildControl("pane").getScrollMaxY());
@@ -1118,9 +1055,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
         }
         else
         {
-          var flashFE = flash.getFlashElement();
-
-          if(flashFE.TGetPropertyAsNumber("/", 4) < flashFE.TGetPropertyAsNumber("/", 5))
+          if(this.getCurrentPage() < this.getTotalPages())
           {
             this.gotoRelativePage(1);
             flashS.scrollToY(0);
@@ -1220,8 +1155,8 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       {
         var flashFE = flash.getFlashElement();
 
-        var currentFrame = flashFE.TGetPropertyAsNumber("/", 4);
-        var totalFrames = flashFE.TGetPropertyAsNumber("/", 5);
+        var currentFrame = this.getCurrentFrame();
+        var totalFrames = this.getTotalFrames();
 
         if(totalFrames > 0)
         {
@@ -1239,9 +1174,6 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
     /*
      * Get the current page of the document.
      *
-     * As TotalFrames is called differently in different browsers (see below),
-     * we use the TGetProperty instead. It is the same for any browser.
-     *
      * @return {Number} current page
      */
     getCurrentPage : function()
@@ -1250,27 +1182,12 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
       if(flash.isLoaded())
       {
-        return flash.getFlashElement().TGetPropertyAsNumber("/", 4);
+        return qxe.ui.embed.MFlashScripting.getCurrentFrame();
       }
     },
 
     /*
      * Get the total number of pages of the document.
-     *
-     * var flashFE = this.getChildControl("flash").getFlashElement();
-     *
-     * In IE it has to be called like this:
-     *
-     * TotalFrames = flashFE.TotalFrames;
-     *
-     * in Firefox it has to be called like this:
-     *
-     * TotalFrames = flashFE.TotalFrames();
-     *
-     * http://www.macromedia.com/support/flash/ts/documents/activex_script.htm
-     *
-     * Note!
-     * Instead we use the TGetProperty which is the same for any browser.
      *
      * @return {Number} total number of pages
      */
@@ -1280,7 +1197,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
       if(flash.isLoaded())
       {
-        return flash.getFlashElement().TGetPropertyAsNumber("/", 5);
+        return qxe.ui.embed.MFlashScripting.getTotalFrames();
       }
     },
 
@@ -1295,7 +1212,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       {
         var pointsToTwips = 20;
 
-        flash.getFlashElement().SetZoomRect(left * pointsToTwips, top * pointsToTwips, right * pointsToTwips, bottom * pointsToTwips);
+        qxe.ui.embed.MFlashScripting.setZoomRect(left * pointsToTwips, top * pointsToTwips, right * pointsToTwips, bottom * pointsToTwips);
       }
     },
 
@@ -1305,7 +1222,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
       if(flash.isLoaded())
       {
-        flash.getFlashElement().Pan(x, y, mode)
+        qxe.ui.embed.MFlashScripting.pan(x, y, mode)
       }
     },
 
@@ -1315,7 +1232,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
       if(flash.isLoaded())
       {
-        flash.getFlashElement().SetVariable('/:message', data);
+        qxe.ui.embed.MFlashScripting.setVariable('/:message', data);
       }
     },
 
@@ -1325,7 +1242,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
       if(flash.isLoaded())
       {
-        return flash.getFlashElement().GetVariable('/:message');
+        return qxe.ui.embed.MFlashScripting.getVariable('/:message');
       }
     },
 
