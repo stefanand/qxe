@@ -40,7 +40,7 @@ qx.Class.define("qxe.ui.control.Captcha",
   {
     this.base(arguments);
 
-		this._setLayout(new qx.ui.layout.VBox(5));
+    this._setLayout(new qx.ui.layout.VBox(5));
 
     this._createChildControl("captcha-box");
   },
@@ -66,7 +66,7 @@ qx.Class.define("qxe.ui.control.Captcha",
       refine : true,
       init : "captcha"
     }
-	},
+  },
 
 
   /*
@@ -87,124 +87,124 @@ qx.Class.define("qxe.ui.control.Captcha",
     _createChildControlImpl : function(id)
     {
       var control;
-			var layout;
-			var widget;
-			var tooltip;
+      var layout;
+      var widget;
+      var tooltip;
 
       switch(id)
       {
-				case "captcha-box" :
-					control = new qx.ui.groupbox.GroupBox(this.tr("Captcha"));
-					control.setLayout(new qx.ui.layout.VBox(5));
-			    control.setAllowGrowX(false);
-			    control.add(this._createChildControl("captcha-control"));
-			    control.add(this._createChildControl("input"));
+        case "captcha-box" :
+          control = new qx.ui.groupbox.GroupBox(this.tr("Captcha"));
+          control.setLayout(new qx.ui.layout.VBox(5));
+          control.setAllowGrowX(false);
+          control.add(this._createChildControl("captcha-control"));
+          control.add(this._createChildControl("input"));
 
-					this._add(control);
-					break;
+          this._add(control);
+          break;
 
-				case "captcha-control" :
-					layout = new qx.ui.layout.HBox(5);
+        case "captcha-control" :
+          layout = new qx.ui.layout.HBox(5);
 
-					control = new qx.ui.container.Composite(layout);
-			    control.add(this._createChildControl("captcha-view"));
-			    control.add(this._createChildControl("captcha-buttons"));
-					break;
+          control = new qx.ui.container.Composite(layout);
+          control.add(this._createChildControl("captcha-view"));
+          control.add(this._createChildControl("captcha-buttons"));
+          break;
 
-				case "captcha-view" :
-					control = new qx.ui.container.Stack(new qx.ui.layout.Canvas());
-			    control.add(this._createChildControl("captcha-image"));
-//			    control.add(this._createChildControl("captcha-vu-meter"));
-					break;
+        case "captcha-view" :
+          control = new qx.ui.container.Stack(new qx.ui.layout.Canvas());
+          control.add(this._createChildControl("captcha-image"));
+//          control.add(this._createChildControl("captcha-vu-meter"));
+          break;
 
-				case "captcha-image" :
-					tooltip = new qx.ui.tooltip.ToolTip(this.tr("The captcha code generated."));
+        case "captcha-image" :
+          tooltip = new qx.ui.tooltip.ToolTip(this.tr("The captcha code generated."));
 
-		      control = new qx.ui.basic.Image();
-		      control.setHeight(100);
-		      control.setWidth(200);
-		      control.setBackgroundColor("#ffffff");
-		      control.addListenerOnce("appear", this._onAppearCaptchaImage, this);
-		      control.addListener("changeSource", this._onSourceChange, this);
-		      control.addListener("loaded", this._onLoaded, this);
-    		  control.addListener("loadingFailed", this._onLoadingFailed, this);
-					control.setToolTip(tooltip);
-					break;
+          control = new qx.ui.basic.Image();
+          control.setHeight(100);
+          control.setWidth(200);
+          control.setBackgroundColor("#ffffff");
+          control.addListenerOnce("appear", this._onAppearCaptchaImage, this);
+          control.addListener("changeSource", this._onSourceChange, this);
+          control.addListener("loaded", this._onLoaded, this);
+          control.addListener("loadingFailed", this._onLoadingFailed, this);
+          control.setToolTip(tooltip);
+          break;
 
-				case "captcha-vu-meter" :
-					tooltip = new qx.ui.tooltip.ToolTip(this.tr("The captcha VU meter."));
+        case "captcha-vu-meter" :
+          tooltip = new qx.ui.tooltip.ToolTip(this.tr("The captcha VU meter."));
 
-//		      control = new qxe.ui.indicator.VUMeter();
-//		      control.setHeight(100);
-//		      control.setWidth(200);
-//		      control.setBackgroundColor("#ffffff");
-//		      control.addListenerOnce("appear", this._onAppearCaptchaImage, this);
-//		      control.addListener("changeSource", this._onSourceChange, this);
-//		      control.addListener("loaded", this._onLoaded, this);
-//    		  control.addListener("loadingFailed", this._onLoadingFailed, this);
-//					control.setToolTip(tooltip);
-					break;
+//          control = new qxe.ui.indicator.VUMeter();
+//          control.setHeight(100);
+//          control.setWidth(200);
+//          control.setBackgroundColor("#ffffff");
+//          control.addListenerOnce("appear", this._onAppearCaptchaImage, this);
+//          control.addListener("changeSource", this._onSourceChange, this);
+//          control.addListener("loaded", this._onLoaded, this);
+//          control.addListener("loadingFailed", this._onLoadingFailed, this);
+//          control.setToolTip(tooltip);
+          break;
 
-				case "captcha-buttons" :
-		      control = new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
+        case "captcha-buttons" :
+          control = new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
 
-					control.add(this._createChildControl("update-button"));
-					control.add(this._createChildControl("sound-button"));
-					control.add(this._createChildControl("help-button"));
-					break;
+          control.add(this._createChildControl("update-button"));
+          control.add(this._createChildControl("sound-button"));
+          control.add(this._createChildControl("help-button"));
+          break;
 
-				case "update-button" :
-					tooltip = new qx.ui.tooltip.ToolTip(this.tr("Get a new captcha code."));
+        case "update-button" :
+          tooltip = new qx.ui.tooltip.ToolTip(this.tr("Get a new captcha code."));
 
-      		control = new qx.ui.form.Button(null, "icon/16/actions/view-refresh.png");
-		      control.addListener("execute", this._onExecuteUpdate, this);
-					control.setToolTip(tooltip);
-					break;
+          control = new qx.ui.form.Button(null, "icon/16/actions/view-refresh.png");
+          control.addListener("execute", this._onExecuteUpdate, this);
+          control.setToolTip(tooltip);
+          break;
 
-				case "sound-button" :
-      		control = new qxe.ui.form.MultiStateButton();
-					control.addButtonState(null, "qxe/icon/ui/control/text.png", this.tr("Read the captcha code generated."));
-			    control.addButtonState(null, "qxe/icon/ui/control/audio-volume-high.png", this.tr("Listen to the captcha code generated."));
-		      control.addListener("execute", this._onExecuteSound, this);
-					break;
+        case "sound-button" :
+          control = new qxe.ui.form.MultiStateButton();
+          control.addButtonState(null, "qxe/icon/ui/control/text.png", this.tr("Read the captcha code generated."));
+          control.addButtonState(null, "qxe/icon/ui/control/audio-volume-high.png", this.tr("Listen to the captcha code generated."));
+          control.addListener("execute", this._onExecuteSound, this);
+          break;
 
-				case "help-button" :
-					tooltip = new qx.ui.tooltip.ToolTip(this.tr("Context sensitive help."));
+        case "help-button" :
+          tooltip = new qx.ui.tooltip.ToolTip(this.tr("Context sensitive help."));
 
-      		control = new qx.ui.form.Button(null, "qxe/icon/ui/control/help-browser.png");
-		      control.addListener("execute", this._onExecuteHelp, this);
-					control.setToolTip(tooltip);
-					break;
+          control = new qx.ui.form.Button(null, "qxe/icon/ui/control/help-browser.png");
+          control.addListener("execute", this._onExecuteHelp, this);
+          control.setToolTip(tooltip);
+          break;
 
         case "input":
-					layout = new qx.ui.layout.HBox(5);
+          layout = new qx.ui.layout.HBox(5);
 
-		      var control = new qx.ui.container.Composite(layout);
-					widget = this._createChildControl("captcha-textfield");
-		      control.add(this._createChildControl("captcha-label"));
-		      control.add(widget);
+          var control = new qx.ui.container.Composite(layout);
+          widget = this._createChildControl("captcha-textfield");
+          control.add(this._createChildControl("captcha-label"));
+          control.add(widget);
 
-					this._add(control);
-					break;
+          this._add(control);
+          break;
 
-				case "captcha-label" :
-		      control = new qx.ui.basic.Label(this.tr("Type the word"));
-		      control.setAlignY("middle");
-		      control.setBuddy(this.getChildControl("captcha-textfield"));
-					break;
+        case "captcha-label" :
+          control = new qx.ui.basic.Label(this.tr("Type the word"));
+          control.setAlignY("middle");
+          control.setBuddy(this.getChildControl("captcha-textfield"));
+          break;
 
-				case "captcha-textfield":
-					tooltip = new qx.ui.tooltip.ToolTip(this.tr("Type in the captcha code you can see to the left."));
+        case "captcha-textfield":
+          tooltip = new qx.ui.tooltip.ToolTip(this.tr("Type in the captcha code you can see to the left."));
 
-		      control = new qx.ui.form.TextField();
-		      control.setPlaceholder(this.tr("Code"));
-		      control.setRequired(true);
-		      control.setEnabled(false);
-		      control.setWidth(60);
-      		control.addListener("input", this._onInput, this);
-					control.setToolTip(tooltip);
-					break;
-			}
+          control = new qx.ui.form.TextField();
+          control.setPlaceholder(this.tr("Code"));
+          control.setRequired(true);
+          control.setEnabled(false);
+          control.setWidth(60);
+          control.addListener("input", this._onInput, this);
+          control.setToolTip(tooltip);
+          break;
+      }
 
       return control || this.base(arguments, id);
     },
@@ -221,11 +221,11 @@ qx.Class.define("qxe.ui.control.Captcha",
      *
      * @param e {qx.event.type.Appear} focus event
      */
-		_onAppearCaptchaImage : function(e)
-		{
-			// Get the first captcha when the widget is appearing
-			this.getChildControl("update-button").fireEvent("execute");
-		},
+    _onAppearCaptchaImage : function(e)
+    {
+      // Get the first captcha when the widget is appearing
+      this.getChildControl("update-button").fireEvent("execute");
+    },
 
     /**
      * Listens to the "source" event to display the new captcha image.
@@ -250,7 +250,7 @@ qx.Class.define("qxe.ui.control.Captcha",
      */
     _onLoaded : function(e)
     {
-	    this.debug("Captcha image loaded.");
+      this.debug("Captcha image loaded.");
 
       this.getChildControl("captcha-textfield").setEnabled(true);
       this.getChildControl("update-button").setEnabled(true);
@@ -266,7 +266,7 @@ qx.Class.define("qxe.ui.control.Captcha",
      */
     _onLoadingFailed : function(e)
     {
-	    this.debug("Failed loading captcha image.");
+      this.debug("Failed loading captcha image.");
 
       this.getChildControl("captcha-textfield").setEnabled(false);
       this.getChildControl("update-button").setEnabled(true);
@@ -280,9 +280,9 @@ qx.Class.define("qxe.ui.control.Captcha",
      *
      * @param e {qx.event.type.Appear} focus event
      */
-		_onInput : function(e)
-		{
-		},
+    _onInput : function(e)
+    {
+    },
 
     /**
      * Listens to the "appear" event to display the received captcha image.
@@ -291,8 +291,8 @@ qx.Class.define("qxe.ui.control.Captcha",
      */
     _onExecuteUpdate : function(e)
     {
-			// validate
-			// Set buttons
+      // validate
+      // Set buttons
     },
 
     /**
@@ -300,20 +300,20 @@ qx.Class.define("qxe.ui.control.Captcha",
      *
      * @param e {qx.event.type.Appear} focus event
      */
-		_onExecuteSound : function(e)
-		{
-			// Put sound system here
-		},
+    _onExecuteSound : function(e)
+    {
+      // Put sound system here
+    },
 
     /**
      * Listens to the "execute" event to display help.
      *
      * @param e {qx.event.type.Execute} execute event
      */
-		_onExecuteHelp : function(e)
-		{
-			// Put help system in here
-		}
+    _onExecuteHelp : function(e)
+    {
+      // Put help system in here
+    }
   }
 });
 

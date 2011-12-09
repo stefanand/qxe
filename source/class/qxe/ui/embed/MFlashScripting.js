@@ -569,17 +569,25 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      */
     goToLabel : function(label) {
       this.getFlashElement().TGotoLabel("/", label);
-    }
+    },
 
     /**
+     * Documented but not working. Probably just a hint about adding the 
+     * functionality to the flash file:
+     * http://forums.adobe.com/thread/431696
+     *
      * Generated as the Flash movie is downloading.
      *
      * @param percent {Number} percent loaded
      */
-//    OnProgress : function(percent) {
+//    onProgress : function(percent) {
 //    },
 
     /**
+     * Documented but not working. Probably just a hint about adding the 
+     * functionality to the flash file:
+     * http://forums.adobe.com/thread/431696
+     *
      * Generated when the ready state of the control changes.
      *
      * @param state {Number} state
@@ -589,7 +597,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      *                       3 = Interactive
      *                       4 = Complete
      */
-//    OnReadyStateChange : function(state) {
+//    onReadyStateChange : function(state) {
 //    },
 
     /**
@@ -598,11 +606,14 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      *
      * Use this to create a response to a frame or button action in the Flash movie.
      *
+     * http://help.adobe.com/en_US/AS2LCR/Flash_10.0/help.html?content=00000561.html
+     *
      * @param command {String} command
      * @param args {Array} arguments
      */
-//    FSCommand : function(command, args) {
-//    }        
+    FSCommand : function(command, args) {
+      this.getFlashElement().fscommand(command, args);
+    }        
   }
 });
 

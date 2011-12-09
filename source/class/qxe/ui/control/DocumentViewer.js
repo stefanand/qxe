@@ -557,23 +557,8 @@ alert("Hallå");
      */
     _onPrintButtonClick : function(e)
     {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        var flashFE = flash.getFlashElement();
-
-        if(flashFE.print)
-        {
-          // Calling a custom flash method over ExternalInterface
-          flashFE.print();
-        }
-        else
-        {
-          this.notSupported();
-        }
-      }
-*/    },
+      this.callCustomFunction("print");
+    },
 
     /**
      * Listens to the "execute" event to layout pages in a thumb view.
@@ -582,23 +567,8 @@ alert("Hallå");
      */
     _onThumbViewButtonClick : function(e)
     {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        var flashFE = flash.getFlashElement();
-
-        if(flashFE.showThumbnails)
-        {
-          // Calling a custom flash method over ExternalInterface
-          flashFE.showThumbnails();
-        }
-        else
-        {
-          this.notSupported();
-        }
-      }
-*/    },
+      this.callCustomFunction("showThumbnails");
+    },
 
     /**
      * Listens to the "execute" event to fit document to width.
@@ -638,23 +608,8 @@ alert("Hallå");
      */
     _onFullScreenButtonClick : function(e)
     {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        var flashFE = flash.getFlashElement();
-
-        if(flashFE.showFullScreen)
-        {
-          // Calling a custom flash method over ExternalInterface
-          flashFE.showFullScreen();
-        }
-        else
-        {
-          this.notSupported();
-        }
-      }
-*/    },
+      this.callCustomFunction("showFullScreen");
+    },
 
     /**
      * Listens to the "execute" event to change to zoom in page.
@@ -761,23 +716,8 @@ alert("Hallå");
      */
     _onSearchButtonClick : function(e)
     {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        var flashFE = flash.getFlashElement();
-
-        if(flashFE.search)
-        {
-          // Calling a custom flash method over ExternalInterface
-          flashFE.search();
-        }
-        else
-        {
-          this.notSupported();
-        }
-      }
-*/    },
+      this.callCustomFunction("search");
+    },
 
 
     /*
@@ -818,21 +758,20 @@ alert("Hallå");
       // Set height and width so we get scrollbars
       flash.setWidth(flash.getFlashWidth());
       flash.setHeight(flash.getFlashHeight());
-alert(flash.getFlashWidth()+"   "+flash.getFlashHeight());
 
       var xScale = flash.getXScale();
       var yScale = flash.getYScale();
-alert(flash.getXScale()+"   "+flash.getYScale());
+
       this.getChildControl("zoom-page-field").setValue("" + ((xScale + yScale)/2));
-/*
+
+      this.enableAll();
+
       var pageControl = this.getChildControl("page-control");
       pageControl.getChildControl("current-page-field").setValue("" + this.getCurrentPage());
       pageControl.getChildControl("num-pages-field").setValue("" + this.getTotalPages());
 
-      this.enableAll();
-
       this.setScrolledAll(false);
-*/
+
 //      this.getChildControl("initiator").terminate();
     },
 
@@ -860,10 +799,24 @@ alert(flash.getXScale()+"   "+flash.getYScale());
     /**
      * @todo Show user dialog with error message. Negative is that it will be bound to another class.
      */
-    notSupported : function()
+    callCustomFunction : function(func)
     {
-//      var msg = "The " + arguments.callee.caller.name + " function can not be called or is not supported for the flash file.";
-//      this.debug(msg);
+      var flash = this.getChildControl("flash");
+
+      if(flash.isLoaded())
+      {
+        var flashFE = flash.getFlashElement();
+
+        if(flashFE[func])
+        {
+          // Calling a custom flash method over ExternalInterface
+          flashFE[func]();
+        }
+        else
+        {
+          this.debug("The " + func + " function can not be called or is not supported for the flash file.");
+        }
+      }
     },
 
 
@@ -899,8 +852,10 @@ alert(flash.getXScale()+"   "+flash.getYScale());
       {
         this.gotoPage(0);
       }
-
-      flashS.scrollToY(0);
+      else
+      {
+        flashS.scrollToY(0);
+      }
 */    },
 
     /**
@@ -972,35 +927,21 @@ alert(flash.getXScale()+"   "+flash.getYScale());
      *
      * fieldChange to prevent reentrance to the textfield of current page
      */
-    gotoPage : function(absolutePage, fieldChange)
+    gotoPage : function(absolutePage)
     {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        var totalPages = this.getTotalPages();
+      var totalPages = this.getTotalPages();
  
-        if(absolutePage > 0 && absolutePage <= totalPages)
-        {
-          this.gotoFrame(absolutePage - 1)
+      if(absolutePage >= 1 && absolutePage <= totalPages)
+      {
+        this.getChildControl("flash").gotoFrame(absolutePage - 1);
 
-//          this._setLocationButtons();
-
-          if(typeof(fieldChange) === "undefined" || fieldChange)
-          {
-            this.getChildControl("page-control").getChildControl("current-page-field").setValue("" + absolutePage);
-          }
-          else
-          {
-            this.debug("Page " + (absolutePage + 1) + " has not been loaded yet.");
-          }
-        }
-        else
-        {
-          this.debug("Page " + (absolutePage + 1) + " is outside page range.");
-        }
+        this.getChildControl("page-control").getChildControl("current-page-field").setValue("" + absolutePage);
       }
-*/    },
+      else
+      {
+        this.debug("Page " + (absolutePage - 1) + " is outside page range.");
+      }
+    },
 
     goPageUp : function()
     {
@@ -1171,12 +1112,7 @@ alert(flash.getXScale()+"   "+flash.getYScale());
      */
     getCurrentPage : function()
     {
-      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        return flash.getCurrentFrame();
-      }
+      return this.getChildControl("flash").getCurrentFrame();
     },
 
     /*
@@ -1186,12 +1122,7 @@ alert(flash.getXScale()+"   "+flash.getYScale());
      */
     getTotalPages : function()
     {
-      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        return flash.getTotalFrames();
-      }
+      return this.getChildControl("flash").getTotalFrames();
     },
 
     /*

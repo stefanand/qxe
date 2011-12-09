@@ -143,6 +143,7 @@ qx.Class.define("qxe.ui.control.PageControl",
           control.setToolTip(tooltip);
           control.setFilter(/[0-9]/);
           control.addListener("changeValue", this._onGotoPageChangeValue, this);
+          control.addListener("input", this._onGotoPageChangeValue, this);
           break;
 
         case "num-pages-field":
@@ -198,8 +199,6 @@ qx.Class.define("qxe.ui.control.PageControl",
     _onFirstPageButtonClick : function(e)
     {
       this.__pageContainer.gotoPage(1);
-
-      this.checkEnable();
     },
 
     /**
@@ -215,18 +214,24 @@ qx.Class.define("qxe.ui.control.PageControl",
       {
         pageContainer.gotoPage(pageContainer.getCurrentPage() - 1);
       }
-
-      this.checkEnable();
     },
 
     _onGotoPageChangeValue : function(e)
     {
+      var oldPage = e.getOldData();
       var newPage = e.getData();
+this.debug(oldPage);
+      // If erasing when no previous data i.e. on page 1
+      oldPage = (oldPage == "" || oldPage == null ? 1 : oldPage);
+      // Set to previous page
+      newPage = parseInt(newPage == "" ? oldPage : newPage);
+
       var pageContainer = this.__pageContainer;
 
-      if(newPage >= 1 && newPage <= pageContainer.getTotalPages() && newPage != pageContainer.getCurrentPage())
+      if(newPage >= 1 && newPage <= pageContainer.getTotalPages())
       {
         pageContainer.gotoPage(newPage);
+
         this.checkEnable();
       }
     },
@@ -245,8 +250,6 @@ qx.Class.define("qxe.ui.control.PageControl",
       {
         pageContainer.gotoPage(currentPage + 1);
       }
-
-      this.checkEnable();
     },
 
     /**
@@ -258,8 +261,6 @@ qx.Class.define("qxe.ui.control.PageControl",
     {
       var pageContainer = this.__pageContainer;
       pageContainer.gotoPage(pageContainer.getTotalPages());
-
-      this.checkEnable();
     },
 
 
