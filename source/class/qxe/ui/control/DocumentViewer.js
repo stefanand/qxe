@@ -90,8 +90,6 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
   ],
   include :
   [
-    // Should be in the qx.ui.embed.Flash class
-    qxe.ui.embed.MFlashScripting,
     qxe.ui.control.MPageControl,
     qx.ui.core.MRemoteChildrenHandling,
     qx.ui.core.MRemoteLayoutHandling,
@@ -513,7 +511,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
           break;
 
         case "flash":
-          control = new qx.ui.embed.Flash("");
+          control = new qxe.ui.embed.Flash("");
 //          control.setId("flashDoc");
           control.setAllowShrinkY(false);
           control.setAllowShrinkX(false);
@@ -525,7 +523,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 //          control.setMayScript(true);
           control.setMenu(false);
           control.addListener("keyup", this._onKeyUp, this);
-          control.setLoadTimeout(60000);
+//          control.setLoadTimeout(60000);
           control.addListener("loading", function() {
             this.debug(control.getPercentLoaded());
           }, this);
@@ -559,7 +557,7 @@ alert("Hallå");
      */
     _onPrintButtonClick : function(e)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
@@ -575,7 +573,7 @@ alert("Hallå");
           this.notSupported();
         }
       }
-    },
+*/    },
 
     /**
      * Listens to the "execute" event to layout pages in a thumb view.
@@ -584,7 +582,7 @@ alert("Hallå");
      */
     _onThumbViewButtonClick : function(e)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
@@ -600,7 +598,7 @@ alert("Hallå");
           this.notSupported();
         }
       }
-    },
+*/    },
 
     /**
      * Listens to the "execute" event to fit document to width.
@@ -609,13 +607,13 @@ alert("Hallå");
      */
     _onFitWidthButtonClick : function(e)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
-        qxe.ui.embed.MFlashScripting.setXScale(flash.getWidth());
+        this.setXScale(flash.getFlashWidth());
       }
-    },
+*/    },
 
     /**
      * Listens to the "execute" event to fit document to whole page.
@@ -624,15 +622,14 @@ alert("Hallå");
      */
     _onFitPageButtonClick : function(e)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
-this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane").getPaneSize().height+"   "+flash.getFlashElement().getXScale());
-        qxe.ui.embed.MFlashScripting.setXScale(50);
-//        qxe.ui.embed.MFlashScripting.setYScale(200);
+        this.setXScale(50);
+//        this.setYScale(200);
       }
-    },
+*/    },
 
     /**
      * Listens to the "execute" event to change to full screen mode.
@@ -641,7 +638,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     _onFullScreenButtonClick : function(e)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
@@ -657,7 +654,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
           this.notSupported();
         }
       }
-    },
+*/    },
 
     /**
      * Listens to the "execute" event to change to zoom in page.
@@ -666,7 +663,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     _onZoomInButtonClick : function(e)
     {
-      qxe.ui.embed.MFlashScripting.zoom(100 - this.getZoomFraction());
+//      this.zoom(100 - this.getZoomFraction());
     },
 
     /**
@@ -676,14 +673,14 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     _onZoomChangeValue : function(e)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
  
       if(flash.isLoaded())
       {
         // Relative change in percent: 50% -> doubles the size, 200% -> halfs the size
-        qxe.ui.embed.MFlashScripting.zoom(e.getData());
+        this.zoom(e.getData());
       }
-    },
+*/    },
 
     /**
      * Listens to the "execute" event to change to zoom out page.
@@ -692,7 +689,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     _onZoomOutButtonClick : function(e)
     {
-      qxe.ui.embed.MFlashScripting.zoom(100 + this.getZoomFraction());
+//      this.zoom(100 + this.getZoomFraction());
     },
 
     /**
@@ -702,14 +699,13 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     _onClockwiseButtonClick : function(e)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
-        var script = qxe.ui.embed.MFlashScripting;
-        script.setRotation(script.getRotation() + 90);
+        this.setRotation(this.getRotation() + 90);
       }
-    },
+*/    },
 
     /**
      * Listens to the "execute" event to change to counter clockwise rotate page.
@@ -718,14 +714,13 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     _onCounterclockwiseButtonClick : function(e)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
-        var script = qxe.ui.embed.MFlashScripting;
-        script.setRotation(script.getRotation() - 90);
+        this.setRotation(this.getRotation() - 90);
       }
-    },
+*/    },
 
     /**
      * Listens to the "execute" event to change to select pointer cursor.
@@ -734,7 +729,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     _onPointerSelectionToolButtonClick : function(e)
     {
-      this.getChildControl("scroll-pane").setCursor("default");
+//      this.getChildControl("scroll-pane").setCursor("default");
     },
 
     /**
@@ -744,10 +739,10 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     _onTextSelectionToolButtonClick : function(e)
     {
-      this.getChildControl("scroll-pane").setCursor("text");
+/*      this.getChildControl("scroll-pane").setCursor("text");
 
       this.notSupported("text selection tool");
-    },
+*/    },
 
     /**
      * Listens to the "execute" event to change to select hand tool cursor.
@@ -756,7 +751,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     _onHandToolButtonClick : function(e)
     {
-      this.getChildControl("scroll-pane").setCursor("pointer");
+//      this.getChildControl("scroll-pane").setCursor("pointer");
     },
 
     /**
@@ -766,7 +761,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     _onSearchButtonClick : function(e)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
@@ -782,7 +777,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
           this.notSupported();
         }
       }
-    },
+*/    },
 
 
     /*
@@ -820,18 +815,16 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
 
       var flash = this.getChildControl("flash");
 
-      qxe.ui.embed.MFlashScripting.FLASH_ELEMENT = flash.getFlashElement();
-
       // Set height and width so we get scrollbars
-      var script = qxe.ui.embed.MFlashScripting;
-      flash.setWidth(script.getWidth());
-      flash.setHeight(script.getHeight());
+      flash.setWidth(flash.getFlashWidth());
+      flash.setHeight(flash.getFlashHeight());
+alert(flash.getFlashWidth()+"   "+flash.getFlashHeight());
 
-      var xScale = script.getXScale();
-      var yScale = script.getYScale();
-
+      var xScale = flash.getXScale();
+      var yScale = flash.getYScale();
+alert(flash.getXScale()+"   "+flash.getYScale());
       this.getChildControl("zoom-page-field").setValue("" + ((xScale + yScale)/2));
-
+/*
       var pageControl = this.getChildControl("page-control");
       pageControl.getChildControl("current-page-field").setValue("" + this.getCurrentPage());
       pageControl.getChildControl("num-pages-field").setValue("" + this.getTotalPages());
@@ -839,13 +832,13 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
       this.enableAll();
 
       this.setScrolledAll(false);
-
+*/
 //      this.getChildControl("initiator").terminate();
     },
 
     _onScrollY : function(e)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
@@ -862,15 +855,15 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
 //            // If 0% zoom then no panning and everything is contained within the scroll area else this:
 //            alert(flashFE.TGetPropertyAsNumber("/", 1));
       }
-    },
+*/    },
 
     /**
      * @todo Show user dialog with error message. Negative is that it will be bound to another class.
      */
     notSupported : function()
     {
-      var msg = "The " + arguments.callee.caller.name + " function can not be called or is not supported for the flash file.";
-      this.debug(msg);
+//      var msg = "The " + arguments.callee.caller.name + " function can not be called or is not supported for the flash file.";
+//      this.debug(msg);
     },
 
 
@@ -882,17 +875,17 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
 
     zoom : function(zoomValue)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
         // Relative change in percent: 50% -> doubles the size, 200% -> halfs the size
         var zoomValue = 100 + this.getZoomFraction();
-        qxe.ui.embed.MFlashScripting.zoom(zoomValue);
+        this.zoom(zoomValue);
 
         this.getChildControl("zoom-page-field").setValue("" + zoomValue);
       }
-    },
+*/    },
 
     /**
      * 1. go to top of current page
@@ -900,7 +893,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     gotoPageTop : function()
     {
-      var flashS = this.getChildControl("scroll-pane");
+/*      var flashS = this.getChildControl("scroll-pane");
 
       if(flashS.getScrollY() == 0)
       {
@@ -908,7 +901,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
       }
 
       flashS.scrollToY(0);
-    },
+*/    },
 
     /**
      * 1. go to bottom of current page
@@ -916,7 +909,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     gotoPageBottom : function()
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
@@ -930,19 +923,19 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
 
         flashS.scrollToY(scrollMaxY);
       }
-    },
+*/    },
 
     gotoEnd : function()
     {
-      this.gotoPage(this.getTotalPages());
+/*      this.gotoPage(this.getTotalPages());
 
       var flashS = this.getChildControl("scroll-pane");
       flashS.scrollToY(flashS.getChildControl("pane").getScrollMaxY());
-    },
+*/    },
 
     goUp : function()
     {
-      var flashS = this.getChildControl("scroll-pane");
+/*      var flashS = this.getChildControl("scroll-pane");
 
       if(flashS.getScrollY() == 0)
       {
@@ -954,11 +947,11 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
       {
         flashS.scrollByY(-1);
       }
-    },
+*/    },
 
     goDown : function()
     {
-      var flashS = this.getChildControl("scroll-pane");
+/*      var flashS = this.getChildControl("scroll-pane");
 
       if(flashS.getScrollY() == flashS.getChildControl("pane").getScrollMaxY())
       {
@@ -970,7 +963,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
       {
         flashS.scrollByY(1);
       }
-    },
+*/    },
 
     /**
      * Go to page in the document.
@@ -981,7 +974,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     gotoPage : function(absolutePage, fieldChange)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
@@ -989,7 +982,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
  
         if(absolutePage > 0 && absolutePage <= totalPages)
         {
-          qxe.ui.embed.MFlashScripting.gotoFrame(absolutePage - 1)
+          this.gotoFrame(absolutePage - 1)
 
 //          this._setLocationButtons();
 
@@ -1007,11 +1000,11 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
           this.debug("Page " + (absolutePage + 1) + " is outside page range.");
         }
       }
-    },
+*/    },
 
     goPageUp : function()
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
@@ -1034,11 +1027,11 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
           }
         }
       }
-    },
+*/    },
 
     goPageDown : function()
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
@@ -1062,11 +1055,11 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
           }
         }
       }
-    },
+*/    },
     
     scrollLeft : function()
     {
-      var flashS = this.getChildControl("scroll-pane");
+/*      var flashS = this.getChildControl("scroll-pane");
       var xPosition = flashS.getScrollX();
 
       if(xPosition > 0)
@@ -1076,11 +1069,11 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
 
         flashS.scrollToX(newPosition);
       }
-    },
+*/    },
 
     scrollRight : function()
     {
-      var flashS = this.getChildControl("scroll-pane");
+/*      var flashS = this.getChildControl("scroll-pane");
       var xPosition = flashS.getScrollX();
 
       if(xPosition < flashS.getChildControl("pane").getScrollMaxX())
@@ -1090,7 +1083,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
 
         flashS.scrollToX(newPosition);
       }
-    },
+*/    },
 
     enableAll : function()
     {
@@ -1139,12 +1132,12 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
 
     setParam : function(param)
     {
-      this.getChildControl("flash").getContentElement().setParam(param);
+//      this.getChildControl("flash").getContentElement().setParam(param);
     },
 
     setVariables : function(variables)
     {
-      this.getChildControl("flash").setVariables(variables);
+//      this.getChildControl("flash").setVariables(variables);
     },
 /*
     _setLocationButtons : function()
@@ -1182,7 +1175,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
 
       if(flash.isLoaded())
       {
-        return qxe.ui.embed.MFlashScripting.getCurrentFrame();
+        return flash.getCurrentFrame();
       }
     },
 
@@ -1197,7 +1190,7 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
 
       if(flash.isLoaded())
       {
-        return qxe.ui.embed.MFlashScripting.getTotalFrames();
+        return flash.getTotalFrames();
       }
     },
 
@@ -1206,65 +1199,73 @@ this.debug("Height="+flash.getHeight()+"    "+this.getChildControl("scroll-pane"
      */
     zoomRectangle : function(left, top, right, bottom)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
         var pointsToTwips = 20;
 
-        qxe.ui.embed.MFlashScripting.setZoomRect(left * pointsToTwips, top * pointsToTwips, right * pointsToTwips, bottom * pointsToTwips);
+        this.setZoomRect(left * pointsToTwips, top * pointsToTwips, right * pointsToTwips, bottom * pointsToTwips);
       }
-    },
+*/    },
 
     panPage : function(x, y, mode)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
-        qxe.ui.embed.MFlashScripting.pan(x, y, mode)
+        this.pan(x, y, mode)
       }
-    },
+*/    },
 
+    /**
+     * Send message to flash.
+     *
+     * @param data {String} message
+     */
     sendToFlash : function(data)
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
-        qxe.ui.embed.MFlashScripting.setVariable('/:message', data);
+        this.setVariable('/:message', data);
       }
-    },
+*/    },
 
+    /**
+     * Get message from flash.
+     */
     getFromFlash : function()
     {
-      var flash = this.getChildControl("flash");
+/*      var flash = this.getChildControl("flash");
 
       if(flash.isLoaded())
       {
-        return qxe.ui.embed.MFlashScripting.getVariable('/:message');
+        return this.getVariable('/:message');
       }
-    },
+*/    },
 
+    /**
+     * Statistics
+     * ----------
+     *  1. type of request i.e. new page
+     *  2. document name
+     *  3. date
+     *  4. time
+     *  5. pages read
+     *  6. viewing time per page
+     *  7. paging between pages
+     *  8. zoom levels
+     *  9. who requested the documents
+     * 10. referring web page
+     * 11. we browser
+     * 12. downloads
+     * 13. custom values
+     */
     collectStatistics : function()
     {
-/*
-Statistics
-----------
-1. type of request i.e. new page
-2. document name
-3. date
-4. time
-5. pages read
-6. viewing time per page
-7. paging between pages
-8. zoom levels
-9. who requested the documents
-10. referring web page
-11. we browser
-12. downloads
-13. custom values
-*/
     },
 
     getFlashElement : function()

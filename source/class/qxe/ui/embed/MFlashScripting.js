@@ -18,73 +18,72 @@
 /**
  * A flash scripting wrapper mixin to control flash from javascript.
  *
+ * Flash functions:
+ *
+ * Back()
+ * CallFunction(request)
+ * DisableLocalSecurity()
+ * EnforceLocalSecurity()
+ * FlashVersion()
+ * Forward()
+ * SetReturnValue(value)
+ *
+ * http://www.adobe.com/support/flash/publishexport/scriptingwithflash/index.html
  * 
- Flash functions:
-
-  Back()
-  CallFunction(request)
-  DisableLocalSecurity()
-  EnforceLocalSecurity()
-  FlashVersion()
-  Forward()
-  SetReturnValue(value)
-
-  http://www.adobe.com/support/flash/publishexport/scriptingwithflash/index.html
-  
-  flashFE.TGetProperty("/", n);
-  flashFE.TSetProperty("/", n, value);
-  
-  Property        Property number    Constant        Get  Set
-  -----------------------------------------------------------
-  X POSITION (_x)      0              X_POS           ÷    ÷
-  Y POSITION (_y)      1              Y_POS           ÷    ÷
-  X SCALE              2              X_SCALE         ÷    ÷
-  Y SCALE              3              Y_SCALE         ÷    ÷
-  CURRENTFRAME         4              CURRENT_FRAME   ÷
-  TOTALFRAMES          5              TOTAL_FRAMES    ÷
-  ALPHA                6              ALPHA           ÷    ÷
-  VISIBILITY           7              VISIBLE         ÷    ÷
-  WIDTH                8              WIDTH           ÷
-  HEIGHT               9              HEIGHT          ÷
-  ROTATION            10              ROTATE          ÷    ÷
-  TARGET              11              TARGET          ÷
-  FRAMESLOADED        12              FRAMES_LOADED   ÷
-  NAME                13              NAME            ÷    ÷
-  DROPTARGET          14              DROP_TARGET     ÷
-  URL(_url)           15              URL             ÷
-  
-  The following table shows global properties:
-  
-  Global Property  Property number    Constant       Get  Set
-  -----------------------------------------------------------
-  HIGHQUALITY         16              HIGH_QUALITY    ÷    ÷
-  FOCUSRECT           17              FOCUS_RECT      ÷    ÷
-  SOUNDBUFTIME        18              SOUND_BUF_TIME  ÷    ÷
-
-  Converting a .pdf file to .swf
-  -----------------------------
-  Using swftools by:
- 
-  pdf2swf -T4 -o file.swf file.pdf
- 
-  we tried version 9 by -T9 instead of -T4 because of allow access public but then an "undefined error" JScript 
-  occurred in IE8.
- 
-  Conclusion: Use -T4 and there is no access violations either.
+ * Flash properties: 
+ * 
+ * flashFE.TGetProperty("/", n);
+ * flashFE.TGetPropertyAsNumber("/", n);
+ * flashFE.TSetProperty("/", n, value);
+ * 
+ * Property        Property number    Constant        Get  Set
+ * -----------------------------------------------------------
+ * X POSITION (_x)      0              X_POS           ÷    ÷
+ * Y POSITION (_y)      1              Y_POS           ÷    ÷
+ * X SCALE              2              X_SCALE         ÷    ÷
+ * Y SCALE              3              Y_SCALE         ÷    ÷
+ * CURRENTFRAME         4              CURRENT_FRAME   ÷
+ * TOTALFRAMES          5              TOTAL_FRAMES    ÷
+ * ALPHA                6              ALPHA           ÷    ÷
+ * VISIBILITY           7              VISIBLE         ÷    ÷
+ * WIDTH                8              WIDTH           ÷
+ * HEIGHT               9              HEIGHT          ÷
+ * ROTATION            10              ROTATE          ÷    ÷
+ * TARGET              11              TARGET          ÷
+ * FRAMESLOADED        12              FRAMES_LOADED   ÷
+ * NAME                13              NAME            ÷    ÷
+ * DROPTARGET          14              DROP_TARGET     ÷
+ * URL(_url)           15              URL             ÷
+ * 
+ * The following table shows global properties:
+ * 
+ * Global Property  Property number    Constant       Get  Set
+ * -----------------------------------------------------------
+ * HIGHQUALITY         16              HIGH_QUALITY    ÷    ÷
+ * FOCUSRECT           17              FOCUS_RECT      ÷    ÷
+ * SOUNDBUFTIME        18              SOUND_BUF_TIME  ÷    ÷
+ *
+ * Converting a .pdf file to .swf
+ * -----------------------------
+ * Using swftools by:
+ *
+ * pdf2swf -T4 -o file.swf file.pdf
+ *
+ * we tried version 9 by -T9 instead of -T4 because of allow access public but then an "undefined error" JScript 
+ * occurred in IE8.
+ *
+ * Conclusion: Use -T4 and there is no access violations either.
  */
 qx.Mixin.define("qxe.ui.embed.MFlashScripting",
 {
   /*
   *****************************************************************************
-     STATICS
+     MEMBERS
   *****************************************************************************
   */
 
-  statics :
+  members :
   {
-    FLASH_ELEMENT : null,
-
-
     /*
     ---------------------------------------------------------------------------
       Properties
@@ -97,7 +96,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {Number} x position
      */
     getXPos : function() {
-      return this.FLASH_ELEMENT.TGetPropertyAsNumber("/", 0);
+      return this.getFlashElement().TGetPropertyAsNumber("/", 0);
     },
 
     /**
@@ -106,7 +105,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @param value {Number} x position
      */
     setXPos : function(value) {
-      this.FLASH_ELEMENT.TSetProperty("/", 0, value);
+      this.getFlashElement().TSetProperty("/", 0, value);
     },
 
     /**
@@ -115,7 +114,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {Number} y position
      */
     getYPos : function() {
-      return this.FLASH_ELEMENT.TGetPropertyAsNumber("/", 1);
+      return this.getFlashElement().TGetPropertyAsNumber("/", 1);
     },
 
     /**
@@ -124,7 +123,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @param value {Number} y position
      */
     setYPos : function(value) {
-      this.FLASH_ELEMENT.TSetProperty("/", 1, value);
+      this.getFlashElement().TSetProperty("/", 1, value);
     },
 
     /**
@@ -133,7 +132,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {Number} x scale
      */
     getXScale : function() {
-      return this.FLASH_ELEMENT.TGetPropertyAsNumber("/", 2);
+      return this.getFlashElement().TGetPropertyAsNumber("/", 2);
     },
 
     /**
@@ -142,7 +141,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @param value {Number} x scale
      */
     setXScale : function(value) {
-      this.FLASH_ELEMENT.TSetProperty("/", 2, value);
+      this.getFlashElement().TSetProperty("/", 2, value);
     },
 
     /**
@@ -151,7 +150,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {Number} y scale
      */
     getYScale : function() {
-      return this.FLASH_ELEMENT.TGetPropertyAsNumber("/", 3);
+      return this.getFlashElement().TGetPropertyAsNumber("/", 3);
     },
 
     /**
@@ -160,7 +159,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @param value {Number} y scale
      */
     setYScale : function(value) {
-      this.FLASH_ELEMENT.TSetProperty("/", 3, value);
+      this.getFlashElement().TSetProperty("/", 3, value);
     },
 
     /**
@@ -169,7 +168,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {Number} current frame
      */
     getCurrentFrame : function() {
-      return (this.FLASH_ELEMENT.TGetPropertyAsNumber("/", 4) - 1);
+      return this.getFlashElement().TGetPropertyAsNumber("/", 4);
     },
 
     /**
@@ -193,7 +192,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {Number} total number frames
      */
     getTotalFrames : function() {
-      return this.FLASH_ELEMENT.TGetPropertyAsNumber("/", 5);
+      return this.getFlashElement().TGetPropertyAsNumber("/", 5);
     },
 
     /**
@@ -202,7 +201,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {Number} alpha value
      */
     getAlpha : function() {
-      return this.FLASH_ELEMENT.TGetPropertyAsNumber("/", 6);
+      return this.getFlashElement().TGetPropertyAsNumber("/", 6);
     },
 
     /**
@@ -211,7 +210,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @param value {Number} alpha value
      */
     setAlpha : function(value) {
-      this.FLASH_ELEMENT.TSetProperty("/", 6, value);
+      this.getFlashElement().TSetProperty("/", 6, value);
     },
 
     /**
@@ -221,8 +220,8 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      *                  0 = hidden
      *                  1 = visible
      */
-    getVisibility : function() {
-      return this.FLASH_ELEMENT.TGetPropertyAsNumber("/", 7);
+    getFlashVisibility : function() {
+      return this.getFlashElement().TGetPropertyAsNumber("/", 7);
     },
 
     /**
@@ -232,8 +231,8 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      *                  0 = hidden
      *                  1 = visible
      */
-    setVisibility : function(value) {
-      this.FLASH_ELEMENT.TSetProperty("/", 7, value);
+    setFlashVisibility : function(value) {
+      this.getFlashElement().TSetProperty("/", 7, value);
     },
 
     /**
@@ -241,8 +240,8 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      *
      * @return {Number} width
      */
-    getWidth : function() {
-      return this.FLASH_ELEMENT.TGetPropertyAsNumber("/", 8);
+    getFlashWidth : function() {
+      return this.getFlashElement().TGetPropertyAsNumber("/", 8);
     },
 
     /**
@@ -250,8 +249,8 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      *
      * @return {Number} height
      */
-    getHeight : function() {
-      return this.FLASH_ELEMENT.TGetPropertyAsNumber("/", 9);
+    getFlashHeight : function() {
+      return this.getFlashElement().TGetPropertyAsNumber("/", 9);
     },
 
     /**
@@ -260,7 +259,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {Number} degrees of rotation
      */
     getRotation : function() {
-      return this.FLASH_ELEMENT.TGetPropertyAsNumber("/", 10);
+      return this.getFlashElement().TGetPropertyAsNumber("/", 10);
     },
 
     /**
@@ -269,7 +268,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @param value {Number} degrees of rotation
      */
     setRotation : function(value) {
-      this.FLASH_ELEMENT.TSetProperty("/", 10, value);
+      this.getFlashElement().TSetProperty("/", 10, value);
     },
 
     /**
@@ -278,7 +277,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {String} target
      */
     getTarget : function() {
-      return this.FLASH_ELEMENT.TGetProperty("/", 11);
+      return this.getFlashElement().TGetProperty("/", 11);
     },
 
     /**
@@ -287,7 +286,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {Number} frames loaded
      */
     getFramesLoaded : function() {
-      return this.FLASH_ELEMENT.TGetPropertyAsNumber("/", 12);
+      return this.getFlashElement().TGetPropertyAsNumber("/", 12);
     },
 
     /**
@@ -296,7 +295,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {String} name
      */
     getName : function() {
-      return this.FLASH_ELEMENT.TGetProperty("/", 13);
+      return this.getFlashElement().TGetProperty("/", 13);
     },
 
     /**
@@ -305,7 +304,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @param value {String} name
      */
     setName : function(value) {
-      this.FLASH_ELEMENT.TSetProperty("/", 13, value);
+      this.getFlashElement().TSetProperty("/", 13, value);
     },
 
     /**
@@ -314,7 +313,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {String} drop target
      */
     getDropTarget : function() {
-      return this.FLASH_ELEMENT.TGetProperty("/", 14);
+      return this.getFlashElement().TGetProperty("/", 14);
     },
 
     /**
@@ -323,7 +322,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {String} URL
      */
     getURL : function() {
-      return this.FLASH_ELEMENT.TGetProperty("/", 15);
+      return this.getFlashElement().TGetProperty("/", 15);
     },
 
     /**
@@ -332,7 +331,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {String} high quality
      */
     getHighQuality : function() {
-      return this.FLASH_ELEMENT.TGetProperty("/", 16);
+      return this.getFlashElement().TGetProperty("/", 16);
     },
 
     /**
@@ -341,7 +340,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @param value {Number} high quality
      */
     setHighQuality : function(value) {
-      this.FLASH_ELEMENT.TSetProperty("/", 16, value);
+      this.getFlashElement().TSetProperty("/", 16, value);
     },
 
     /**
@@ -350,7 +349,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {Number} 0 = false, 1 = true
      */
     getFocusRect : function() {
-      return this.FLASH_ELEMENT.TGetProperty("/", 17);
+      return this.getFlashElement().TGetProperty("/", 17);
     },
 
     /**
@@ -359,7 +358,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @param value {Number} 0 = false, 1 = true
      */
     setFocusRect : function(value) {
-      this.FLASH_ELEMENT.TSetProperty("/", 17, value);
+      this.getFlashElement().TSetProperty("/", 17, value);
     },
 
     /**
@@ -368,7 +367,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @return {Number} sound buffer time
      */
     getSoundBufTime : function() {
-      return this.FLASH_ELEMENT.TGetProperty("/", 18);
+      return this.getFlashElement().TGetProperty("/", 18);
     },
 
     /**
@@ -377,8 +376,9 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @param value {Number} sound buffer time
      */
     setSoundBufTime : function(value) {
-      this.FLASH_ELEMENT.TSetProperty("/", 18, value);
+      this.getFlashElement().TSetProperty("/", 18, value);
     },
+
 
     /*
     ---------------------------------------------------------------------------
@@ -386,90 +386,189 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
     ---------------------------------------------------------------------------
     */
 
+    /**
+     * Get flash variable.
+     *
+     * @return {String} path
+     */
     getVariable : function(path) {
-      return this.FLASH_ELEMENT.GetVariable(path);
+      return this.getFlashElement().GetVariable(path);
     },
 
+    /**
+     * Set the flash variable.
+     *
+     * @param path {String} path
+     * @param value {String} value
+     */
+    setVariable : function(path, value) {
+      this.getFlashElement().setVariable(path, value);
+    },
+
+    /**
+     * Go to flash frame.
+     *
+     * can also use:
+     * flashFE.TGotoFrame("/", num);
+     *
+     * @param num {Number} frame number
+     */
     gotoFrame : function(num) {
       var loaded = this.getFramesLoaded();
 
       if(num > loaded)
       {
-        return this.FLASH_ELEMENT.GotoFrame(loaded);
+        return this.getFlashElement().GotoFrame(loaded);
       }
 
-      return this.FLASH_ELEMENT.GotoFrame(num);
+      return this.getFlashElement().GotoFrame(num);
     },
 
+    /**
+     * Is flash playing.
+     *
+     * @return {Boolean} true/false
+     */
     isPlaying : function() {
-      return this.FLASH_ELEMENT.IsPlaying();
+      return this.getFlashElement().IsPlaying();
     },
 
+    /**
+     * Load flash movie.
+     *
+     * @param layerNum {Number} layer number
+     * @param url {String} flash url
+     */
     loadMovie : function(layerNum, url) {
-      return this.FLASH_ELEMENT.loadMovie(layerNum, url);
+      return this.getFlashElement().loadMovie(layerNum, url);
     },
 
-    panPixels : function(hPx, vPx) {
-      this.FLASH_ELEMENT.Pan(hPx, vPx, 0);
+    /**
+     * Pan flash object.
+     *
+     * @param horiz {Number} horizontal
+     * @param vert {Number} vertical
+     * @param mode {Number} pan mode
+     *                      0 = pixels
+     *                      1 = percent
+     */
+    pan : function(horiz, vert, mode) {
+      this.getFlashElement().Pan(horiz, vert, mode);
     },
 
-    panPercent : function(hP, vP) {
-      this.FLASH_ELEMENT.Pan(hP, vP, 1);
+    /**
+     * Returns the current loaded state from the Flash movie.
+     *
+     * @return {Integer} The loaded percent value.
+     */
+    getPercentLoaded : function()
+    {
+      var flashFE = this.getFlashElement();
+
+      // First make sure the movie is defined and has received a non-zero object id.
+      if(typeof(flashFE) != "undefined" && flashFE != null)
+      {
+        try {
+          return flashFE.PercentLoaded();
+        }
+        catch(err)
+        {
+          // Not an accessible function yet.
+          return 0;
+        }
+      }
+      else {
+        return 0;
+      }
     },
 
-    getPercentLoaded : function() {
-      return this.FLASH_ELEMENT.PercentLoaded();
-    },
-
+    /**
+     * Play flash object.
+     */
     play : function() {
-      this.FLASH_ELEMENT.Play();
+      this.getFlashElement().Play();
     },
 
+    /**
+     * Rewind flash object.
+     */
     rewind : function() {
-      this.FLASH_ELEMENT.Rewind();
+      this.getFlashElement().Rewind();
     },
 
-    setVariable : function(path, value) {
-      this.FLASH_ELEMENT.setVariable(path, value);
-    },
-
-//Zooms in on a rectangular area of the movie. The units of the coordinates are in twips (1440 units per inch). To calculate a rectangle in Flash, set the ruler units to Points and multiply the coordinates by 20 to get twips. (There are 72 points per inch.) The argument type for all arguments is integer. 
+    /**
+     * Zooms in on a rectangular area of the movie. The units of
+     * the coordinates are in twips (1440 units per inch). To
+     * calculate a rectangle in Flash, set the ruler units to
+     * Points and multiply the coordinates by 20 to get twips.
+     * (There are 72 points per inch.)
+     *
+     * @param left {Number} left position
+     * @param top {Number} top position
+     * @param right {Number} right position
+     * @param bottom {Number} bottom position
+     */
     zoomRect : function(left, top, right, bottom) {
-      this.FLASH_ELEMENT.SetZoomRect(left, top, right, bottom);
+      this.getFlashElement().SetZoomRect(left, top, right, bottom);
     },
 
+    /**
+     * Stop playing flash object.
+     */
     stop : function() {
-      this.FLASH_ELEMENT.StopPlay();
+      this.getFlashElement().StopPlay();
     },
 
-//Zooms the view by a relative scale factor specified by percent. Zoom(50) doubles the size of the objects in the view. Zoom(200) reduces the size of objects in the view by one half. Zoom(0) resets the view to 100%. You cannot specify a reduction in the size of objects in the view when the current view is already 100%. The argument type is integer. 
+    /**
+     * Zooms the view by a relative scale factor specified by percent.
+     * Zoom(50) doubles the size of the objects in the view. Zoom(200)
+     * reduces the size of objects in the view by one half. Zoom(0)
+     * resets the view to 100%. You cannot specify a reduction in the
+     * size of objects in the view when the current view is already 100%.
+     *
+     * @param percent {Number} percent
+     *                         0 = reset zoom
+     */
     zoom : function(percent) {
-      this.FLASH_ELEMENT.Zoom(percent);
+      this.getFlashElement().Zoom(percent);
     },
 
-    zoomReset : function() {
-      this.FLASH_ELEMENT.Zoom(0);
-    },
-
+    /**
+     * Call and run flash frame.
+     *
+     * @param frame {Number} frame
+     */
     callFrame : function(frame) {
-      this.FLASH_ELEMENT.TCallFrame("/", frame);        
+      this.getFlashElement().TCallFrame("/", frame);        
     },
 
+    /**
+     * Call and run flash label.
+     *
+     * @param label {String} label
+     */
     callLabel : function(label) {
-      this.FLASH_ELEMENT.TCallLabel("/", label);        
+      this.getFlashElement().TCallLabel("/", label);        
     },
 
-    // TCurrentLabel("/")
-    currentLabel : function() {
-      return this.FLASH_ELEMENT.TCallLabel("/");
+    /**
+     * Get current flash label.
+     *
+     * TCurrentLabel("/") is an alternative to get the current label.
+     *
+     * @return {String} label
+     */
+    getCurrentLabel : function() {
+      return this.getFlashElement().TCallLabel("/");
     },
 
-    goToFrame : function(num) {
-      this.FLASH_ELEMENT.TGotoFrame("/", num);
-    },
-
+    /**
+     * Go to flash label.
+     *
+     * @param label {String} label
+     */
     goToLabel : function(label) {
-      this.FLASH_ELEMENT.TGotoLabel("/", label);
+      this.getFlashElement().TGotoLabel("/", label);
     }
 
     /**
