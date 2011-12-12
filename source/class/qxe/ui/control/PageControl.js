@@ -34,13 +34,12 @@
  * @childControl num-pages-field {qx.ui.form.TextField} the total number of pages field
  * @childControl next-page-button {qx.ui.form.Button} go to next page button
  * @childControl last-page-button {qx.ui.form.Button} go to last page button
+
+   - backspace i current page fältet shall give previous page num
  */
 qx.Class.define("qxe.ui.control.PageControl",
 {
   extend : qx.ui.core.Widget,
-//  implement : [
-//    qxe.ui.control.IPageControl
-//  ],
 
 
   /*

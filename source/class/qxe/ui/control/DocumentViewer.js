@@ -221,6 +221,12 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
   members :
   {
+    /** Original height */
+    __flashHeight : null,
+    /** Original width */
+    __flashWidth : null,
+
+
     /*
     ---------------------------------------------------------------------------
       WIDGET API
@@ -507,6 +513,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
         case "scroll-pane":
           // Scroll container
           control = new qx.ui.container.Scroll();
+          control.setContentPadding(2);
           control.getChildControl("pane").addListener("scrollY", this._onScrollY, this);
           break;
 
@@ -543,13 +550,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       BASIC EVENT HANDLERS
     ---------------------------------------------------------------------------
     */
-/*
-    _onChangeSelection : function(e)
-    {
-alert("Hallå");
-//e.getTarget().setSelection([this.getChildControl("fit-width-button")]);
-    },
-*/
+
     /**
      * Listens to the "execute" event to print the document.
      *
@@ -577,13 +578,13 @@ alert("Hallå");
      */
     _onFitWidthButtonClick : function(e)
     {
-/*      var flash = this.getChildControl("flash");
+      var flash = this.getChildControl("flash");
+      flash.setYScale(100);
+      flash.setXScale(100);
 
-      if(flash.isLoaded())
-      {
-        this.setXScale(flash.getFlashWidth());
-      }
-*/    },
+      // Needed to refresh/update
+      this.gotoPage(this.getCurrentPage());
+    },
 
     /**
      * Listens to the "execute" event to fit document to whole page.
@@ -592,14 +593,28 @@ alert("Hallå");
      */
     _onFitPageButtonClick : function(e)
     {
-/*      var flash = this.getChildControl("flash");
+      var flash = this.getChildControl("flash");
+      var pane = this.getChildControl("scroll-pane");
 
-      if(flash.isLoaded())
+//      pane.setBackgroundColor("red");
+
+      if(this.__flashHeight == null)
       {
-        this.setXScale(50);
-//        this.setYScale(200);
+        this.__flashHeight = flash.getFlashHeight();
+        this.__flashWidth = flash.getFlashWidth();
       }
-*/    },
+
+      var ratio = 100 * pane.getHeight()/this.__flashHeight;
+      flash.setYScale(ratio);
+      flash.setXScale(ratio);
+
+      // Change pane size
+//      pane.setHeight(pane.getHeight());
+//      pane.setWidth(Math.floor(ratio/100 * this.__flashWidth));
+
+      // Needed to refresh/update
+      this.gotoPage(this.getCurrentPage());
+    },
 
     /**
      * Listens to the "execute" event to change to full screen mode.
@@ -618,7 +633,8 @@ alert("Hallå");
      */
     _onZoomInButtonClick : function(e)
     {
-//      this.zoom(100 - this.getZoomFraction());
+      this.getChildControl("flash").zoom(100 - this.getZoomFraction());
+// change height and width of the pane
     },
 
     /**
@@ -628,14 +644,11 @@ alert("Hallå");
      */
     _onZoomChangeValue : function(e)
     {
-/*      var flash = this.getChildControl("flash");
+      var flash = this.getChildControl("flash");
  
-      if(flash.isLoaded())
-      {
-        // Relative change in percent: 50% -> doubles the size, 200% -> halfs the size
-        this.zoom(e.getData());
-      }
-*/    },
+      // Relative change in percent: 50% -> doubles the size, 200% -> halfs the size
+      this.zoom(e.getData());
+    },
 
     /**
      * Listens to the "execute" event to change to zoom out page.
@@ -644,7 +657,7 @@ alert("Hallå");
      */
     _onZoomOutButtonClick : function(e)
     {
-//      this.zoom(100 + this.getZoomFraction());
+      this.getChildControl("flash").zoom(100 + this.getZoomFraction());
     },
 
     /**
@@ -654,13 +667,9 @@ alert("Hallå");
      */
     _onClockwiseButtonClick : function(e)
     {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        this.setRotation(this.getRotation() + 90);
-      }
-*/    },
+      var flash = this.getChildControl("flash");
+      flash.setRotation(flash.getRotation() + 90);
+    },
 
     /**
      * Listens to the "execute" event to change to counter clockwise rotate page.
@@ -669,13 +678,9 @@ alert("Hallå");
      */
     _onCounterclockwiseButtonClick : function(e)
     {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        this.setRotation(this.getRotation() - 90);
-      }
-*/    },
+      var flash = this.getChildControl("flash");
+      flash.setRotation(flash.getRotation() - 90);
+    },
 
     /**
      * Listens to the "execute" event to change to select pointer cursor.
@@ -684,7 +689,7 @@ alert("Hallå");
      */
     _onPointerSelectionToolButtonClick : function(e)
     {
-//      this.getChildControl("scroll-pane").setCursor("default");
+      this.callCustomFunction("setPointerCursor");
     },
 
     /**
@@ -694,10 +699,8 @@ alert("Hallå");
      */
     _onTextSelectionToolButtonClick : function(e)
     {
-/*      this.getChildControl("scroll-pane").setCursor("text");
-
-      this.notSupported("text selection tool");
-*/    },
+      this.callCustomFunction("setTextCursor");
+    },
 
     /**
      * Listens to the "execute" event to change to select hand tool cursor.
@@ -706,7 +709,7 @@ alert("Hallå");
      */
     _onHandToolButtonClick : function(e)
     {
-//      this.getChildControl("scroll-pane").setCursor("pointer");
+      this.callCustomFunction("setHandCursor");
     },
 
     /**
