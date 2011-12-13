@@ -199,16 +199,6 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
     {
       check : "Integer",
       init : 10
-    },
-
-    /*
-     * A flag to control if the user has scrolled to the bottom of the document.
-     */
-    scrolledAll :
-    {
-      check : "Boolean",
-      init : false,
-      event : "scrolledAll"
     }
   },
 
@@ -800,19 +790,6 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 //      this.getChildControl("initiator").terminate();
     },
 
-    /**
-     * Secures that the subscriber scrolls all pages and all lines of the document displayed.
-     */
-    _onScrollY : function(e)
-    {      
-      var pane = this.getChildControl("scroll-pane").getChildControl("pane");
-
-      if(this.getCurrentPage() == this.getTotalPages() && pane.getScrollY() == pane.getScrollMaxY())
-      {
-        this.setScrolledAll(true);
-      }
-    },
-
 
     /*
     ---------------------------------------------------------------------------
@@ -830,91 +807,9 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 */    },
 
     /**
-     * 1. go to top of current page
-     * 2. go to top of first page
-     */
-    gotoPageTop : function()
-    {
-/*      var flashS = this.getChildControl("scroll-pane");
-
-      if(flashS.getScrollY() == 0)
-      {
-        this.gotoPage(0);
-      }
-      else
-      {
-        flashS.scrollToY(0);
-      }
-*/    },
-
-    /**
-     * 1. go to bottom of current page
-     * 2. go to bottom of last page
-     */
-    gotoPageBottom : function()
-    {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        var flashS = this.getChildControl("scroll-pane");
-        var scrollMaxY = flashS.getChildControl("pane").getScrollMaxY();
-
-        if(flashS.getScrollY() == scrollMaxY)
-        {
-          this.gotoPage(this.getTotalPages());
-        }
-
-        flashS.scrollToY(scrollMaxY);
-      }
-*/    },
-
-    gotoEnd : function()
-    {
-/*      this.gotoPage(this.getTotalPages());
-
-      var flashS = this.getChildControl("scroll-pane");
-      flashS.scrollToY(flashS.getChildControl("pane").getScrollMaxY());
-*/    },
-
-    goUp : function()
-    {
-/*      var flashS = this.getChildControl("scroll-pane");
-
-      if(flashS.getScrollY() == 0)
-      {
-        this.gotoRelativePage(-1);
-
-        flashS.scrollToY(flashS.getChildControl("pane").getScrollMaxY());
-      }
-      else
-      {
-        flashS.scrollByY(-1);
-      }
-*/    },
-
-    goDown : function()
-    {
-/*      var flashS = this.getChildControl("scroll-pane");
-
-      if(flashS.getScrollY() == flashS.getChildControl("pane").getScrollMaxY())
-      {
-        this.gotoRelativePage(1);
-
-        flashS.scrollToY(0);
-      }
-      else
-      {
-        flashS.scrollByY(1);
-      }
-*/    },
-
-    /**
      * Go to page in the document.
      *
-     * @param value {Number} page number
-     *
-     * fieldChange to prevent reentrance to the textfield of current page
+     * @param absolutePage {Number} page number
      */
     gotoPage : function(absolutePage)
     {
@@ -932,89 +827,9 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       }
     },
 
-    goPageUp : function()
-    {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        var flashS = this.getChildControl("scroll-pane");
-        var yPosition = flashS.getScrollY();
-
-        if(yPosition > 0)
-        {
-          var calcPosition = yPosition - flashS.getPaneSize().height;
-          var newPosition = calcPosition < 0 ? 0 : calcPosition;
-
-          flashS.scrollToY(newPosition);
-        }
-        else
-        {
-          if(this.getCurrentPage() > 1)
-          {
-            this.gotoRelativePage(-1);
-            flashS.scrollToY(flashS.getChildControl("pane").getScrollMaxY());
-          }
-        }
-      }
-*/    },
-
-    goPageDown : function()
-    {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        var flashS = this.getChildControl("scroll-pane");
-        var yPosition = flashS.getScrollY();
-        var maxPosition = flashS.getChildControl("pane").getScrollMaxY();
-
-        if(yPosition < maxPosition)
-        {
-          var calcPosition = yPosition + flashS.getPaneSize().height;
-          var newPosition = calcPosition > maxPosition ? maxPosition : calcPosition;
-
-          flashS.scrollToY(newPosition);
-        }
-        else
-        {
-          if(this.getCurrentPage() < this.getTotalPages())
-          {
-            this.gotoRelativePage(1);
-            flashS.scrollToY(0);
-          }
-        }
-      }
-*/    },
-    
-    scrollLeft : function()
-    {
-/*      var flashS = this.getChildControl("scroll-pane");
-      var xPosition = flashS.getScrollX();
-
-      if(xPosition > 0)
-      {
-        var calcPosition = xPosition - flashS.getPaneSize().width;
-        var newPosition = calcPosition < 0 ? 0 : calcPosition;
-
-        flashS.scrollToX(newPosition);
-      }
-*/    },
-
-    scrollRight : function()
-    {
-/*      var flashS = this.getChildControl("scroll-pane");
-      var xPosition = flashS.getScrollX();
-
-      if(xPosition < flashS.getChildControl("pane").getScrollMaxX())
-      {
-        var calcPosition = xPosition + flashS.getPaneSize().width;
-        var newPosition = calcPosition < 0 ? 0 : calcPosition;
-
-        flashS.scrollToX(newPosition);
-      }
-*/    },
-
+    /**
+     * Enable all controllers.
+     */
     enableAll : function()
     {
       this.getChildControl("print-button").setEnabled(true);
@@ -1031,6 +846,15 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       FLASH JAVASCRIPT METHODS
     ---------------------------------------------------------------------------
     */
+
+    /**
+     * Go to page in the document.
+     *
+     */
+    getFlashElement : function()
+    {
+      return this.getChildControl("flash").getFlashElement();
+    },
 
     getSource : function()
     {
@@ -1069,30 +893,6 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
     {
 //      this.getChildControl("flash").setVariables(variables);
     },
-/*
-    _setLocationButtons : function()
-    {
-      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        var flashFE = flash.getFlashElement();
-
-        var currentFrame = this.getCurrentFrame();
-        var totalFrames = this.getTotalFrames();
-
-        if(totalFrames > 0)
-        {
-          this.getChildControl("previous-page-button").setEnabled(currentFrame > 1);
-          this.getChildControl("next-page-button").setEnabled(currentFrame < totalFrames);
-        }
-        else
-        {
-          this.getChildControl("page-control").setEnabled(false);
-        }
-      }
-    },
-*/
 
     /*
      * Get the current page of the document.
@@ -1137,113 +937,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       {
         this.pan(x, y, mode)
       }
-*/    },
-
-    /**
-     * Send message to flash.
-     *
-     * @param data {String} message
-     */
-    sendToFlash : function(data)
-    {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        this.setVariable('/:message', data);
-      }
-*/    },
-
-    /**
-     * Get message from flash.
-     */
-    getFromFlash : function()
-    {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        return this.getVariable('/:message');
-      }
-*/    },
-
-    /**
-     * Statistics
-     * ----------
-     *  1. type of request i.e. new page
-     *  2. document name
-     *  3. date
-     *  4. time
-     *  5. pages read
-     *  6. viewing time per page
-     *  7. paging between pages
-     *  8. zoom levels
-     *  9. who requested the documents
-     * 10. referring web page
-     * 11. we browser
-     * 12. downloads
-     * 13. custom values
-     */
-    collectStatistics : function()
-    {
-    },
-
-    getFlashElement : function()
-    {
-      return this.getChildControl("flash").getFlashElement();
-    }
+*/    }
   }
 });
-
-/*
-    invokeFlashMethod : qx.core.Environment.select("engine.name",
-    {
-      "mshtml" : function(methodName, args)
-      {
-        var new_args = Array.prototype.slice.apply(arguments);
-        new_args.splice(0, 1);
-
-//        var xmlArgs = window.self.__flash__argumentsToXML(new_args, 0);
-
-        var xml = '<invoke name=\"';
-        xml += methodName;
-        xml += '\" returntype=\"javascript\">';
-        xml += "<arguments><string>" + 
-                  new_args[0] + 
-                "</string>" +
-                "<string>" +
-                  new_args[1] +
-                "</string>" +
-                "<string>" +
-                  new_args[2] +
-                "</string></arguments>";
-        xml += '</invoke>';
-
-        var result = null;
-
-        var flashFE = this.getChildControl("flash").getFlashElement();
-
-        var funcRes = flashFE.callFunction(xml);
-
-        if (funcRes != null && typeof(funcRes) != "undefined")
-        {
-          result = eval(funcRes);
-        }
-
-        return result;
-      },
-
-      "default" : function(methodName, args)
-      {
-        var new_args = Array.prototype.slice.apply(arguments);
-        new_args.splice(0, 1);
-
-        var flashFE = this.getChildControl("flash").getFlashElement();
-
-        var result = flashFE[methodName].apply(flashFE, new_args);
-
-        return result;
-      }
-    }),
-*/
 

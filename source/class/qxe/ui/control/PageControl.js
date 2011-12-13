@@ -208,13 +208,14 @@ qx.Class.define("qxe.ui.control.PageControl",
     _onPreviousPageButtonClick : function(e)
     {
       var pageContainer = this.__pageContainer;
-
-      if(pageContainer.getCurrentPage() > 1)
-      {
-        pageContainer.gotoPage(pageContainer.getCurrentPage() - 1);
-      }
+      pageContainer.gotoPage(Math.max(1, pageContainer.getCurrentPage() - 1));
     },
 
+    /**
+     * Listens to the "data" event to change the current page field.
+     *
+     * @param e {qx.event.type.DataEvent} data event
+     */
     _onGotoPageChangeValue : function(e)
     {
       var oldPage = e.getOldData();
@@ -244,12 +245,7 @@ qx.Class.define("qxe.ui.control.PageControl",
     _onNextPageButtonClick : function(e)
     {
       var pageContainer = this.__pageContainer;
-      var currentPage = pageContainer.getCurrentPage();
-
-      if(currentPage < pageContainer.getTotalPages())
-      {
-        pageContainer.gotoPage(currentPage + 1);
-      }
+      pageContainer.gotoPage(Math.min(pageContainer.getTotalPages(), pageContainer.getCurrentPage() + 1));
     },
 
     /**

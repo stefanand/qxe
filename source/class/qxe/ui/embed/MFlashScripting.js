@@ -593,7 +593,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      */
     getCurrentLabel : function() {
       return this.getFlashElement().TCallLabel("/");
-    }
+    },
 
     /**
      * Documented but not working. Probably just a hint about adding the 
@@ -637,7 +637,25 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      */
 //    FSCommand : function(command, args) {
 //      this.getFlashElement().fscommand(command, args);
-//    }        
+//    },
+
+    /**
+     * Send message to flash.
+     *
+     * @param data {String} message
+     */
+    sendMessageToFlash : function(data)
+    {
+      this.setVariable('/:message', data);
+    },
+
+    /**
+     * Get message from flash.
+     */
+    getMessageFromFlash : function()
+    {
+      return this.getVariable('/:message');
+    }
   }
 });
 
