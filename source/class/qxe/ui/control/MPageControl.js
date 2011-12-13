@@ -28,26 +28,6 @@ qx.Mixin.define("qxe.ui.control.MPageControl",
 
   members :
   {
-/*    gotoPage : function(page)
-    {
-
-//			this.getChildControl("scroll-pane").scrollToY(0);
-    },
-
-    gotoPreviousPage : function()
-    {
-      this.gotoRelativePage(-1);
-
-//      this.getChildControl("scroll-pane").scrollToY(0);
-    },
-
-    gotoNextPage : function()
-    {
-//      this.gotoRelativePage(1);
-
-//      this.getChildControl("scroll-pane").scrollToY(0);
-    },
-*/
     /**
      * 1. go to top of current page
      * 2. go to top of first page
@@ -76,33 +56,6 @@ qx.Mixin.define("qxe.ui.control.MPageControl",
     {
     },
 */
-    /**
-     *
-     * fieldChange to prevent reentrance to the textfield of current page
-     *
-     */
-/*    gotoRelativePage : function(relativeFrame, fieldChange)
-    {
-    },
-*/
-    /**
-     *
-     * fieldChange to prevent reentrance to the textfield of current page
-     *
-     */
-/*    gotoPage : function(absoluteFrame, fieldChange)
-    {
-    },
-
-    goPageUp : function()
-    {
-    },
-
-    goPageDown : function()
-    {
-    },
-*/
-
     _onKeyUp : function(e)
     {
       var key = (e.isCtrlPressed() ? "Ctrl-" : "") + (e.isShiftPressed() ? "Shift-" : "") + (e.getType() !== "keyinput" ? e.getKeyIdentifier() : "");

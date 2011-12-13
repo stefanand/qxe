@@ -207,6 +207,17 @@ qx.Class.define("qxe.ui.embed.Flash",
     },
 
     /**
+     * Set allow script access
+     **/
+    allowFullScreen :
+    {
+      check : "Boolean",
+      init : false,
+      nullable : true,
+      apply : "_applyAllowFullScreen"
+    },
+
+    /**
      * Enable/disable live connection
      **/
     liveConnect :
@@ -401,6 +412,11 @@ qx.Class.define("qxe.ui.embed.Flash",
     // property apply
     _applyAllowScriptAccess : function(value, old) {
       this.__flashParamHelper("allowScriptAccess", value);
+    },
+
+    // property apply
+    _applyAllowFullScreen : function(value, old) {
+      this.__flashParamHelper("allowFullScreen", value);
     },
 
     // property apply

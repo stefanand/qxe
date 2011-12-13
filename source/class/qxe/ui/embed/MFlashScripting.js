@@ -172,30 +172,6 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
     },
 
     /**
-     * Get the total number of the flash object.
-     *
-     * var flashFE = this.getChildControl("flash").getFlashElement();
-     *
-     * In IE it has to be called like this:
-     *
-     * TotalFrames = flashFE.TotalFrames;
-     *
-     * in Firefox it has to be called like this:
-     *
-     * TotalFrames = flashFE.TotalFrames();
-     *
-     * http://www.macromedia.com/support/flash/ts/documents/activex_script.htm
-     *
-     * Note!
-     * Instead we use the TGetProperty which is the same for any browser.
-     *
-     * @return {Number} total number frames
-     */
-    getTotalFrames : function() {
-      return this.getFlashElement().TGetPropertyAsNumber("/", 5);
-    },
-
-    /**
      * Get the alpha value of the flash object.
      *
      * @return {Number} alpha value
@@ -382,27 +358,31 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
 
     /*
     ---------------------------------------------------------------------------
-      Functions
+      Flash 2.0+ Methods
     ---------------------------------------------------------------------------
     */
 
     /**
-     * Get flash variable.
-     *
-     * @return {String} path
+     * Play flash object.
      */
-    getVariable : function(path) {
-      return this.getFlashElement().GetVariable(path);
+    play : function() {
+      this.getFlashElement().Play();
     },
 
     /**
-     * Set the flash variable.
-     *
-     * @param path {String} path
-     * @param value {String} value
+     * Stop playing flash object.
      */
-    setVariable : function(path, value) {
-      this.getFlashElement().setVariable(path, value);
+    stop : function() {
+      this.getFlashElement().StopPlay();
+    },
+
+    /**
+     * Is flash playing.
+     *
+     * @return {Boolean} true/false
+     */
+    isPlaying : function() {
+      return this.getFlashElement().IsPlaying();
     },
 
     /**
@@ -425,22 +405,64 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
     },
 
     /**
-     * Is flash playing.
+     * Get the total number of the flash object.
      *
-     * @return {Boolean} true/false
+     * var flashFE = this.getChildControl("flash").getFlashElement();
+     *
+     * In IE it has to be called like this:
+     *
+     * TotalFrames = flashFE.TotalFrames;
+     *
+     * in Firefox it has to be called like this:
+     *
+     * TotalFrames = flashFE.TotalFrames();
+     *
+     * http://www.macromedia.com/support/flash/ts/documents/activex_script.htm
+     *
+     * Note!
+     * Instead we use the TGetProperty which is the same for any browser.
+     *
+     * @return {Number} total number frames
      */
-    isPlaying : function() {
-      return this.getFlashElement().IsPlaying();
+    getTotalFrames : function() {
+      return this.getFlashElement().TGetPropertyAsNumber("/", 5);
     },
 
     /**
-     * Load flash movie.
-     *
-     * @param layerNum {Number} layer number
-     * @param url {String} flash url
+     * Rewind flash object.
      */
-    loadMovie : function(layerNum, url) {
-      return this.getFlashElement().loadMovie(layerNum, url);
+    rewind : function() {
+      this.getFlashElement().Rewind();
+    },
+
+    /**
+     * Zooms in on a rectangular area of the movie. The units of
+     * the coordinates are in twips (1440 units per inch). To
+     * calculate a rectangle in Flash, set the ruler units to
+     * Points and multiply the coordinates by 20 to get twips.
+     * (There are 72 points per inch.)
+     *
+     * @param left {Number} left position
+     * @param top {Number} top position
+     * @param right {Number} right position
+     * @param bottom {Number} bottom position
+     */
+    zoomRect : function(left, top, right, bottom) {
+      this.getFlashElement().SetZoomRect(left, top, right, bottom);
+    },
+
+    /**
+     * Zooms the view by a relative scale factor specified by percent.
+     * Zoom(50) doubles the size of the objects in the view. Zoom(200)
+     * reduces the size of objects in the view by one half. Zoom(0)
+     * resets the view to 100%. You cannot specify a reduction in the
+     * size of objects in the view when the current view is already 100%.
+     *
+     * @param percent {Number} percent
+     *                         0 = reset zoom
+     */
+    zoom : function(percent) {
+      this.getFlashElement().Zoom(percent);
     },
 
     /**
@@ -482,55 +504,66 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
       }
     },
 
-    /**
-     * Play flash object.
-     */
-    play : function() {
-      this.getFlashElement().Play();
-    },
+
+    /*
+    ---------------------------------------------------------------------------
+      Flash 3.0+ Methods
+    ---------------------------------------------------------------------------
+    */
+
+    // TGotoFrame(target, framenumber)
 
     /**
-     * Rewind flash object.
-     */
-    rewind : function() {
-      this.getFlashElement().Rewind();
-    },
-
-    /**
-     * Zooms in on a rectangular area of the movie. The units of
-     * the coordinates are in twips (1440 units per inch). To
-     * calculate a rectangle in Flash, set the ruler units to
-     * Points and multiply the coordinates by 20 to get twips.
-     * (There are 72 points per inch.)
+     * Go to flash label.
      *
-     * @param left {Number} left position
-     * @param top {Number} top position
-     * @param right {Number} right position
-     * @param bottom {Number} bottom position
+     * @param label {String} label
      */
-    zoomRect : function(left, top, right, bottom) {
-      this.getFlashElement().SetZoomRect(left, top, right, bottom);
+    goToLabel : function(label) {
+      this.getFlashElement().TGotoLabel("/", label);
     },
 
-    /**
-     * Stop playing flash object.
-     */
-    stop : function() {
-      this.getFlashElement().StopPlay();
-    },
+    // TCurrentFrame(target)
+
+    // String TCurrentLabel(target)
+
+    // TPlay(target)
+
+    // TStopPlay(target)
 
     /**
-     * Zooms the view by a relative scale factor specified by percent.
-     * Zoom(50) doubles the size of the objects in the view. Zoom(200)
-     * reduces the size of objects in the view by one half. Zoom(0)
-     * resets the view to 100%. You cannot specify a reduction in the
-     * size of objects in the view when the current view is already 100%.
+     * Load flash movie.
      *
-     * @param percent {Number} percent
-     *                         0 = reset zoom
+     * @param layerNum {Number} layer number
+     * @param url {String} flash url
      */
-    zoom : function(percent) {
-      this.getFlashElement().Zoom(percent);
+    loadMovie : function(layerNum, url) {
+      return this.getFlashElement().LoadMovie(layerNum, url);
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      Flash 4.0+ Methods
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Get flash variable.
+     *
+     * @return {String} path
+     */
+    getVariable : function(path) {
+      return this.getFlashElement().GetVariable(path);
+    },
+
+    /**
+     * Set the flash variable.
+     *
+     * @param path {String} path
+     * @param value {String} value
+     */
+    setVariable : function(path, value) {
+      this.getFlashElement().setVariable(path, value);
     },
 
     /**
@@ -560,16 +593,7 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      */
     getCurrentLabel : function() {
       return this.getFlashElement().TCallLabel("/");
-    },
-
-    /**
-     * Go to flash label.
-     *
-     * @param label {String} label
-     */
-    goToLabel : function(label) {
-      this.getFlashElement().TGotoLabel("/", label);
-    },
+    }
 
     /**
      * Documented but not working. Probably just a hint about adding the 
@@ -611,9 +635,9 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      * @param command {String} command
      * @param args {Array} arguments
      */
-    FSCommand : function(command, args) {
-      this.getFlashElement().fscommand(command, args);
-    }        
+//    FSCommand : function(command, args) {
+//      this.getFlashElement().fscommand(command, args);
+//    }        
   }
 });
 

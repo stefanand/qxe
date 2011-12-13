@@ -513,7 +513,6 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
         case "scroll-pane":
           // Scroll container
           control = new qx.ui.container.Scroll();
-          control.setContentPadding(2);
           control.getChildControl("pane").addListener("scrollY", this._onScrollY, this);
           break;
 
@@ -526,11 +525,11 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
           control.setPlay(false);
           control.setLoop(false);
           control.setAllowScriptAccess("sameDomain");
+          control.setAllowFullScreen(true);
           control.setLiveConnect(true);
 //          control.setMayScript(true);
           control.setMenu(false);
           control.addListener("keyup", this._onKeyUp, this);
-//          control.setLoadTimeout(60000);
           control.addListener("loading", function() {
             this.debug(control.getPercentLoaded());
           }, this);
@@ -722,6 +721,29 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       this.callCustomFunction("search");
     },
 
+    /**
+     * @todo Show user dialog with error message. Negative is that it will be bound to another class.
+     */
+    callCustomFunction : function(func)
+    {
+      var flash = this.getChildControl("flash");
+
+      if(flash.isLoaded())
+      {
+        var flashFE = flash.getFlashElement();
+
+        if(flashFE[func])
+        {
+          // Calling a custom flash method over ExternalInterface
+          flashFE[func]();
+        }
+        else
+        {
+          this.debug("The " + func + " function can not be called or is not supported for the flash file.");
+        }
+      }
+    },
+
 
     /*
     ---------------------------------------------------------------------------
@@ -778,47 +800,16 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 //      this.getChildControl("initiator").terminate();
     },
 
-    _onScrollY : function(e)
-    {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        // Secures that the subscriber scrolls all pages and all lines of the document displayed.
-        var currentPage = this.getCurrentPage();
-        var totalPages = this.getTotalPages();
-
-        var pane = this.getChildControl("scroll-pane").getChildControl("pane");
-
-        if(currentPage == totalPages && pane.getScrollY() == pane.getScrollMaxY())
-        {
-          this.setScrolledAll(true);
-        }
-//            // If 0% zoom then no panning and everything is contained within the scroll area else this:
-//            alert(flashFE.TGetPropertyAsNumber("/", 1));
-      }
-*/    },
-
     /**
-     * @todo Show user dialog with error message. Negative is that it will be bound to another class.
+     * Secures that the subscriber scrolls all pages and all lines of the document displayed.
      */
-    callCustomFunction : function(func)
-    {
-      var flash = this.getChildControl("flash");
+    _onScrollY : function(e)
+    {      
+      var pane = this.getChildControl("scroll-pane").getChildControl("pane");
 
-      if(flash.isLoaded())
+      if(this.getCurrentPage() == this.getTotalPages() && pane.getScrollY() == pane.getScrollMaxY())
       {
-        var flashFE = flash.getFlashElement();
-
-        if(flashFE[func])
-        {
-          // Calling a custom flash method over ExternalInterface
-          flashFE[func]();
-        }
-        else
-        {
-          this.debug("The " + func + " function can not be called or is not supported for the flash file.");
-        }
+        this.setScrolledAll(true);
       }
     },
 
@@ -831,16 +822,11 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
     zoom : function(zoomValue)
     {
-/*      var flash = this.getChildControl("flash");
-
-      if(flash.isLoaded())
-      {
-        // Relative change in percent: 50% -> doubles the size, 200% -> halfs the size
+/*      // Relative change in percent: 50% -> doubles the size, 200% -> halfs the size
         var zoomValue = 100 + this.getZoomFraction();
         this.zoom(zoomValue);
 
         this.getChildControl("zoom-page-field").setValue("" + zoomValue);
-      }
 */    },
 
     /**

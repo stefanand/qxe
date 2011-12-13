@@ -29,8 +29,7 @@
     "simulation-run",
     "test",
     "test-source",
-    "translation",
-    "image-combine"
+    "translation"
   ],
   
   "default-job" : "source",

@@ -151,6 +151,15 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     "document-viewer/tool-pane" : "toolbar/part",
     "document-viewer/search-pane" : "toolbar/part",
     "document-viewer/scroll-pane" : "scrollarea",
+    "document-viewer/scroll-pane/pane" :
+    {
+      style : function(states)
+      {
+        return {
+          margin : 5
+        };
+      }
+    },
 
     /*
     ---------------------------------------------------------------------------

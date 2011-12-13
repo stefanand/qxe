@@ -197,7 +197,7 @@ qx.Class.define("qxe.ui.control.PageControl",
      */
     _onFirstPageButtonClick : function(e)
     {
-      this.__pageContainer.gotoPage(1);
+      this.getChildControl("current-page-field").setValue("1");
     },
 
     /**
@@ -219,7 +219,7 @@ qx.Class.define("qxe.ui.control.PageControl",
     {
       var oldPage = e.getOldData();
       var newPage = e.getData();
-this.debug(oldPage);
+
       // If erasing when no previous data i.e. on page 1
       oldPage = (oldPage == "" || oldPage == null ? 1 : oldPage);
       // Set to previous page
@@ -230,6 +230,7 @@ this.debug(oldPage);
       if(newPage >= 1 && newPage <= pageContainer.getTotalPages())
       {
         pageContainer.gotoPage(newPage);
+        pageContainer.getChildControl("scroll-pane").scrollToY(0);
 
         this.checkEnable();
       }
@@ -258,8 +259,7 @@ this.debug(oldPage);
      */
     _onLastPageButtonClick : function(e)
     {
-      var pageContainer = this.__pageContainer;
-      pageContainer.gotoPage(pageContainer.getTotalPages());
+      this.getChildControl("current-page-field").setValue("" + this.__pageContainer.getTotalPages());
     },
 
 
