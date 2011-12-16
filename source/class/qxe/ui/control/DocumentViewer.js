@@ -72,6 +72,7 @@
  * @childControl zoom-page-field {qx.ui.form.TextField} shows the zoom value of the document in the visual-pane
  * @childControl orientation-pane {qx.ui.container.Composite} container shows the clockwise-button and counterclockwise-button
  * @childControl clockwise-button {qx.ui.toolbar.Button} rotates the document in the visual-pane clockwise
+ * @childControl rotation-page-field {qx.ui.form.TextField} shows the rotation degrees of the document in the visual-pane
  * @childControl counterclockwise-button {qx.ui.toolbar.Button} rotates the document in the visual-pane counterclockwise
  * @childControl page-control-pane {qxe.ui.control.PageControl} container shows the page control pane
  * @childControl tool-pane {qx.ui.container.Composite} container shows the selection-tool-button and hand-tool-button
@@ -392,6 +393,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
           control = new qx.ui.toolbar.Part();
           control.setEnabled(false);
           control.add(this._createChildControl("counterclockwise-button"));
+          control.add(this._createChildControl("rotation-page-field"));
           control.add(this._createChildControl("clockwise-button"));
           break;
 
@@ -401,6 +403,18 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
           control = new qx.ui.toolbar.Button(null, "icon/16/actions/object-rotate-left.png");
           control.setToolTip(tooltip);
           control.addListener("execute", this._onCounterclockwiseButtonClick, this);
+          break;
+
+        case "rotation-page-field":
+          tooltip = new qx.ui.tooltip.ToolTip(this.tr("Degrees rotation of the document."));
+
+          control = new qx.ui.form.TextField();
+          control.setTextAlign("right");
+          control.setWidth(35);
+          control.setAlignY("middle");
+          control.setToolTip(tooltip);
+          control.setFilter(/[0-9]/);
+          control.addListener("changeValue", this._onRotationChangeValue, this);
           break;
 
         case "clockwise-button":
@@ -570,9 +584,6 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       var flash = this.getChildControl("flash");
       flash.setYScale(100);
       flash.setXScale(100);
-
-      // Needed to refresh/update
-      this.gotoPage(this.getCurrentPage());
     },
 
     /**
@@ -600,9 +611,6 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
       // Change pane size
 //      pane.setHeight(pane.getHeight());
 //      pane.setWidth(Math.floor(ratio/100 * this.__flashWidth));
-
-      // Needed to refresh/update
-      this.gotoPage(this.getCurrentPage());
     },
 
     /**
@@ -657,7 +665,30 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
     _onClockwiseButtonClick : function(e)
     {
       var flash = this.getChildControl("flash");
-      flash.setRotation(flash.getRotation() + 90);
+this.debug(flash.getRotation()+"   "+flash.getXPos()+"    "+flash.getYPos()+"    "+flash.getHeight()+"    "+flash.getWidth());
+//x2 = x0+(x-x0)*cos(theta)+(y-y0)*sin(theta)
+//y2 = y0-(x-x0)*sin(theta)+(y-y0)*cos(theta)
+var theta = Math.PI * (flash.getRotation() + 10) / 180;
+var width = flash.getWidth();
+var height = flash.getHeight();
+var newWidth = Math.abs(width * Math.cos(theta) + height * Math.sin(theta));
+var newHeight = Math.abs(width * Math.sin(theta) + height * Math.cos(theta));
+this.debug("W="+newWidth+"   H="+newHeight);
+      flash.setRotation(flash.getRotation() + 10);
+      flash.setXPos((newWidth - width)/2);
+//      flash.setYPos(width * Math.sin(theta));
+    },
+
+    /**
+     * Listens to the "execute" event to change to rotation page in or out.
+     *
+     * @param e {qx.event.type.Execute} execute event
+     */
+    _onRotationChangeValue : function(e)
+    {
+      var flash = this.getChildControl("flash");
+ 
+//      this.rotation(e.getData());
     },
 
     /**
@@ -779,11 +810,13 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
 
       this.getChildControl("zoom-page-field").setValue("" + ((xScale + yScale)/2));
 
-      this.enableAll();
+      this.getChildControl("rotation-page-field").setValue("" + flash.getRotation());
 
       var pageControl = this.getChildControl("page-control");
       pageControl.getChildControl("current-page-field").setValue("" + this.getCurrentPage());
       pageControl.getChildControl("num-pages-field").setValue("" + this.getTotalPages());
+
+      this.enableAll();
 
       this.setScrolledAll(false);
 

@@ -142,6 +142,9 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      */
     setXScale : function(value) {
       this.getFlashElement().TSetProperty("/", 2, value);
+
+      // Needed to refresh/update
+      this.gotoFrame(this.getCurrentFrame() - 1);
     },
 
     /**
@@ -160,6 +163,9 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      */
     setYScale : function(value) {
       this.getFlashElement().TSetProperty("/", 3, value);
+
+      // Needed to refresh/update
+      this.gotoFrame(this.getCurrentFrame() - 1);
     },
 
     /**
@@ -245,6 +251,9 @@ qx.Mixin.define("qxe.ui.embed.MFlashScripting",
      */
     setRotation : function(value) {
       this.getFlashElement().TSetProperty("/", 10, value);
+
+      // Needed to refresh/update
+      this.gotoFrame(this.getCurrentFrame() - 1);
     },
 
     /**
