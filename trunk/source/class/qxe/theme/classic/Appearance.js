@@ -61,6 +61,147 @@ qx.Theme.define("qxe.theme.classic.Appearance",
 
     /*
     ---------------------------------------------------------------------------
+      CALENDAR
+    ---------------------------------------------------------------------------
+    */
+
+    "calendar" :
+    {
+      style : function(states)
+      {
+        return {
+          decorator : "outset"
+        };
+      }
+    },
+
+    "calendar/navigation-bar" :
+    {
+      style : function(states)
+      {
+        return {
+          backgroundColor : "calendar",
+          textColor : states.disabled ? "text-disabled" : states.invalid ? "invalid" : undefined,
+          padding : [2, 10]
+        };
+      }
+    },
+
+    "calendar/previous-button-tooltip" : "tooltip",
+    "calendar/next-button-tooltip" : "tooltip",
+
+    "calendar/previous-button"  : "calendar/button",
+    "calendar/next-button" : "calendar/button",
+    "calendar/button/icon" : {},
+
+    "calendar/button" :
+    {
+      style : function(states)
+      {
+        var result = {
+          width  : 17,
+          show   : "icon"
+        };
+
+        if (states.previous) {
+          result.icon = "decoration/arrows/left.gif";
+        } else if (states.next) {
+          result.icon = "decoration/arrows/right.gif";
+        }
+
+        if (states.pressed || states.checked || states.abandoned) {
+            result.decorator = "inset-thin";
+          } else if (states.hovered) {
+            result.decorator = "outset-thin";
+          } else {
+            result.decorator = undefined;
+          }
+
+          if (states.pressed || states.checked || states.abandoned) {
+            result.padding = [ 2, 0, 0, 2 ];
+          } else if (states.hovered) {
+            result.padding = 1;
+          } else {
+            result.padding = 2;
+          }
+
+          return result;
+        }
+      },
+
+      "calendar/label" :
+      {
+        style : function(states)
+        {
+          return {
+            font          : "bold",
+            textAlign     : "center"
+          };
+        }
+      },
+
+      "calendar/date-pane" :
+      {
+        style : function(states)
+        {
+          return {
+            decorator       : "calendar-date-pane",
+            backgroundColor : "calendar"
+          };
+        }
+      },
+      
+      "month-pane/weekday" :
+      {
+        style : function(states)
+        {
+          return {
+            decorator       : "calendar-weekday",
+            font            : "bold",
+            textAlign       : "center",
+            textColor       : states.disabled ? "text-disabled" : states.weekend ? "date-chooser-title" : "date-chooser",
+            backgroundColor : states.weekend ? "calendar" : "calendar-title"
+          };
+        }
+      },
+
+      "month-pane/day" :
+      {
+        style : function(states)
+        {
+          return {
+            textAlign       : "center",
+            decorator       : states.today ? "main" : undefined,
+            textColor       : states.disabled ? "text-disabled" : states.selected ? "text-selected" : states.otherMonth ? "text-disabled" : undefined,
+            backgroundColor : states.disabled ? undefined : states.selected ? "calendar-selected" : undefined,
+            padding         : [ 2, 4 ]
+          };
+        }
+      },
+
+      "month-pane/week" :
+      {
+        style : function(states)
+        {
+          return {
+            textAlign : "center",
+            textColor : "calendar-title",
+            padding   : [ 2, 4 ],
+            decorator : states.header ? "month-pane-week-header" : "month-pane-week"
+          };
+        }
+      },
+
+    /*
+    ---------------------------------------------------------------------------
+      CALENDAR DAYS
+    ---------------------------------------------------------------------------
+    */
+
+    "calendar-day" : "calendar/date-pane",
+
+    /*
+    ---------------------------------------------------------------------------
       CAPTCHA
     ---------------------------------------------------------------------------
     */

@@ -66,6 +66,143 @@ qx.Theme.define("qxe.theme.modern.Appearance",
 
     /*
     ---------------------------------------------------------------------------
+      CALENDAR
+    ---------------------------------------------------------------------------
+    */
+
+    "calendar" :
+    {
+        style : function(states)
+        {
+          var decorator;
+
+          var focused = !!states.focused;
+          var invalid = !!states.invalid;
+          var disabled = !!states.disabled;
+
+          if (focused && invalid && !disabled) {
+            decorator = "input-focused-invalid";
+          } else if (focused && !invalid && !disabled) {
+            decorator = "input-focused";
+          } else if (disabled) {
+            decorator = "input-disabled";
+          } else if (!focused && invalid && !disabled) {
+            decorator = "border-invalid";
+          } else {
+            decorator = "input";
+          }
+
+          return {
+            padding : 2,
+            decorator : decorator,
+            backgroundColor : "background-light"
+          };
+       }
+    },
+
+    "calendar/navigation-bar" : {},
+
+    "calendar/nav-button"  :
+    {
+      include : "button-frame",
+      alias : "button-frame",
+
+      style : function(states)
+      {
+        var result = {
+          padding : [ 2, 4 ]
+        };
+
+        if (states.previous) {
+          result.icon = "decoration/arrows/left.png";
+        } else if (states.next) {
+          result.icon = "decoration/arrows/right.png";
+        }
+
+        return result;
+      }
+    },
+
+    "calendar/previous-button-tooltip" : "tooltip",
+    "calendar/next-button-tooltip" : "tooltip",
+
+    "calendar/previous-button" : "calendar/nav-button",
+    "calendar/next-button" : "calendar/nav-button",
+
+    "calendar/label" :
+    {
+      style : function(states)
+      {
+        return {
+          font      : "bold",
+          textAlign : "center",
+          textColor: states.disabled ? "text-disabled" : undefined
+        };
+      }
+    },
+
+    "calendar/date-pane" :
+    {
+      style : function(states)
+      {
+        return {
+          textColor: states.disabled ? "text-disabled" : undefined,
+          marginTop : 2
+        };
+      }
+    },
+
+    "month-pane/weekday" :
+    {
+      style : function(states)
+      {
+        return {
+          textColor : states.disabled ? "text-disabled" : states.weekend ? "text-light" : undefined,
+          textAlign : "center",
+          paddingTop : 2,
+          backgroundColor : "background-medium"
+        };
+      }
+    },
+
+    "month-pane/week" :
+    {
+      style : function(states)
+      {
+        return {
+          textAlign : "center",
+          padding   : [ 2, 4 ],
+          backgroundColor : "background-medium"
+        };
+      }
+    },
+
+    "month-pane/day" :
+    {
+      style : function(states)
+      {
+        var decorator = states.disabled ? undefined : states.selected ? "selected" : undefined;
+
+        return {
+          textAlign : "center",
+          decorator : decorator,
+          textColor : states.disabled ? "text-disabled" : states.selected ? "text-selected" : states.otherMonth ? "text-light" : undefined,
+          font      : states.today ? "bold" : undefined,
+          padding   : [ 2, 4 ]
+        };
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
+      CALENDAR DAYS
+    ---------------------------------------------------------------------------
+    */
+
+    "calendar-day" : "calendar/date-pane",
+
+    /*
+    ---------------------------------------------------------------------------
       CAPTCHA
     ---------------------------------------------------------------------------
     */

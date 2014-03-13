@@ -21,6 +21,55 @@ qx.Theme.define("qxe.theme.classic.Decoration",
   {
     /*
     ---------------------------------------------------------------------------
+      CALENDAR
+    ---------------------------------------------------------------------------
+    */
+
+    "calendar-date-pane" :
+    {
+      style :
+      {
+        widthTop: 1,
+        colorTop : "gray",
+        style : "solid"
+      }
+    },
+
+    "month-pane-weekday" :
+    {
+      style :
+      {
+        widthBottom: 1,
+        colorBottom : "gray",
+        style : "solid"
+      }
+    },
+
+    "month-pane-week" :
+    {
+      style :
+      {
+        widthRight: 1,
+        colorRight : "gray",
+        style : "solid"
+      }
+    },
+
+    "month-pane-week-header" :
+    {
+      style :
+      {
+        widthBottom : 1,
+        colorBottom : "gray",
+        widthRight: 1,
+        colorRight : "gray",
+
+        style : "solid"
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
       DOCUMENTVIEWER
     ---------------------------------------------------------------------------
     */

@@ -12,18 +12,28 @@
   [
     "api",
     "api-data",
+    "build",
     "clean",
     "distclean",
-    "dependencies",
     "fix",
     "info",
     "inspector",
     "lint",
     "migration",
     "pretty",
+    "profiling",
+    "source",
+    "source-all",
+    "source-hybrid",
+    "source-server",
+    "source-server-reload",
+    "source-httpd-config",
     "test",
     "test-source",
-    "translation"
+    "translation",
+    "validate-config",
+    "validate-manifest",
+    "watch"
   ],
   
   "default-job" : "source-hybrid",
@@ -31,9 +41,9 @@
   "let" :
   {
     "APPLICATION"  : "qxe.demo",
-    "QOOXDOO_PATH" : "../../../qooxdoo",
+    "QOOXDOO_PATH" : "../../../../../qooxdoo",
     "QXTHEME"      : "qxe.demo.theme.Theme",
-    "API_EXCLUDE"  : ["qx.test.*", "com.test.demo.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*"],
+    "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*"],
     "LOCALES"      : [ "en" ],
     "CACHE"        : "${TMPDIR}/qx${QOOXDOO_VERSION}/cache",
     "ROOT"         : "."
