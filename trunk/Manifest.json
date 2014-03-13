@@ -2,6 +2,7 @@
   "info" : 
   {
     "name" : "qxe",
+    "category" : ["widget", "tool", "utility"],
 
     "summary" : "qooxdoo extension framework",
     "description" : "Extension of the standard qooxdoo framework.",
@@ -18,7 +19,10 @@
     ],
 
     "version" : "trunk",
-    "qooxdoo-versions": ["1.6-pre"]
+    "qooxdoo-versions": ["3.6"],
+
+    "download" : "",
+    "checksum" : ""
   },
   
   "provides" : 
