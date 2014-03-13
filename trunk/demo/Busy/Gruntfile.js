@@ -12,10 +12,10 @@ module.exports = function(grunt) {
     },
 
     common: {
-      "APPLICATION" : "com.test",
+      "APPLICATION" : "qxe",
       "QOOXDOO_PATH" : "../../../qooxdoo",
       "LOCALES": ["en"],
-      "QXTHEME": "com.test.theme.Theme"
+      "QXTHEME": "qxe.theme.Theme"
     }
 
     /*
