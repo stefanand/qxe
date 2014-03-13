@@ -25,22 +25,25 @@
     "source",
     "source-all",
     "source-hybrid",
-    "simulation-build",
-    "simulation-run",
+    "source-server",
+    "source-server-reload",
+    "source-httpd-config",
     "test",
     "test-source",
     "translation",
-    "image-combine"
+    "validate-config",
+    "validate-manifest",
+    "watch"
   ],
   
-  "default-job" : "source",
+  "default-job" : "source-hybrid",
 
   "let" :
   {
     "APPLICATION"  : "qxe.demo",
-    "QOOXDOO_PATH" : "../../../../qooxdoo/1.6",
+    "QOOXDOO_PATH" : "../../../../../qooxdoo",
     "QXTHEME"      : "qxe.demo.theme.Theme",
-    "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*", "${APPLICATION}.simulation.*"],
+    "API_EXCLUDE"  : ["qx.test.*", "${APPLICATION}.theme.*", "${APPLICATION}.test.*"],
     "LOCALES"      : [ "en" ],
     "CACHE"        : "${TMPDIR}/qx${QOOXDOO_VERSION}/cache",
     "ROOT"         : "."
