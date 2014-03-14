@@ -52,8 +52,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
   */
 
   /**
-   * @param orientation {String} Orientation of the button pane.
-   * @param spacing {Integer} The spacing between buttons of the button pane.
+   * @param orientation {String} - Orientation of the button pane.
+   * @param spacing {Integer} - The spacing between buttons of the button pane.
    */
   construct : function(orientation, spacing)
   {
@@ -155,8 +155,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      *
      * Calls setOrientation(), setSpacing() and setButtons() functions.
      *
-     * @param json {object} The json structure.
-     * @return {qxe.ui.form.ButtonPane} The created button pane.
+     * @param json {String} - The json structure.
+     * @return {qxe.ui.form.ButtonPane} - The created button pane.
      */
     getInstance : function(json)
     {
@@ -260,8 +260,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     /**
      * Apply method for the orientation.
      *
-     * @param value {boolean} The new value.
-     * @param old {boolean} The old value.
+     * @param value {Boolean} - The new value.
+     * @param old {Boolean} - The old value.
      */
     _applyOrientation : function(value, old)
     {
@@ -295,8 +295,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     /**
      * Apply method for spacing between buttons.
      *
-     * @param value {boolean} The new value.
-     * @param old {boolean} The old value.
+     * @param value {Boolean} - The new value.
+     * @param old {Boolean} - The old value.
      */
     _applySpacing : function(value, old)
     {
@@ -307,8 +307,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     /**
      * Apply method for constraint.
      *
-     * @param value {boolean} The new value.
-     * @param old {boolean} The old value.
+     * @param value {Boolean} - The new value.
+     * @param old {Boolean} - The old value.
      */
     _applyConstraint : function(value, old)
     {
@@ -335,10 +335,10 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      *
      * Horizontal layout has optimized lengths as default while vertical layout has same lengths as default.
      *
-     * @param value {boolean} The new value.
-     *                         true  -> optimized lengths
-     *                         false -> same lengths
-     * @param old {boolean} The old value.
+     * @param value {Boolean} - The new value.
+     *                          true  -> optimized lengths
+     *                          false -> same lengths
+     * @param old {Boolean} - The old value.
      */
     _applySizeConstraint : function(value, old)
     {
@@ -364,8 +364,9 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      * Windows, affirmative button appears on the right hand side of cancel button.
      * On Mac OS X, affirmative button will appear on the left hand side of cancel button.
      *
-     * @param button {qx.ui.form.Button} The button to add.
-     * @param constraint {[ "affirmative" | "cancel" | "help" ]} The constraint used for the button.
+     * @param button {qx.ui.form.Button} - The button to add.
+     * @param constraint {String} - The constraint used for the button.
+     *                              Any of [ "affirmative" | "cancel" | "help" ]
      */
     add : function(button, constraint)
     {
@@ -410,7 +411,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     /**
      * Remove a button from the button pane.
      *
-     * @param button {qx.ui.form.Button} The button to be removed.
+     * @param button {qx.ui.form.Button} - The button to be removed.
      */
     remove : function(button)
     {
@@ -424,8 +425,9 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      * Add a spacer to the button pane. The spacer has a flex
      * value of one and will stretch to the available space.
      *
-     * @return {qx.ui.core.Spacer} The newly added spacer object. A reference
-     * to the spacer is needed to remove this spacer from the layout.
+     * @return {qx.ui.core.Spacer} - The newly added spacer object. A reference
+     *                                to the spacer is needed to remove this spacer
+     *                                from the layout.
      */
     addSpacer : function()
     {
@@ -460,7 +462,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     /**
      * Set all buttons.
      *
-     * @param json {Object} The json definition of button pane.
+     * @param json {String} - The json definition of button pane.
      */
     setButtons : function(json)
     {
@@ -483,7 +485,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     /**
      * Get all constrained buttons.
      *
-     * @return {Array#map} the constrained buttons.
+     * @return {Array} - the constrained buttons.
      */
     _getConstraints : function()
     {
@@ -510,8 +512,9 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      * Windows, affirmative button appears on the right hand side of cancel button.
      * On Mac OS X, affirmative button will appear on the left hand side of cancel button.
      *
-     * @param button {qx.ui.form.Button} The button to constrain.
-     * @param constraint {[ "affirmative" | "cancel" | "help" | "other" ]} The constraint for the button.
+     * @param button {qx.ui.form.Button} - The button to constrain.
+     * @param constraint {String} - The constraint for the button.
+     *                              Any of [ "affirmative" | "cancel" | "help" | "other" ]
      */
     _constrainButton : function(button, constraint)
     {
@@ -566,7 +569,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     /**
      * Resize the buttons according to sizeConstraint.
      *
-     * @param value {boolean} True if size constrained.
+     * @param value {Boolean} - True if size constrained.
      */
     _sizeConstrainButtons : function(value)
     {
@@ -615,8 +618,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     /**
      * Gets the button with the index.
      *
-     * @param index {Number} the button index.
-     * @return {qx.ui.form.Button} the button which has the name. null if there is no button with that name.
+     * @param index {Number} - the button index.
+     * @return {qx.ui.form.Button} - the button which has the name. null if there is no button with that name.
      */
     getButton : function(index)
     {
@@ -628,8 +631,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      * In order to use this method, you have to set a name to the button using {@link
      * Widget#setUserData("name", String)} method.
      *
-     * @param name {String} the button name.
-     * @return {qx.ui.form.Button} the button which has the name. null if there is no button with that name.
+     * @param name {String} - the button name.
+     * @return {qx.ui.form.Button} - the button which has the name. null if there is no button with that name.
      */
     getButtonByName : function(name)
     {
@@ -650,7 +653,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
   },
 
   /**
-   * Destruct function.
+   * Destructor.
    */
   destruct : function()
   {

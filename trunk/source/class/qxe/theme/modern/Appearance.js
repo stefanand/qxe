@@ -17,10 +17,10 @@
 
 /* ************************************************************************
 
-#asset(qx/icon/Tango/16/actions/dialog-cancel.png)
-#asset(qx/icon/Tango/16/actions/dialog-ok.png)
+@asset(qx/icon/Tango/16/actions/dialog-cancel.png)
+@asset(qx/icon/Tango/16/actions/dialog-ok.png)
 
-# asset(qx/decoration/Modern/*)
+@ asset(qx/decoration/Modern/*)
 
 ************************************************************************* */
 

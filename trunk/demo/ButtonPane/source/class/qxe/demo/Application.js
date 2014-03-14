@@ -72,31 +72,30 @@ qx.Class.define("qxe.demo.Application",
       var doc = this.getRoot();
 
       // Add button to document at fixed coordinates
-      doc.add(new qx.ui.basic.Label("Default with custom and predefined buttons"), {left: 100, top: 35});
+      doc.add(new qx.ui.basic.Label("Default with custom and predefined buttons."), {left: 100, top: 35});
       doc.add(this.createButtonPane1(), {left: 100, top: 50});
 
-      doc.add(new qx.ui.basic.Label("Spacing 8px with predefined buttons"), {left: 100, top: 85});
+      doc.add(new qx.ui.basic.Label("Spacing 8px with predefined buttons."), {left: 100, top: 85});
       doc.add(this.createButtonPane2(), {left: 100, top: 100});
 
-      doc.add(new qx.ui.basic.Label("Button constraints with predefined buttons"), {left: 100, top: 135});
+      doc.add(new qx.ui.basic.Label("Button constraints with predefined buttons."), {left: 100, top: 135});
       doc.add(this.createButtonPane3(), {left: 100, top: 150});
 
-      doc.add(new qx.ui.basic.Label("Yes and No predefined buttons"), {left: 100, top: 185});
+      doc.add(new qx.ui.basic.Label("Yes and No predefined buttons."), {left: 100, top: 185});
       doc.add(this.createButtonPane4(), {left: 100, top: 200});
 
-      doc.add(new qx.ui.basic.Label("JSON definition"), {left: 100, top: 235});
+      doc.add(new qx.ui.basic.Label("JSON definition."), {left: 100, top: 235});
       doc.add(this.createButtonPane5(), {left: 100, top: 250});
 
-      doc.add(new qx.ui.basic.Label("Vertical predefined buttons same width"), {left: 350, top: 35});
+      doc.add(new qx.ui.basic.Label("Vertical predefined buttons same width."), {left: 350, top: 35});
       doc.add(this.createButtonPane6(), {left: 350, top: 50});
 
-      doc.add(new qx.ui.basic.Label("Vertical predefined buttons and optimized width"), {left: 350, top: 135});
+      doc.add(new qx.ui.basic.Label("Vertical predefined buttons and optimized width."), {left: 350, top: 135});
       doc.add(this.createButtonPane7(), {left: 350, top: 150});
     },
 
     /**
-     * Defining and adding buttons to the ButtonPane one by one
-     * Send, Cancel and Help.
+     * Default with custom and predefined buttons.
      */
     createButtonPane1 : function()
     {
@@ -129,8 +128,7 @@ qx.Class.define("qxe.demo.Application",
     },
 
     /**
-     * Defining and adding buttons to the ButtonPane one by one
-     * OK, Cancel and Help.
+     * Spacing 8px with predefined buttons.
      */
     createButtonPane2 : function()
     {
@@ -163,8 +161,7 @@ qx.Class.define("qxe.demo.Application",
     },
 
     /**
-     * Defining and adding buttons to the ButtonPane one by one
-     * OK, Cancel and Help without size constraint.
+     * Button constraints with predefined buttons.
      */
     createButtonPane3 : function()
     {
@@ -198,8 +195,7 @@ qx.Class.define("qxe.demo.Application",
     },
 
     /**
-     * Defining and adding buttons to the ButtonPane one by one
-     * OK, Cancel and Help.
+     * Yes and No predefined buttons.
      */
     createButtonPane4 : function()
     {
@@ -225,8 +221,7 @@ qx.Class.define("qxe.demo.Application",
     },
 
     /**
-     * Defining and adding buttons to the ButtonPane one by one
-     * OK, Cancel and Help customized by a json structure.
+     * JSON definition.
      */
     createButtonPane5 : function()
     {
@@ -268,8 +263,7 @@ qx.Class.define("qxe.demo.Application",
     },
 
     /**
-     * Defining and adding buttons to the ButtonPane one by one
-     * OK, Cancel and Help.
+     * Vertical predefined buttons same width.
      */
     createButtonPane6 : function()
     {
@@ -302,8 +296,7 @@ qx.Class.define("qxe.demo.Application",
     },
 
     /**
-     * Defining and adding buttons to the ButtonPane one by one
-     * OK, Cancel and Help without size constraint.
+     * Vertical predefined buttons and optimized width.
      */
     createButtonPane7 : function()
     {
