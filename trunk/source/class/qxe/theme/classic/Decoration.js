@@ -76,8 +76,6 @@ qx.Theme.define("qxe.theme.classic.Decoration",
 
     "visual-pane" :
     {
-      decorator: qx.ui.decoration.Single,
-
       style :
       {
         backgroundColor : "visual-pane-background",

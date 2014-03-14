@@ -17,11 +17,11 @@
 
 /* ************************************************************************
 
-#asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
+@asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
+@asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
+@asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
 
-#asset(qxe/demo/*)
+@asset(qxe/demo/*)
 
 ************************************************************************ */
 
@@ -43,9 +43,9 @@ qx.Class.define("qxe.demo.Application",
   members :
   {
     /**
-     * This method contains the initial application code and gets called 
+     * This method contains the initial application code and gets called
      * during startup of the application
-     * 
+     *
      * @lint ignoreDeprecated(alert)
      */
     main : function()
@@ -70,7 +70,7 @@ qx.Class.define("qxe.demo.Application",
 
       // Document is the application root
       var doc = this.getRoot();
-			
+
       // Add button to document at fixed coordinates
       doc.add(new qx.ui.basic.Label("Default with custom and predefined buttons"), {left: 100, top: 35});
       doc.add(this.createButtonPane1(), {left: 100, top: 50});
@@ -94,13 +94,17 @@ qx.Class.define("qxe.demo.Application",
       doc.add(this.createButtonPane7(), {left: 350, top: 150});
     },
 
+    /**
+     * Defining and adding buttons to the ButtonPane one by one
+     * Send, Cancel and Help.
+     */
     createButtonPane1 : function()
     {
       var buttonPane = new qxe.ui.form.ButtonPane();
 
       var sendB = new qx.ui.form.Button("Send", "icon/16/actions/dialog-ok.png");
       sendB.addListener("execute", function() {
-        alert("You pressed the Send button!");
+        this.debug("You pressed the Send button!");
       }, this);
 
       buttonPane.add(sendB);
@@ -108,7 +112,7 @@ qx.Class.define("qxe.demo.Application",
       var cancelB = new qx.ui.form.Button();
       cancelB.set(qxe.ui.form.ButtonPane.CANCEL);
       cancelB.addListener("execute", function() {
-        alert("You pressed the Cancel button!");
+        this.debug("You pressed the Cancel button!");
       }, this);
 
       buttonPane.add(cancelB);
@@ -116,7 +120,7 @@ qx.Class.define("qxe.demo.Application",
       var helpB = new qx.ui.form.Button();
       helpB.set(qxe.ui.form.ButtonPane.HELP);
       helpB.addListener("execute", function() {
-        alert("You pressed the Help button!");
+        this.debug("You pressed the Help button!");
       }, this);
 
       buttonPane.add(helpB);
@@ -124,13 +128,17 @@ qx.Class.define("qxe.demo.Application",
       return buttonPane;
     },
 
+    /**
+     * Defining and adding buttons to the ButtonPane one by one
+     * OK, Cancel and Help.
+     */
     createButtonPane2 : function()
     {
       var buttonPane = new qxe.ui.form.ButtonPane(null, 8);
 
       var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
       okB.addListener("execute", function() {
-        alert("You pressed the OK button!");
+        this.debug("You pressed the OK button!");
       }, this);
 
       buttonPane.add(okB);
@@ -138,7 +146,7 @@ qx.Class.define("qxe.demo.Application",
       var cancelB = new qx.ui.form.Button();
       cancelB.set(qxe.ui.form.ButtonPane.CANCEL);
       cancelB.addListener("execute", function() {
-        alert("You pressed the Cancel button!");
+        this.debug("You pressed the Cancel button!");
       }, this);
 
       buttonPane.add(cancelB);
@@ -146,14 +154,18 @@ qx.Class.define("qxe.demo.Application",
       var helpB = new qx.ui.form.Button();
       helpB.set(qxe.ui.form.ButtonPane.HELP);
       helpB.addListener("execute", function() {
-        alert("You pressed the Help button!");
+        this.debug("You pressed the Help button!");
       }, this);
-    
+
       buttonPane.add(helpB);
 
       return buttonPane;
     },
 
+    /**
+     * Defining and adding buttons to the ButtonPane one by one
+     * OK, Cancel and Help without size constraint.
+     */
     createButtonPane3 : function()
     {
       var buttonPane = new qxe.ui.form.ButtonPane();
@@ -161,7 +173,7 @@ qx.Class.define("qxe.demo.Application",
 
       var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
       okB.addListener("execute", function() {
-        alert("You pressed the OK button!");
+        this.debug("You pressed the OK button!");
       }, this);
 
       buttonPane.add(okB, "affirmative");
@@ -169,7 +181,7 @@ qx.Class.define("qxe.demo.Application",
       var cancelB = new qx.ui.form.Button();
       cancelB.set(qxe.ui.form.ButtonPane.CANCEL);
       cancelB.addListener("execute", function() {
-        alert("You pressed the Cancel button!");
+        this.debug("You pressed the Cancel button!");
       }, this);
 
       buttonPane.add(cancelB, "cancel");
@@ -177,14 +189,18 @@ qx.Class.define("qxe.demo.Application",
       var helpB = new qx.ui.form.Button();
       helpB.set(qxe.ui.form.ButtonPane.HELP);
       helpB.addListener("execute", function() {
-        alert("You pressed the Help button!");
+        this.debug("You pressed the Help button!");
       }, this);
-    
+
       buttonPane.add(helpB, "help");
 
       return buttonPane;
     },
 
+    /**
+     * Defining and adding buttons to the ButtonPane one by one
+     * OK, Cancel and Help.
+     */
     createButtonPane4 : function()
     {
       var buttonPane = new qxe.ui.form.ButtonPane();
@@ -192,7 +208,7 @@ qx.Class.define("qxe.demo.Application",
       var yesB = new qx.ui.form.Button();
       yesB.set(qxe.ui.form.ButtonPane.YES);
       yesB.addListener("execute", function() {
-        alert("You pressed the Yes button!");
+        this.debug("You pressed the Yes button!");
       }, this);
 
       buttonPane.add(yesB, "affirmative");
@@ -200,14 +216,18 @@ qx.Class.define("qxe.demo.Application",
       var noB = new qx.ui.form.Button();
       noB.set(qxe.ui.form.ButtonPane.NO);
       noB.addListener("execute", function() {
-        alert("You pressed the Yes button!");
+        this.debug("You pressed the Yes button!");
       }, this);
-    
+
       buttonPane.add(noB, "cancel");
 
       return buttonPane;
     },
 
+    /**
+     * Defining and adding buttons to the ButtonPane one by one
+     * OK, Cancel and Help customized by a json structure.
+     */
     createButtonPane5 : function()
     {
       var def = {
@@ -235,25 +255,29 @@ qx.Class.define("qxe.demo.Application",
 
       var buttonPane = new qxe.ui.form.ButtonPane.getInstance(def);
       buttonPane.getButtonByName("OK").addListener("execute", function() {
-        alert("You pressed the OK button!");
+        this.debug("You pressed the OK button!");
       }, this);
       buttonPane.getButtonByName("CANCEL").addListener("execute", function() {
-        alert("You pressed the Cancel button!");
+        this.debug("You pressed the Cancel button!");
       }, this);
       buttonPane.getButtonByName("HELP").addListener("execute", function() {
-        alert("You pressed the Help button!");
+        this.debug("You pressed the Help button!");
       }, this);
 
       return buttonPane;
     },
 
+    /**
+     * Defining and adding buttons to the ButtonPane one by one
+     * OK, Cancel and Help.
+     */
     createButtonPane6 : function()
     {
       var buttonPane = new qxe.ui.form.ButtonPane("vertical");
 
       var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
       okB.addListener("execute", function() {
-        alert("You pressed the OK button!");
+        this.debug("You pressed the OK button!");
       }, this);
 
       buttonPane.add(okB);
@@ -261,7 +285,7 @@ qx.Class.define("qxe.demo.Application",
       var cancelB = new qx.ui.form.Button();
       cancelB.set(qxe.ui.form.ButtonPane.CANCEL);
       cancelB.addListener("execute", function() {
-        alert("You pressed the Cancel button!");
+        this.debug("You pressed the Cancel button!");
       }, this);
 
       buttonPane.add(cancelB);
@@ -269,14 +293,18 @@ qx.Class.define("qxe.demo.Application",
       var helpB = new qx.ui.form.Button();
       helpB.set(qxe.ui.form.ButtonPane.HELP);
       helpB.addListener("execute", function() {
-        alert("You pressed the Help button!");
+        this.debug("You pressed the Help button!");
       }, this);
-    
+
       buttonPane.add(helpB);
 
       return buttonPane;
     },
 
+    /**
+     * Defining and adding buttons to the ButtonPane one by one
+     * OK, Cancel and Help without size constraint.
+     */
     createButtonPane7 : function()
     {
       var buttonPane = new qxe.ui.form.ButtonPane("vertical");
@@ -284,7 +312,7 @@ qx.Class.define("qxe.demo.Application",
 
       var okB = new qx.ui.form.Button("OK", "icon/16/actions/dialog-ok.png");
       okB.addListener("execute", function() {
-        alert("You pressed the OK button!");
+        this.debug("You pressed the OK button!");
       }, this);
 
       buttonPane.add(okB);
@@ -292,7 +320,7 @@ qx.Class.define("qxe.demo.Application",
       var cancelB = new qx.ui.form.Button();
       cancelB.set(qxe.ui.form.ButtonPane.CANCEL);
       cancelB.addListener("execute", function() {
-        alert("You pressed the Cancel button!");
+        this.debug("You pressed the Cancel button!");
       }, this);
 
       buttonPane.add(cancelB);
@@ -300,9 +328,9 @@ qx.Class.define("qxe.demo.Application",
       var helpB = new qx.ui.form.Button();
       helpB.set(qxe.ui.form.ButtonPane.HELP);
       helpB.addListener("execute", function() {
-        alert("You pressed the Help button!");
+        this.debug("You pressed the Help button!");
       }, this);
-    
+
       buttonPane.add(helpB);
 
       return buttonPane;

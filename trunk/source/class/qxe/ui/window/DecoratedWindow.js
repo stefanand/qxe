@@ -72,11 +72,11 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
     this._createChildControl("captionbar");
 
     // apply constructor parameters
-    if (icon) {
+    if (icon != null) {
       this.setIcon(icon);
     }
 
-    if (caption) {
+    if (caption != null) {
       this.setCaption(caption);
     }
 
@@ -196,6 +196,9 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
           control = new qx.ui.container.Composite(layout);
           this._addBefore(control, this.getChildControl("pane"));
 
+          // captionbar events
+          control.addListener("dblclick", this._onCaptionMouseDblClick, this);
+
           // register as move handle
           this._activateMoveHandle(control);
           break;
@@ -223,18 +226,6 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
       }
 
       return control || this.base(arguments, id);
-    },
-
-
-    /*
-    ---------------------------------------------------------------------------
-      PROPERTY APPLY ROUTINES
-    ---------------------------------------------------------------------------
-    */
-
-    // property apply
-    _applyCaptionBarChange : function(value, old) {
-      this._updateCaptionBar();
     },
 
 
@@ -280,6 +271,17 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
       }
     },
 
+
+    /*
+    ---------------------------------------------------------------------------
+      PROPERTY APPLY ROUTINES
+    ---------------------------------------------------------------------------
+    */
+
+    // property apply
+    _applyCaptionBarChange : function(value, old) {
+      this._updateCaptionBar();
+    },
 
     /*
     ---------------------------------------------------------------------------

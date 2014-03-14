@@ -17,10 +17,10 @@
 
 /* ************************************************************************
 
-#asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/dialog-apply.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
+@asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
+@asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
+@asset(qx/icon/${qx.icontheme}/16/actions/dialog-apply.png)
+@asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
 
 ************************************************************************ */
 
@@ -44,6 +44,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
 {
   extend : qx.ui.core.Widget,
 
+
   /*
   *****************************************************************************
      CONSTRUCTOR
@@ -51,8 +52,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
   */
 
   /**
-   * @param orientation {String} Orientation of the button pane
-   * @param spacing {Integer} The spacing between buttons of the button pane
+   * @param orientation {String} Orientation of the button pane.
+   * @param spacing {Integer} The spacing between buttons of the button pane.
    */
   construct : function(orientation, spacing)
   {
@@ -83,7 +84,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
   statics :
   {
     // Buttons
-    /** The OK button */     
+    /** The OK button */
     OK : {
       label : qx.locale.Manager.marktr("OK"),
       icon : "icon/16/actions/dialog-ok.png",
@@ -154,8 +155,8 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      *
      * Calls setOrientation(), setSpacing() and setButtons() functions.
      *
-     * @param json {object} The new value.
-     * @return {qxe.ui.form.ButtonPane} The newly created button pane.
+     * @param json {object} The json structure.
+     * @return {qxe.ui.form.ButtonPane} The created button pane.
      */
     getInstance : function(json)
     {
@@ -228,7 +229,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
      * This has been change for the button pane to be minimum width as default.
      *
      *   true  -> minimum width
-     *   false -> maximum width (flex:1)
+     *   false -> maximum width (flex : 1)
      */
     sizeConstraint :
     {
@@ -248,6 +249,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
   members :
   {
     __buttonOrder : [],
+
 
     /*
     ---------------------------------------------------------------------------
@@ -346,6 +348,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
       }
     },
 
+
     /*
     ---------------------------------------------------------------------------
       CHILD HANDLING
@@ -373,10 +376,11 @@ qx.Class.define("qxe.ui.form.ButtonPane",
           throw new Error("Incompatible child for ButtonPane: " + button);
         }
       }
+      var buttonOrder = this.__buttonOrder;
 
-      if(this.__buttonOrder.indexOf(button) != -1)
+      if(buttonOrder.indexOf(button) != -1)
       {
-        this.__buttonOrder.push(button);
+        buttonOrder.push(button);
       }
 
       var index = this._getChildren().length;
@@ -426,7 +430,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     addSpacer : function()
     {
       var spacer = new qx.ui.core.Spacer;
-      this._add(spacer, {flex:1});
+      this._add(spacer, {flex : 1});
 
       return spacer;
     },
@@ -446,6 +450,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
       return this.base(arguments, left, top, width, height);
     },
 
+    
     /*
     ---------------------------------------------------------------------------
       INTERNAL ROUTINES
@@ -535,7 +540,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
         else
         {
           var cancel = (constraints["cancel"] ? 1 : 0);
-  
+
           if(constraint == "help")
           {
             win ? this._addAfter(button, children[index - !!affirmative - !!cancel]) : this._addBefore(button, children[!!affirmative + !!cancel]);
@@ -580,7 +585,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
 
           widest = widest < width ? width : widest;
         }
- 
+
         // Set all button widths to widest
         for(var i = 0; i < len; i++)
         {
@@ -599,6 +604,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
         }
       }
     },
+
 
     /*
     ---------------------------------------------------------------------------
@@ -651,4 +657,3 @@ qx.Class.define("qxe.ui.form.ButtonPane",
     this._disposeArray("__buttonOrder");
   }
 });
-

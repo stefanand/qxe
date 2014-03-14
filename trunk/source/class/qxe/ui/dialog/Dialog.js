@@ -75,7 +75,8 @@ qx.Class.define("qxe.ui.dialog.Dialog",
     {
       check : "Boolean",
       init : false,
-      event : "changeModal"
+      event : "changeModal",
+      apply : "_applyModal"
     },
 
     /**
@@ -110,6 +111,15 @@ qx.Class.define("qxe.ui.dialog.Dialog",
 
   members :
   {
+    // overridden
+    /**
+     * @lint ignoreReferenceField(_forwardStates)
+     */
+    _forwardStates :
+    {
+      modal : true
+    },
+
     /*
     ---------------------------------------------------------------------------
       BASIC EVENT HANDLERS
@@ -151,6 +161,30 @@ qx.Class.define("qxe.ui.dialog.Dialog",
 
       this.base(arguments);
     },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      PROPERTY APPLY ROUTINES
+    ---------------------------------------------------------------------------
+    */
+
+    // property apply
+    _applyModal : function(value, old)
+    {
+      if (old) {
+        this.removeState("modal");
+      } else {
+        this.addState("modal");
+      }
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      USER API
+    ---------------------------------------------------------------------------
+    */
 
     // Augmented
     hide : function()

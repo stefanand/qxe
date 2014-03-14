@@ -43,8 +43,6 @@ qx.Theme.define("qxe.theme.modern.Decoration",
 
     "decorated-window-captionbar-active" :
     {
-      decorator : qx.ui.decoration.Grid,
-
       style : {
         baseImage : "decoration/window/captionbar-active.png"
       }
@@ -52,8 +50,6 @@ qx.Theme.define("qxe.theme.modern.Decoration",
 
     "decorated-window-captionbar-inactive" :
     {
-      decorator : qx.ui.decoration.Grid,
-
       style : {
         baseImage : "decoration/window/captionbar-inactive.png"
       }
@@ -67,8 +63,6 @@ qx.Theme.define("qxe.theme.modern.Decoration",
 
     "dialog" :
     {
-      decorator: qx.ui.decoration.Single,
-
       style :
       {
         backgroundColor : "background-pane",
@@ -87,8 +81,6 @@ qx.Theme.define("qxe.theme.modern.Decoration",
 
     "visual-pane" :
     {
-      decorator: qx.ui.decoration.Single,
-
       style :
       {
         backgroundColor : "visual-pane-background",
@@ -106,8 +98,6 @@ qx.Theme.define("qxe.theme.modern.Decoration",
 
     "webdesktop" :
     {
-      decorator: qx.ui.decoration.Single,
-
       style :
       {
         backgroundColor : "webdesktop-background"

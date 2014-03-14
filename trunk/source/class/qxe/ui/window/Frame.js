@@ -356,151 +356,6 @@ qx.Class.define("qxe.ui.window.Frame",
       }
     },
 
-    /**
-     * Set the window's position relative to its parent
-     *
-     * @param left {Integer} The left position
-     * @param top {Integer} The top position
-     */
-    moveTo : function(left, top)
-    {
-      if (this.isMaximized()) {
-        return;
-      }
-
-      this.base(arguments, left, top);
-    },
-
-    /**
-     * Return <code>true</code> if the window is in maximized state,
-     * but note that the window in maximized state could also be invisible, this
-     * is equivalent to minimized. So use the {@link qx.ui.window.Window#getMode}
-     * to get the window mode.
-     *
-     * @return {Boolean} <code>true</code> if the window is maximized,
-     *   <code>false</code> otherwise.
-     */
-    isMaximized : function()
-    {
-      return this.hasState("maximized");
-    },
-
-    /**
-     * Return the window mode as <code>String</code>:
-     * <code>"maximized"</code>, <code>"normal"</code> or <code>"minimized"</code>.
-     *
-     * @return {String} The window mode as <code>String</code> value.
-     */
-    getMode : function()
-    {
-      if(!this.isVisible()) {
-        return "minimized";
-      } else {
-        if(this.isMaximized()) {
-          return "maximized";
-        } else {
-          return "normal";
-        }
-      }
-    },
-
-    /*
-    ---------------------------------------------------------------------------
-      PROPERTY APPLY ROUTINES
-    ---------------------------------------------------------------------------
-    */
-
-    // property apply
-    _applyShowStatusbar : function(value, old)
-    {
-      // store the state if the status bar is shown
-      var resizeFrame = this._getResizeFrame();
-
-      if (value) {
-        this.addState("showStatusbar");
-        resizeFrame.addState("showStatusbar");
-      } else {
-        this.removeState("showStatusbar");
-        resizeFrame.removeState("showStatusbar");
-      }
-
-      if (value) {
-        this._showChildControl("statusbar");
-      } else {
-        this._excludeChildControl("statusbar");
-      }
-    },
-/*
-    // property apply
-    _applyStatusBarChange : function(value, old)
-    {
-      this._updateStatusBar();
-    },
-*/
-
-    /*
-    ---------------------------------------------------------------------------
-      BASIC EVENT HANDLERS
-    ---------------------------------------------------------------------------
-    */
-
-    /**
-     * Maximizes the window or restores it if it is already
-     * maximized.
-     *
-     * @param e {qx.event.type.Mouse} double click event
-     */
-    _onCaptionMouseDblClick : function(e)
-    {
-      if (this.getAllowMaximize()) {
-        this.isMaximized() ? this.restore() : this.maximize();
-      }
-    },
-
-    /*
-    ---------------------------------------------------------------------------
-      EVENTS FOR CAPTIONBAR BUTTONS
-    ---------------------------------------------------------------------------
-    */
-
-    /**
-     * Minimizes the window, removes all states from the minimize button and
-     * stops the further propagation of the event (calling {@link qx.event.type.Event#stopPropagation}).
-     *
-     * @param e {qx.event.type.Mouse} mouse click event
-     */
-    _onMinimizeButtonClick : function(e)
-    {
-      this.minimize();
-      this.getChildControl("minimize-button").reset();
-    },
-
-
-    /**
-     * Restores the window, removes all states from the restore button and
-     * stops the further propagation of the event (calling {@link qx.event.type.Event#stopPropagation}).
-     *
-     * @param e {qx.event.type.Mouse} mouse click event
-     */
-    _onRestoreButtonClick : function(e)
-    {
-      this.restore();
-      this.getChildControl("restore-button").reset();
-    },
-
-
-    /**
-     * Maximizes the window, removes all states from the maximize button and
-     * stops the further propagation of the event (calling {@link qx.event.type.Event#stopPropagation}).
-     *
-     * @param e {qx.event.type.Mouse} mouse click event
-     */
-    _onMaximizeButtonClick : function(e)
-    {
-      this.maximize();
-      this.getChildControl("maximize-button").reset();
-    },
-
 
     /*
     ---------------------------------------------------------------------------
@@ -610,6 +465,158 @@ qx.Class.define("qxe.ui.window.Frame",
         // Fire user event
         this.fireEvent("restore");
       }
+    },
+
+
+    /**
+     * Set the window's position relative to its parent
+     *
+     * @param left {Integer} The left position
+     * @param top {Integer} The top position
+     */
+    moveTo : function(left, top)
+    {
+      if (this.isMaximized()) {
+        return;
+      }
+
+      this.base(arguments, left, top);
+    },
+
+    /**
+     * Return <code>true</code> if the window is in maximized state,
+     * but note that the window in maximized state could also be invisible, this
+     * is equivalent to minimized. So use the {@link qx.ui.window.Window#getMode}
+     * to get the window mode.
+     *
+     * @return {Boolean} <code>true</code> if the window is maximized,
+     *   <code>false</code> otherwise.
+     */
+    isMaximized : function()
+    {
+      return this.hasState("maximized");
+    },
+
+    /**
+     * Return the window mode as <code>String</code>:
+     * <code>"maximized"</code>, <code>"normal"</code> or <code>"minimized"</code>.
+     *
+     * @return {String} The window mode as <code>String</code> value.
+     */
+    getMode : function()
+    {
+      if(!this.isVisible()) {
+        return "minimized";
+      } else {
+        if(this.isMaximized()) {
+          return "maximized";
+        } else {
+          return "normal";
+        }
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
+      PROPERTY APPLY ROUTINES
+    ---------------------------------------------------------------------------
+    */
+
+    // property apply
+    _applyShowStatusbar : function(value, old)
+    {
+      // store the state if the status bar is shown
+      var resizeFrame = this._getResizeFrame();
+
+      if (value) {
+        this.addState("showStatusbar");
+        resizeFrame.addState("showStatusbar");
+      } else {
+        this.removeState("showStatusbar");
+        resizeFrame.removeState("showStatusbar");
+      }
+
+      if (value) {
+        this._showChildControl("statusbar");
+      } else {
+        this._excludeChildControl("statusbar");
+      }
+    },
+
+    // property apply
+    _applyCaptionBarChange : function(value, old) {
+      this._updateCaptionBar();
+    },
+
+/*
+    // property apply
+    _applyStatusBarChange : function(value, old)
+    {
+      this._updateStatusBar();
+    },
+*/
+
+    /*
+    ---------------------------------------------------------------------------
+      BASIC EVENT HANDLERS
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Maximizes the window or restores it if it is already
+     * maximized.
+     *
+     * @param e {qx.event.type.Mouse} double click event
+     */
+    _onCaptionMouseDblClick : function(e)
+    {
+      if (this.getAllowMaximize()) {
+        this.isMaximized() ? this.restore() : this.maximize();
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
+      EVENTS FOR CAPTIONBAR BUTTONS
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Minimizes the window, removes all states from the minimize button and
+     * stops the further propagation of the event (calling {@link qx.event.type.Event#stopPropagation}).
+     *
+     * @param e {qx.event.type.Mouse} mouse click event
+     */
+    _onMinimizeButtonClick : function(e)
+    {
+      this.minimize();
+      this.getChildControl("minimize-button").reset();
+    },
+
+
+    /**
+     * Restores the window, removes all states from the restore button and
+     * stops the further propagation of the event (calling {@link qx.event.type.Event#stopPropagation}).
+     *
+     * @param e {qx.event.type.Mouse} mouse click event
+     */
+    _onRestoreButtonClick : function(e)
+    {
+      this.restore();
+      this.getChildControl("restore-button").reset();
+    },
+
+
+    /**
+     * Maximizes the window, removes all states from the maximize button and
+     * stops the further propagation of the event (calling {@link qx.event.type.Event#stopPropagation}).
+     *
+     * @param e {qx.event.type.Mouse} mouse click event
+     */
+    _onMaximizeButtonClick : function(e)
+    {
+      this.maximize();
+      this.getChildControl("maximize-button").reset();
     }
   }
 });
