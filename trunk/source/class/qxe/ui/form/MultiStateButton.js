@@ -37,7 +37,7 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
   /**
    * Creates a MultiStateButton.
    *
-   * @param command {qx.ui.core.Command?null} Command instance to connect with
+   * @param command {qx.ui.core.Command?null} - Command instance to connect with
    */
   construct : function(command)
   {
@@ -108,8 +108,7 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
     /**
      * Calculates the biggest size; height and width, for non-dynamic size behaviour.
      *
-     * @param atom {json} Button state json definition.
-     * @return {void}
+     * @param atom {String} - Button state json definition.
      */
     __calcSize : function(atom)
     {
@@ -164,8 +163,7 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
      * <li>Adds "hovered" state (if "abandoned" state is not set)</li>
      *</ul>
      *
-     * @param e {Event} Mouse event
-     * @return {void}
+     * @param e {qx.event.type.Event} - Mouse event
      */
     _onMouseUp : function(e)
     {
@@ -179,8 +177,7 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
      * Removes "abandoned" and "pressed" state (if "pressed" state is set)
      * for the keys "Enter" or "Space"
      *
-     * @param e {Event} Key event
-     * @return {void}
+     * @param e {qx.event.type.Event} - Key event
      */
     _onKeyUp : function(e)
     {
@@ -198,9 +195,9 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
     /**
      * Adds a button state to the multistate button.
      *
-     * @param label {String} The label which should be added.
-     * @param icon {String} The icon which should be added.
-     * @param toolTipText {String} The tooltip text which should be added.
+     * @param label {String} - The label which should be added.
+     * @param icon {String} - The icon which should be added.
+     * @param toolTipText {String} - The tooltip text which should be added.
      */
     addButtonState : function(label, icon, toolTipText)
     {
@@ -226,16 +223,16 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
       }
 
       // Set selection
-			if(atoms.length == 1)
-			{
-				this.setSelection(0);
-			}
+      if(atoms.length == 1)
+      {
+        this.setSelection(0);
+      }
     },
 
     /**
      * Removes a button state from the MultiStateButton.
      *
-     * @param index {Integer} The button state index to be removed.
+     * @param index {Integer} - The button state index to be removed.
      */
     removeButtonState : function(index)
     {
@@ -247,11 +244,11 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
         if (index == 0)
         {
           if (atoms[1])
-					{
+          {
             this.setSelection(1);
           }
-					else
-					{
+          else
+          {
             this.resetSelection();
           }
         }
@@ -288,7 +285,7 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
      * Replaces current selection with the given items.
      *
      * @param items {qx.ui.core.Widget[]} Items to select.
-     * @throws an exception if the item is not a child element.
+     * @throws {Error} if the item is not a child element.
      */
     setSelection : function(items)
     {
@@ -311,9 +308,9 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
     /**
      * Detects whether the given item is currently selected.
      *
-     * @param item {qx.ui.core.Widget} Any valid selectable item
-     * @return {Boolean} Whether the item is selected.
-     * @throws an exception if the item is not a child element.
+     * @param item {qx.ui.core.Widget} - Any valid selectable item
+     * @return {Boolean} - Whether the item is selected.
+     * @throws {Error} if the item is not a child element.
      */
     isSelected : function(item) {
       return item == this.__selection;
@@ -322,7 +319,7 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
     /**
      * Whether the selection is empty.
      *
-     * @return {Boolean} Whether the selection is empty.
+     * @return {Boolean} - Whether the selection is empty.
      */
     isSelectionEmpty : function() {
       return false;
@@ -331,9 +328,9 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
     /**
      * Returns all elements which are selectable.
      *
-     * @param all {boolean} true for all selectables, false for the
-     *   selectables the user can interactively select
-     * @return {qx.ui.core.Widget[]} The contained items.
+     * @param all {Boolean} - true for all selectables, false for the
+     *                        selectables the user can interactively select
+     * @return {qx.ui.core.Widget[]} - The contained items.
      */
     getSelectables: function(all) {
       return this.__atoms;

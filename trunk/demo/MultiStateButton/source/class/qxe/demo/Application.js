@@ -17,12 +17,12 @@
 
 /* ************************************************************************
 
-#asset(qxe/icon/ui/control/audio-volume-muted.png)
-#asset(qxe/icon/ui/control/audio-volume-low.png)
-#asset(qxe/icon/ui/control/audio-volume-medium.png)
-#asset(qxe/icon/ui/control/audio-volume-high.png)
+@asset(qxe/icon/ui/control/audio-volume-muted.png)
+@asset(qxe/icon/ui/control/audio-volume-low.png)
+@asset(qxe/icon/ui/control/audio-volume-medium.png)
+@asset(qxe/icon/ui/control/audio-volume-high.png)
 
-#asset(qxe/demo/*)
+@asset(qxe/demo/*)
 
 ************************************************************************ */
 
@@ -91,3 +91,4 @@ qx.Class.define("qxe.demo.Application",
     }
   }
 });
+

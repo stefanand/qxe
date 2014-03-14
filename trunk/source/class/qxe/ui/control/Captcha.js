@@ -17,11 +17,11 @@
 
 /* ************************************************************************
 
-#asset(qx/icon/${qx.icontheme}/16/actions/view-refresh.png)
+@asset(qx/icon/${qx.icontheme}/16/actions/view-refresh.png)
 
-#asset(qxe/icon/ui/control/text.png)
-#asset(qxe/icon/ui/control/audio-volume-high.png)
-#asset(qxe/icon/ui/control/help-browser.png)
+@asset(qxe/icon/ui/control/text.png)
+@asset(qxe/icon/ui/control/audio-volume-high.png)
+@asset(qxe/icon/ui/control/help-browser.png)
 
 ************************************************************************ */
 
@@ -219,7 +219,7 @@ qx.Class.define("qxe.ui.control.Captcha",
     /**
      * Listens to the "appear" event to display the received captcha image.
      *
-     * @param e {qx.event.type.Appear} focus event
+     * @param e {qx.event.type.Appear} - focus event
      */
     _onAppearCaptchaImage : function(e)
     {
@@ -230,7 +230,7 @@ qx.Class.define("qxe.ui.control.Captcha",
     /**
      * Listens to the "source" event to display the new captcha image.
      *
-     * @param e {qx.event.type.Appear} focus event
+     * @param e {qx.event.type.Appear} - focus event
      */
     _onSourceChange : function(e)
     {
@@ -246,7 +246,7 @@ qx.Class.define("qxe.ui.control.Captcha",
     /**
      * Listens to the "loaded" event to display the loaded captcha image.
      *
-     * @param e {qx.event.type.Appear} focus event
+     * @param e {qx.event.type.Appear} - focus event
      */
     _onLoaded : function(e)
     {
@@ -262,7 +262,7 @@ qx.Class.define("qxe.ui.control.Captcha",
     /**
      * Listens to the "loadingFailed" event to act on failed loading of captcha image.
      *
-     * @param e {qx.event.type.Appear} focus event
+     * @param e {qx.event.type.Appear} - focus event
      */
     _onLoadingFailed : function(e)
     {
@@ -278,7 +278,7 @@ qx.Class.define("qxe.ui.control.Captcha",
     /**
      * Listens to the "input" event on input of captcha code.
      *
-     * @param e {qx.event.type.Appear} focus event
+     * @param e {qx.event.type.Appear} - focus event
      */
     _onInput : function(e)
     {
@@ -287,7 +287,7 @@ qx.Class.define("qxe.ui.control.Captcha",
     /**
      * Listens to the "appear" event to display the received captcha image.
      *
-     * @param e {qx.event.type.Appear} focus event
+     * @param e {qx.event.type.Appear} - focus event
      */
     _onExecuteUpdate : function(e)
     {
@@ -298,7 +298,7 @@ qx.Class.define("qxe.ui.control.Captcha",
     /**
      * Listens to the "appear" event to display the received captcha image.
      *
-     * @param e {qx.event.type.Appear} focus event
+     * @param e {qx.event.type.Appear} - focus event
      */
     _onExecuteSound : function(e)
     {
@@ -308,7 +308,7 @@ qx.Class.define("qxe.ui.control.Captcha",
     /**
      * Listens to the "execute" event to display help.
      *
-     * @param e {qx.event.type.Execute} execute event
+     * @param e {qx.event.type.Execute} - execute event
      */
     _onExecuteHelp : function(e)
     {
@@ -316,4 +316,3 @@ qx.Class.define("qxe.ui.control.Captcha",
     }
   }
 });
-
