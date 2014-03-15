@@ -41,19 +41,7 @@ qx.Theme.define("qxe.theme.modern.Decoration",
     ---------------------------------------------------------------------------
     */
 
-    "decorated-window-captionbar-active" :
-    {
-      style : {
-        baseImage : "decoration/window/captionbar-active.png"
-      }
-    },
-
-    "decorated-window-captionbar-inactive" :
-    {
-      style : {
-        baseImage : "decoration/window/captionbar-inactive.png"
-      }
-    },
+    "decorated-window-resize-frame" : "window-resize-frame",
 
     /*
     ---------------------------------------------------------------------------
@@ -105,4 +93,3 @@ qx.Theme.define("qxe.theme.modern.Decoration",
     }
   }
 });
-

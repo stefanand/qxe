@@ -15,12 +15,11 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-@ asset(qxe/decoration/Classic/*)
-
-************************************************************************* */
-
+/**
+ *
+ * @asset(qxe/decoration/Classic/*)
+ *
+ */
 qx.Theme.define("qxe.theme.classic.Appearance",
 {
   title : "qxe classic appearance theme",
@@ -88,10 +87,13 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     },
 
     "calendar/previous-button-tooltip" : "tooltip",
+
     "calendar/next-button-tooltip" : "tooltip",
 
     "calendar/previous-button"  : "calendar/button",
+
     "calendar/next-button" : "calendar/button",
+
     "calendar/button/icon" : {},
 
     "calendar/button" :
@@ -150,7 +152,7 @@ qx.Theme.define("qxe.theme.classic.Appearance",
           };
         }
       },
-      
+
       "month-pane/weekday" :
       {
         style : function(states)
@@ -207,6 +209,7 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     */
 
     "captcha" : "widget",
+
     "captcha/captcha-box" : "groupbox",
 
     /*
@@ -232,9 +235,13 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     */
 
     "decorated-window" : "window",
+
     "decorated-window/captionbar" : "window/captionbar",
+
     "decorated-window/icon" : "window/icon",
+
     "decorated-window/title" : "window/title",
+
     "decorated-window/close-button" : "window/close-button",
 
     /*
@@ -281,11 +288,17 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     },
 
     "document-viewer/fit-pane" : "toolbar/part",
+
     "document-viewer/zoom-pane" : "toolbar/part",
+
     "document-viewer/orientation-pane" : "toolbar/part",
+
     "document-viewer/location-pane" : "toolbar/part",
+
     "document-viewer/tool-pane" : "toolbar/part",
+
     "document-viewer/search-pane" : "toolbar/part",
+
     "document-viewer/scroll-pane" : "scrollarea",
 
     /*
@@ -294,11 +307,24 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     ---------------------------------------------------------------------------
     */
 
-    "frame" : "window",
+    "frame" :
+    {
+      include : "window",
+      alias : "window",
+
+      style : function(states)
+      {
+        return {
+          decorator : states.maximized ? undefined : "window"
+        };
+      }
+    },
+    
     "frame/minimize-button" : "window/minimize-button",
+
     "frame/restore-button" : "window/restore-button",
+
     "frame/maximize-button" : "window/maximize-button",
-    "frame/statusbar/message" : "statusbar/message",
 
     /*
     ---------------------------------------------------------------------------
@@ -411,6 +437,7 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     },
 
     "webdesktop/pane" : "desktop",
+
     "webdesktop/object" : "hover-button",
 /*    {
       alias : "atom",
@@ -425,6 +452,25 @@ qx.Theme.define("qxe.theme.classic.Appearance",
       }
     },
 */
+
+    /*
+    ---------------------------------------------------------------------------
+      WINDOW
+    ---------------------------------------------------------------------------
+    */
+
+    // Overrides qx.ui.window.Window theme definition
+    "window" :
+    {
+      style : function(states)
+      {
+        return {
+          contentPadding : [ 10, 10, 10, 10 ],
+          backgroundColor : "background"
+        };
+      }
+    },
+
     /*
     ---------------------------------------------------------------------------
       WIZARD
@@ -432,7 +478,7 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     */
 
     "wizard" : "widget",
+
     "wizard-page" : "groupbox"
   }
 });
-

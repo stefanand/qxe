@@ -23,7 +23,7 @@
        - change of statusbar implementing qxe.ui.statusbar.StatusBar
        - added addStatusBar function
        - removed status text
-       - removed DEFAULT_WINDOW_MANAGER to Desktop to make Desktop independent 
+       - removed DEFAULT_WINDOW_MANAGER to Desktop to make Desktop independent
          Window and open up for different window manager classes.
        ! Try to remove Table's dependence on Window
        -----
@@ -36,8 +36,6 @@
  * A window widget
  *
  * More information can be found in the package description {@link qxe.ui.window}.
- *
- * @state maximized Whether the window is maximized
  *
  * @childControl minimize-button {qx.ui.form.Button} button to minimize the window
  * @childControl restore-button {qx.ui.form.Button} button to restore the window
@@ -60,12 +58,9 @@ qx.Class.define("qxe.ui.window.Frame",
    * @param icon {String} The URL of the caption bar icon
    * @param statusbar {qxe.ui.statusbar.StatusBar} The statusbar of the Frame
    */
-  construct : function(caption, icon)
+  construct : function(caption, icon, statusbar)
   {
     this.base(arguments, caption, icon);
-
-    // captionbar events
-    this.getChildControl("captionbar").addListener("dblclick", this._onCaptionMouseDblClick, this);
 
     this._createChildControl("statusbar");
 
@@ -558,25 +553,6 @@ qx.Class.define("qxe.ui.window.Frame",
 
     /*
     ---------------------------------------------------------------------------
-      BASIC EVENT HANDLERS
-    ---------------------------------------------------------------------------
-    */
-
-    /**
-     * Maximizes the window or restores it if it is already
-     * maximized.
-     *
-     * @param e {qx.event.type.Mouse} double click event
-     */
-    _onCaptionMouseDblClick : function(e)
-    {
-      if (this.getAllowMaximize()) {
-        this.isMaximized() ? this.restore() : this.maximize();
-      }
-    },
-
-    /*
-    ---------------------------------------------------------------------------
       EVENTS FOR CAPTIONBAR BUTTONS
     ---------------------------------------------------------------------------
     */
@@ -620,4 +596,3 @@ qx.Class.define("qxe.ui.window.Frame",
     }
   }
 });
-

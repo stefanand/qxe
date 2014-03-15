@@ -15,15 +15,14 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-@asset(qx/icon/Tango/16/actions/dialog-cancel.png)
-@asset(qx/icon/Tango/16/actions/dialog-ok.png)
-
-@ asset(qx/decoration/Modern/*)
-
-************************************************************************* */
-
+/**
+ *
+ * @asset(qx/icon/Tango/16/actions/dialog-cancel.png)
+ * @asset(qx/icon/Tango/16/actions/dialog-ok.png)
+ *
+ * @asset(qx/decoration/Modern/*)
+ *
+ */
 qx.Theme.define("qxe.theme.modern.Appearance",
 {
   title : "qxe modern appearance theme",
@@ -124,9 +123,11 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     },
 
     "calendar/previous-button-tooltip" : "tooltip",
+
     "calendar/next-button-tooltip" : "tooltip",
 
     "calendar/previous-button" : "calendar/nav-button",
+
     "calendar/next-button" : "calendar/nav-button",
 
     "calendar/label" :
@@ -208,6 +209,7 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     */
 
     "captcha" : "widget",
+
     "captcha/captcha-box" : "groupbox",
 
     /*
@@ -233,9 +235,13 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     */
 
     "decorated-window" : "window",
+
     "decorated-window/captionbar" : "window/captionbar",
+
     "decorated-window/icon" : "window/icon",
+
     "decorated-window/title" : "window/title",
+
     "decorated-window/close-button" : "window/close-button",
 
     /*
@@ -282,12 +288,19 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     },
 
     "document-viewer/fit-pane" : "toolbar/part",
+
     "document-viewer/zoom-pane" : "toolbar/part",
+
     "document-viewer/orientation-pane" : "toolbar/part",
+
     "document-viewer/location-pane" : "toolbar/part",
+
     "document-viewer/tool-pane" : "toolbar/part",
+
     "document-viewer/search-pane" : "toolbar/part",
+
     "document-viewer/scroll-pane" : "scrollarea",
+
     "document-viewer/scroll-pane/pane" :
     {
       style : function(states)
@@ -304,11 +317,24 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     ---------------------------------------------------------------------------
     */
 
-    "frame" : "window",
+    "frame" :
+    {
+      include : "window",
+      alias : "window",
+
+      style : function(states)
+      {
+        return {
+          margin : states.maximized ? 0 : [0, 5, 5, 0]
+        };
+      }
+    },
+
     "frame/minimize-button" : "window/minimize-button",
+
     "frame/restore-button" : "window/restore-button",
+
     "frame/maximize-button" : "window/maximize-button",
-    "frame/statusbar/message" : "statusbar/message",
 
     /*
     ---------------------------------------------------------------------------
@@ -433,6 +459,7 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     },
 
     "webdesktop/pane" : "desktop",
+
     "webdesktop/object" : "hover-button",
 /*    {
       alias : "atom",
@@ -447,6 +474,25 @@ qx.Theme.define("qxe.theme.modern.Appearance",
       }
     },
 */
+
+    /*
+    ---------------------------------------------------------------------------
+      WINDOW
+    ---------------------------------------------------------------------------
+    */
+
+    // Overrides qx.ui.window.Window theme definition
+    "window" :
+    {
+      style : function(states)
+      {
+        return {
+          decorator : states.showStatusbar ? "window-incl-statusbar" : "window",
+          contentPadding : [ 10, 10, 10, 10 ]
+        };
+      }
+    },
+
     /*
     ---------------------------------------------------------------------------
       WIZARD
@@ -455,6 +501,7 @@ qx.Theme.define("qxe.theme.modern.Appearance",
 
     // Inherits from respective parent
     "wizard" : "widget",
+
     "wizard-page" : "groupbox"
   }
 });

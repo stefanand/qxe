@@ -18,16 +18,19 @@
      * Fabian Jakobs (fjakobs)
      * Christian Hagendorn (chris_schmidt)
 
-   Revision: 28835->
+   Revision: release_3_5-348-g88a109c->
      * Stefan Andersson (sand)
        - removed status text
        - added functionality for a real statusbar, which can be added
-       - removed DEFAULT_WINDOW_MANAGER to Desktop to make Desktop independent 
+       - removed DEFAULT_WINDOW_MANAGER to Desktop to make Desktop independent
          Window and open up for different window manager classes.
        ! Try to remove Table's dependence on Window
        -----
-       - Window class split into two classes; Window and a superclass of Frame,
+       - Window class split into two classes; Window, DecoratedWindow and Frame,
          and a creation of a new class Dialog.
+      * TODO: Need to fix
+              - Unresponsive on clicking to get focus and move on top.
+              - Irresizable frame.
 
 ************************************************************************ */
 
@@ -300,17 +303,16 @@ qx.Class.define("qxe.ui.window.Window",
      */
     center : function(e)
     {
-			var parent;
-			var bounds;
+      var parent;
 
-			if(e instanceof qx.event.type.Data)
-			{
-      	parent = this.getLayoutParent();
-			}
-			else
-			{
-				parent = e;
-			}
+      if(e instanceof qx.event.type.Data)
+      {
+        parent = this.getLayoutParent();
+      }
+      else
+      {
+        parent = e;
+      }
 
       if (parent)
       {
@@ -433,4 +435,3 @@ qx.Class.define("qxe.ui.window.Window",
     }
   }
 });
-

@@ -18,16 +18,18 @@
      * Fabian Jakobs (fjakobs)
      * Christian Hagendorn (chris_schmidt)
 
-   Revision: 28835->
+   Revision: release_3_5-348-g88a109c->
      * Stefan Andersson (sand)
        - removed status text
        - added functionality for a real statusbar, which can be added
-       - removed DEFAULT_WINDOW_MANAGER to Desktop to make Desktop independent 
+       - removed DEFAULT_WINDOW_MANAGER to Desktop to make Desktop independent
          Window and open up for different window manager classes.
        ! Try to remove Table's dependence on Window
        -----
-       - Window class split into two classes; Window and a superclass of Frame,
+       - Window class split into three classes; Window, DecoratedWindow and Frame,
          and a creation of a new class Dialog.
+      * TODO: Need to fix
+              - Doesn't get focus and move on top when getting active by clicking.
 
 ************************************************************************ */
 
@@ -35,8 +37,6 @@
  * A window widget
  *
  * More information can be found in the package description {@link qx.ui.window}.
- *
- * @state active Whether the window is activated
  *
  * @childControl captionbar {qx.ui.container.Composite} Container for all widgets inside the captionbar
  * @childControl icon {qx.ui.basic.Image} icon at the left of the captionbar
@@ -84,7 +84,7 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
     this._updateCaptionBar();
 
     // change the resize frames appearance
-    this._getResizeFrame().setAppearance("window-resize-frame");
+    this._getResizeFrame().setAppearance("decorated-window-resize-frame");
   },
 
 
@@ -250,7 +250,7 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
         this._excludeChildControl("icon");
       }
 
-      var caption = this.getCaption()
+      var caption = this.getCaption();
       if (caption) {
         this.getChildControl("title").setValue(caption);
         this._showChildControl("title");
@@ -285,6 +285,25 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
 
     /*
     ---------------------------------------------------------------------------
+      BASIC EVENT HANDLERS
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Maximizes the window or restores it if it is already
+     * maximized.
+     *
+     * @param e {qx.event.type.Mouse} double click event
+     */
+    _onCaptionMouseDblClick : function(e)
+    {
+      if (this.getAllowMaximize()) {
+        this.isMaximized() ? this.restore() : this.maximize();
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
       EVENTS FOR CAPTIONBAR BUTTONS
     ---------------------------------------------------------------------------
     */
@@ -302,4 +321,3 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
     }
   }
 });
-

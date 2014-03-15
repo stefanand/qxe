@@ -15,13 +15,13 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qxe/decoration/Modern/dialog/icon/16/information.png)
-
-#asset(qxe/demo/*)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qxe/decoration/Modern/dialog/icon/16/information.png)
+ *
+ * @asset(qxe/demo/*)
+ *
+ */
 
 /**
  * This is the main application class of your custom application "qxe OptionPane"
@@ -41,9 +41,9 @@ qx.Class.define("qxe.demo.Application",
   members :
   {
     /**
-     * This method contains the initial application code and gets called 
+     * This method contains the initial application code and gets called
      * during startup of the application
-     * 
+     *
      * @lint ignoreDeprecated(alert)
      */
     main : function()
@@ -69,26 +69,24 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
-      var frame;
+      var counter = 0;
 
       var button = new qx.ui.form.Button("Press!");
       button.addListener("execute", function(e) {
-        if(!frame)
-        {
-          var label = new qx.ui.basic.Label("Just a label");
+        var label = new qx.ui.basic.Label("Just a label");
 
-          frame = new qxe.ui.window.Frame("Testing frame", "qxe/decoration/Modern/dialog/icon/16/information.png");
-          frame.setLayout(new qx.ui.layout.Canvas());
-          frame.setHeight(100);
-          frame.setWidth(100);
-          frame.add(label);
-          frame.moveTo(110, 60);
-          frame.show();
-        }
+        var frame = new qxe.ui.window.Frame("Testing frame", "qxe/decoration/Modern/dialog/icon/16/information.png");
+        frame.setLayout(new qx.ui.layout.Canvas());
+        frame.setHeight(100);
+        frame.setWidth(100);
+        frame.add(label);
+        frame.moveTo(150 + counter, 100 + counter);
+        frame.show();
+
+        counter += 20;
       }, this);
 
       doc.add(button, {left: 100, top: 50});
     }
   }
 });
-

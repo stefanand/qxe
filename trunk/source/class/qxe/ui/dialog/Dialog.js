@@ -35,9 +35,9 @@ qx.Class.define("qxe.ui.dialog.Dialog",
   /**
    * @param caption {String} The caption text
    */
-  construct : function(caption)
+  construct : function(caption, icon)
   {
-    this.base(arguments, caption);
+    this.base(arguments, caption, icon);
   },
 
 
@@ -199,4 +199,3 @@ qx.Class.define("qxe.ui.dialog.Dialog",
     }
   }
 });
-

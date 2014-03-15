@@ -15,11 +15,13 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qxe/demo/*)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qxe/decoration/Modern/dialog/icon/16/information.png)
+ *
+ * @asset(qxe/demo/*)
+ *
+ */
 
 /**
  * This is the main application class of your custom application "qxe OptionPane"
@@ -39,9 +41,9 @@ qx.Class.define("qxe.demo.Application",
   members :
   {
     /**
-     * This method contains the initial application code and gets called 
+     * This method contains the initial application code and gets called
      * during startup of the application
-     * 
+     *
      * @lint ignoreDeprecated(alert)
      */
     main : function()
@@ -67,23 +69,22 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
-      var dialog;
+      var counter = 0;
 
       var button = new qx.ui.form.Button("Press!");
       button.addListener("execute", function(e) {
-        if(!dialog)
-        {
           var label = new qx.ui.basic.Label("Just a label");
 
-          dialog = new qxe.ui.dialog.Dialog("Testing dialog");
+          var dialog = new qxe.ui.dialog.Dialog("Testing dialog", "qxe/decoration/Modern/dialog/icon/16/information.png");
           dialog.setLayout(new qx.ui.layout.Canvas());
           dialog.setHeight(100);
           dialog.setWidth(100);
           dialog.setBlocking(true);
           dialog.add(label);
-          dialog.moveTo(110, 60);
+          dialog.moveTo(150 + counter, 100 + counter);
           dialog.show();
-        }
+
+          counter += 20;
       }, this);
 
       doc.add(button, {left: 100, top: 50});
