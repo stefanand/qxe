@@ -36,13 +36,13 @@ qx.Class.define("qxe.ui.info.AnalogClock",
 //  this.setMinHeight(100);
 //  this.setMinWidth(100);
 
-  this._dial = [];
-  this._dots = [];
+    this._dial = [];
+    this._dots = [];
 
-  this._hours = [];
-  this._minutes = [];
-  this._seconds = [];
-	},
+    this._hours = [];
+    this._minutes = [];
+    this._seconds = [];
+  },
 
 
   /*
@@ -66,12 +66,12 @@ qx.Class.define("qxe.ui.info.AnalogClock",
     ---------------------------------------------------------------------------
     */
 
-		manualDial :
-		{
-			check : "Object",
-			nullable : true,
-			init : null
-		},
+    manualDial :
+    {
+      check : "Object",
+      nullable : true,
+      init : null
+    },
 
     /**
      * The face colour.
@@ -117,7 +117,7 @@ qx.Class.define("qxe.ui.info.AnalogClock",
       check : "Color",
       init : "#00ff00"
     }
-	},
+  },
 
 
   /*
@@ -144,28 +144,28 @@ qx.Class.define("qxe.ui.info.AnalogClock",
         case "image-pane":
           control = new qx.ui.basic.Image();
 
-					this._add(control);
+          this._add(control);
           break;
-			}
+      }
 
       return control || this.base(arguments, id);
     },
 
-		_applyElementData : function(el)
-		{
-			this.error(el);
-			var image = this.getManualDial();
+    _applyElementData : function(el)
+    {
+      this.error(el);
+      var image = this.getManualDial();
 
-			if(image)
-			{
-				this.add(image);
-			}
-			else
-			{
-				this._createDial(el);
-				this._createHands(el);
-			}
-		},
+      if(image)
+      {
+        this.add(image);
+      }
+      else
+      {
+        this._createDial(el);
+        this._createHands(el);
+      }
+    },
 
     // Face and dial dial[i]
     __createFace :function(dial, i)
@@ -220,8 +220,8 @@ qx.Class.define("qxe.ui.info.AnalogClock",
       return dot;
     },
 
-		_createDial : function(el)
-		{
+    _createDial : function(el)
+    {
       var dial = "3 4 5 6 7 8 9 10 11 12 1 2";
       dial = dial.split(" ");
 
@@ -230,14 +230,14 @@ qx.Class.define("qxe.ui.info.AnalogClock",
         el.appendChild(this.__createFace(dial[i], i));
         el.appendChild(this.__createDots(i));
       }
-		},
+    },
 
-		_createHands : function(el)
-		{
+    _createHands : function(el)
+    {
       this._createHourHand(el);
       this._createMinuteHand(el);
       this._createSecondHand(el);
-		},
+    },
 
     _createHourHand : function(el)
     {
@@ -314,8 +314,8 @@ qx.Class.define("qxe.ui.info.AnalogClock",
       }
     },
 
-		display : function(hours, minutes, seconds)
-		{
+    display : function(hours, minutes, seconds)
+    {
       var halfHeight = this.getHeight()/2;
       var halfWidth = this.getWidth()/2;
       var cyx = 30/4;
@@ -333,8 +333,9 @@ qx.Class.define("qxe.ui.info.AnalogClock",
       // Render second
       for (var i=0; i < second; i++)
       {
-        this._seconds[i].top = halfheight + (i*cyx) * Math.sin(second) + pix;
-        this._seconds[i].left = halfWidth + (i*cyx) * Math.cos(second) + pix;
+    	//TODO: What is pix? px? or...?
+        this._seconds[i].top = halfHeight + (i * cyx) * Math.sin(second);// + pix;
+        this._seconds[i].left = halfWidth + (i * cyx) * Math.cos(second);// + pix;
       }
 
       // Minute calculations
@@ -375,7 +376,7 @@ qx.Class.define("qxe.ui.info.AnalogClock",
         this._hours[i].top = halfHeight + (i*cyx) * Math.sin(hour) + pix;
         this._hours[i].left = halfWidth + (i*cyx) * Math.cos(hour) + pix;
       }
-		}
+    }
   },
 
 
@@ -385,10 +386,9 @@ qx.Class.define("qxe.ui.info.AnalogClock",
   *****************************************************************************
   */
 
-	destruct : function()
-	{
+  destruct : function()
+  {
     this.disposeObject("_dial", "_dots");
     this.disposeArray("_hours", "_minutes", "_seconds");
-	}
+  }
 });
-

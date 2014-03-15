@@ -15,15 +15,15 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-@asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
-@asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
-@asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
-
-@asset(qxe/demo/*)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
+ *
+ * @asset(qxe/demo/*)
+ *
+ */
 
 /**
  * This is the main application class of your custom application "qxe ButtonPane"

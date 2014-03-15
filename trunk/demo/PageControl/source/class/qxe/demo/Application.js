@@ -15,11 +15,11 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qxe/demo/*)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qxe/demo/*)
+ *
+ */
 
 /**
  * This is the main application class of your custom application "qxe Page Control indicator"
@@ -39,9 +39,9 @@ qx.Class.define("qxe.demo.Application",
   members :
   {
     /**
-     * This method contains the initial application code and gets called 
+     * This method contains the initial application code and gets called
      * during startup of the application
-     * 
+     *
      * @lint ignoreDeprecated(alert)
      */
     main : function()
@@ -73,4 +73,3 @@ qx.Class.define("qxe.demo.Application",
     }
   }
 });
-

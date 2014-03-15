@@ -143,4 +143,3 @@ qx.Class.define("qxe.ui.info.DigitalClock",
     }
   }
 });
-

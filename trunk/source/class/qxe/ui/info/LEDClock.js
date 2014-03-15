@@ -15,11 +15,11 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qxe/icon/ui/info/led/*)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qxe/icon/ui/info/led/*)
+ *
+ */
 
 /**
  * A LED clock.
@@ -43,7 +43,7 @@ qx.Class.define("qxe.ui.info.LEDClock",
     this._setLayout(new qx.ui.layout.Canvas());
 
     this._createChildControl("pane");
-	},
+  },
 
 
   /*
@@ -93,7 +93,7 @@ qx.Class.define("qxe.ui.info.LEDClock",
       check : "Boolean",
       init : true
     }
-	},
+  },
 
   /*
   *****************************************************************************
@@ -135,14 +135,14 @@ qx.Class.define("qxe.ui.info.LEDClock",
           control.add(new qx.ui.basic.Image());
           this._add(control);
           break;
-			}
+      }
 
       return control || this.base(arguments, id);
     },
 
     // overridden
-		display : function(hours, minutes, seconds)
-		{
+    display : function(hours, minutes, seconds)
+    {
       var am_pm = "";
 
       if(this.getShowHours() == 12)
@@ -197,7 +197,6 @@ qx.Class.define("qxe.ui.info.LEDClock",
       {
         children[8].setSource(path + "blank.gif");
       }
-		}
+    }
   }
 });
-

@@ -94,10 +94,10 @@ qx.Class.define("qxe.ui.info.Clock",
     },
 
     /*
-     * Central Daylight Time 
+     * Central Daylight Time
      * CDT is 5 hours behind of Coordinated Universal Time (UTC)
      *
-     * Note that CDT is a daylight saving time/summer time zone. It is generally only used during 
+     * Note that CDT is a daylight saving time/summer time zone. It is generally only used during
      * the summer in the places listed below, during the winter CST is used instead
      */
     CDT :
@@ -154,7 +154,7 @@ qx.Class.define("qxe.ui.info.Clock",
     /**
      * Called every clock interval.
      *
-     * @param userData {json} The user data transferred
+     * @param userData {String} The user data transferred
      * @param timerId {Number} The timer id
      */
     _onInterval : function(userData, timerId)
@@ -174,6 +174,10 @@ qx.Class.define("qxe.ui.info.Clock",
 
     /**
      * Display the clock.
+     * 
+     * @param hours {Integer}
+     * @param minutes {Integer}
+     * @param seconds {Integer}
      */
     display : function(hours, minutes, seconds)
     {
@@ -199,4 +203,3 @@ qx.Class.define("qxe.ui.info.Clock",
     }
   }
 });
-

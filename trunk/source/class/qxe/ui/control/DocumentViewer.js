@@ -27,30 +27,30 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qxe/icon/info/loading_content.gif)
-
-#asset(qx/icon/${qx.icontheme}/16/actions/document-print.png)
-
-#asset(qxe/icon/ui/control/documentviewer/thumbnails.gif)
-#asset(qxe/icon/ui/control/documentviewer/fitwidth.gif)
-#asset(qxe/icon/ui/control/documentviewer/fitpage.gif)
-#asset(qx/icon/${qx.icontheme}/16/actions/view-fullscreen.png)
-
-#asset(qx/icon/${qx.icontheme}/16/actions/zoom-in.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/zoom-out.png)
-
-#asset(qx/icon/${qx.icontheme}/16/actions/object-rotate-right.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/object-rotate-left.png)
-
-#asset(qxe/icon/ui/control/documentviewer/pointer.gif)
-#asset(qxe/icon/ui/control/documentviewer/textselect.gif)
-#asset(qxe/icon/ui/control/documentviewer/handtool.gif)
-
-#asset(qx/icon/${qx.icontheme}/16/actions/edit-find.png)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qxe/icon/ui/info/loading_content.gif)
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/document-print.png)
+ *
+ * @asset(qxe/icon/ui/control/documentviewer/thumbnails.gif)
+ * @asset(qxe/icon/ui/control/documentviewer/fitwidth.gif)
+ * @asset(qxe/icon/ui/control/documentviewer/fitpage.gif)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/view-fullscreen.png)
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/zoom-in.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/zoom-out.png)
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/object-rotate-right.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/object-rotate-left.png)
+ *
+ * @asset(qxe/icon/ui/control/documentviewer/pointer.gif)
+ * @asset(qxe/icon/ui/control/documentviewer/textselect.gif)
+ * @asset(qxe/icon/ui/control/documentviewer/handtool.gif)
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/edit-find.png)
+ *
+ */
 
 /**
  * A document flash viewer as known from native applications.
@@ -451,7 +451,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
             radioGroup.add(widget);
           }
 
-          widget = this._createChildControl("hand-tool-button")
+          widget = this._createChildControl("hand-tool-button");
           control.add(widget);
           radioGroup.add(widget);
           break;
@@ -642,7 +642,7 @@ qx.Class.define("qxe.ui.control.DocumentViewer",
     _onZoomChangeValue : function(e)
     {
       var flash = this.getChildControl("flash");
- 
+
       // Relative change in percent: 50% -> doubles the size, 200% -> halfs the size
       this.zoom(e.getData());
     },
@@ -687,7 +687,7 @@ this.debug("W="+newWidth+"   H="+newHeight);
     _onRotationChangeValue : function(e)
     {
       var flash = this.getChildControl("flash");
- 
+
 //      this.rotation(e.getData());
     },
 
@@ -744,6 +744,8 @@ this.debug("W="+newWidth+"   H="+newHeight);
 
     /**
      * @todo Show user dialog with error message. Negative is that it will be bound to another class.
+     * 
+     * @param func {Function}
      */
     callCustomFunction : function(func)
     {
@@ -830,6 +832,9 @@ this.debug("W="+newWidth+"   H="+newHeight);
     ---------------------------------------------------------------------------
     */
 
+    /**
+     * @param zoomValue {Integer}
+     */
     zoom : function(zoomValue)
     {
 /*      // Relative change in percent: 50% -> doubles the size, 200% -> halfs the size
@@ -847,7 +852,7 @@ this.debug("W="+newWidth+"   H="+newHeight);
     gotoPage : function(absolutePage)
     {
       var totalPages = this.getTotalPages();
- 
+
       if(absolutePage >= 1 && absolutePage <= totalPages)
       {
         this.getChildControl("flash").gotoFrame(absolutePage - 1);
@@ -883,17 +888,25 @@ this.debug("W="+newWidth+"   H="+newHeight);
     /**
      * Go to page in the document.
      *
+     * @return {}
      */
     getFlashElement : function()
     {
       return this.getChildControl("flash").getFlashElement();
     },
 
+    /**
+     * 
+     * @return {String}
+     */
     getSource : function()
     {
       return this.getChildControl("flash").getSource();
     },
 
+    /**
+     * @param source {String}
+     */
     setSource : function(source)
     {
 //      this.getChildControl("initiator");
@@ -917,11 +930,17 @@ this.debug("W="+newWidth+"   H="+newHeight);
       flashS.add(flash);
     },
 
+    /**
+     * @param param {String}
+     */
     setParam : function(param)
     {
 //      this.getChildControl("flash").getContentElement().setParam(param);
     },
 
+    /**
+     * @param variables {Map}
+     */
     setVariables : function(variables)
     {
 //      this.getChildControl("flash").setVariables(variables);
@@ -949,6 +968,11 @@ this.debug("W="+newWidth+"   H="+newHeight);
 
     /*
      * twips = 1440 units per inch, 72 points per inch -> x20 = twips
+     * 
+     * @param left {Integer}
+     * @param top {Integer}
+     * @param right {Integer}
+     * @param bottom {Integer}
      */
     zoomRectangle : function(left, top, right, bottom)
     {
@@ -962,6 +986,11 @@ this.debug("W="+newWidth+"   H="+newHeight);
       }
 */    },
 
+	/**
+	 * @param x {Integer}
+	 * @param y {Integer}
+	 * @param mode {Integer}
+	 */
     panPage : function(x, y, mode)
     {
 /*      var flash = this.getChildControl("flash");
@@ -973,4 +1002,3 @@ this.debug("W="+newWidth+"   H="+newHeight);
 */    }
   }
 });
-

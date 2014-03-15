@@ -15,15 +15,15 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-@asset(qx/icon/${qx.icontheme}/16/actions/view-refresh.png)
-
-@asset(qxe/icon/ui/control/text.png)
-@asset(qxe/icon/ui/control/audio-volume-high.png)
-@asset(qxe/icon/ui/control/help-browser.png)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/view-refresh.png)
+ *
+ * @asset(qxe/icon/ui/control/text.png)
+ * @asset(qxe/icon/ui/control/audio-volume-high.png)
+ * @asset(qxe/icon/ui/control/help-browser.png)
+ *
+ */
 
 qx.Class.define("qxe.ui.control.Captcha",
 {

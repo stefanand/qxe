@@ -15,12 +15,12 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qxe/icon/ui/info/binary/on.gif)
-#asset(qxe/icon/ui/info/binary/off.gif)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qxe/icon/ui/info/binary/on.gif)
+ * @asset(qxe/icon/ui/info/binary/off.gif)
+ *
+ */
 
 /**
  * ThinkGeek's Binary LED Clock displays the time in a graphical binary format.
@@ -48,7 +48,7 @@ qx.Class.define("qxe.ui.info.BinaryClock",
 
     // configure internal layout
     this._setLayout(new qx.ui.layout.Grid(2, 2));
-	},
+  },
 
 
   /*
@@ -65,7 +65,7 @@ qx.Class.define("qxe.ui.info.BinaryClock",
       refine : true,
       init : "binary-clock"
     }
-	},
+  },
 
   /*
   *****************************************************************************
@@ -76,8 +76,8 @@ qx.Class.define("qxe.ui.info.BinaryClock",
   members :
   {
     // overridden
-		display : function(hours, minutes, seconds)
-		{
+    display : function(hours, minutes, seconds)
+    {
       this.__resetPane();
 
       // Convert current time to binary
@@ -110,7 +110,7 @@ qx.Class.define("qxe.ui.info.BinaryClock",
           }
         }
       }
-		},
+    },
 
     /**
      * Creates the binary dots or turns off all binary dots if already created.
@@ -148,4 +148,3 @@ qx.Class.define("qxe.ui.info.BinaryClock",
     }
   }
 });
-

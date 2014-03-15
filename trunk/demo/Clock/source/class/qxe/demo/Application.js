@@ -15,13 +15,13 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-# asset(qxe/demo/info/LED.jpg)
-
-#asset(qxe/demo/*)
-
-************************************************************************ */
+/**
+ *
+ * @ asset(qxe/demo/info/LED.jpg)
+ *
+ * @asset(qxe/demo/*)
+ *
+ */
 
 /**
  * This is the main application class of your custom application "qxe Clock"
@@ -41,9 +41,9 @@ qx.Class.define("qxe.demo.Application",
   members :
   {
     /**
-     * This method contains the initial application code and gets called 
+     * This method contains the initial application code and gets called
      * during startup of the application
-     * 
+     *
      * @lint ignoreDeprecated(alert)
      */
     main : function()
@@ -83,10 +83,9 @@ qx.Class.define("qxe.demo.Application",
       doc.add(analogClock, {left: 50, top: 50});
       doc.add(binaryClock, {left: 50, top: 150});
       doc.add(ledClock1, {left: 50, top: 275});
-      doc.add(ledClock2, {left: 50, top: 300})
+      doc.add(ledClock2, {left: 50, top: 300});
       doc.add(digitalClock, {left: 50, top: 325});
       doc.add(internetClock, {left: 50, top: 350});
     }
   }
 });
-

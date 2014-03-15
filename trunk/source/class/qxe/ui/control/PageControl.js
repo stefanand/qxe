@@ -15,14 +15,14 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qx/icon/${qx.icontheme}/16/actions/go-first.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/go-previous.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/go-next.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/go-last.png)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/go-first.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/go-previous.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/go-next.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/go-last.png)
+ *
+ */
 
 /**
  * A page control pane to control the scrolling between pages.
@@ -34,8 +34,8 @@
  * @childControl num-pages-field {qx.ui.form.TextField} the total number of pages field
  * @childControl next-page-button {qx.ui.form.Button} go to next page button
  * @childControl last-page-button {qx.ui.form.Button} go to last page button
-
-   - backspace i current page fältet shall give previous page num
+ *
+ * - backspace i current page fältet shall give previous page num
  */
 qx.Class.define("qxe.ui.control.PageControl",
 {
@@ -297,4 +297,3 @@ qx.Class.define("qxe.ui.control.PageControl",
     }
   }
 });
-

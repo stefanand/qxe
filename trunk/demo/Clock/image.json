@@ -1,7 +1,6 @@
 {
   "jobs" :
   {
-    
     "image-combine" :
     {
       "desc" : "LED image combining",

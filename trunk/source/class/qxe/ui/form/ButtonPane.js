@@ -15,14 +15,14 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-@asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
-@asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
-@asset(qx/icon/${qx.icontheme}/16/actions/dialog-apply.png)
-@asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/dialog-apply.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
+ *
+ */
 
 /**
  * A button pane is a pane with a number of buttons. It can be a standardised
@@ -452,7 +452,7 @@ qx.Class.define("qxe.ui.form.ButtonPane",
       return this.base(arguments, left, top, width, height);
     },
 
-    
+
     /*
     ---------------------------------------------------------------------------
       INTERNAL ROUTINES

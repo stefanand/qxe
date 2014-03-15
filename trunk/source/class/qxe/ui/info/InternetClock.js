@@ -19,7 +19,7 @@
  * This class shows the Internet Time which is a time scheme designed by Swatch,
  * which divides the 24 hour day into 1000 "beats", measured from midnight in Biel,
  * Switzerland. As the Internet Time is the same all over the world this script would
- * be useful if you want to make an appointment. See www.swatch.com. 
+ * be useful if you want to make an appointment. See www.swatch.com.
  */
 qx.Class.define("qxe.ui.info.InternetClock",
 {
@@ -93,16 +93,15 @@ qx.Class.define("qxe.ui.info.InternetClock",
     display : function(hours, minutes, seconds)
     {
       // Biel MeanTime (BMT) is the universal reference for Internet Time.
-      var bmt = (new Date().getTimezoneOffset() + 60);  
+      var bmt = (new Date().getTimezoneOffset() + 60);
 
       var total = ((60 * hours + minutes + seconds/60 + bmt) * (1000 / 1440));
 
       var time = Math.floor(total);
       time = (time < 0) ? time + 1000 : time;
-      time = qxe.util.format.StringFormat.padZeros(time, 3)
+      time = qxe.util.format.StringFormat.padZeros(time, 3);
 
       this.getChildControl("pane").setValue("@" + time);
     }
   }
 });
-
