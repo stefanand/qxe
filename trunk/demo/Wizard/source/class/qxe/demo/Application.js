@@ -15,13 +15,13 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
-
-#asset(qxe/demo/*)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/dialog-ok.png)
+ *
+ * @asset(qxe/demo/*)
+ *
+ */
 
 /**
  * This is the main application class of your custom application "qxe"
@@ -41,9 +41,9 @@ qx.Class.define("qxe.demo.Application",
   members :
   {
     /**
-     * This method contains the initial application code and gets called 
+     * This method contains the initial application code and gets called
      * during startup of the application
-     * 
+     *
      * @lint ignoreDeprecated(alert)
      */
     main : function()
@@ -181,4 +181,3 @@ qx.Class.define("qxe.demo.Application",
     }
   }
 });
-

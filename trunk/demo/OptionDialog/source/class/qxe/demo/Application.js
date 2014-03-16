@@ -15,13 +15,13 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qxe/decoration/Modern/dialog/icon/48/warning.png)
-
-#asset(qxe/demo/*)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qxe/decoration/Modern/dialog/icon/48/warning.png)
+ *
+ * @asset(qxe/demo/*)
+ *
+ */
 
 /**
  * This is the main application class of your custom application "qxe OptionPane"
@@ -41,9 +41,9 @@ qx.Class.define("qxe.demo.Application",
   members :
   {
     /**
-     * This method contains the initial application code and gets called 
+     * This method contains the initial application code and gets called
      * during startup of the application
-     * 
+     *
      * @lint ignoreDeprecated(alert)
      */
     main : function()
@@ -76,11 +76,11 @@ qx.Class.define("qxe.demo.Application",
 
     dialog1 : function()
     {
-      var optionDialog;
+      var optionDialog = null;
 
       var button1 = new qx.ui.form.Button("Press 1!");
       button1.addListener("execute", function(e) {
-        if(!optionDialog)
+        if(optionDialog == null)
         {
           var buttonPane = {
             buttons : {
@@ -103,11 +103,11 @@ qx.Class.define("qxe.demo.Application",
 
     dialog2 : function()
     {
-      var optionDialog;
+      var optionDialog = null;
 
       var button2 = new qx.ui.form.Button("Press 2!");
       button2.addListener("execute", function(e) {
-        if(!optionDialog)
+        if(optionDialog == null)
         {
           var optionPane = qxe.ui.dialog.OptionPane.getInstance(qxe.ui.dialog.OptionPane.INFO);
           optionPane.setMessage("This is information!");
@@ -125,11 +125,11 @@ qx.Class.define("qxe.demo.Application",
 
     dialog3 : function()
     {
-      var optionDialog;
+      var optionDialog = null;
 
       var button3 = new qx.ui.form.Button("Press 3!");
       button3.addListener("execute", function(e) {
-        if(!optionDialog)
+        if(optionDialog == null)
         {
           var def = {
             caption : "a title",
@@ -149,4 +149,3 @@ qx.Class.define("qxe.demo.Application",
     }
   }
 });
-

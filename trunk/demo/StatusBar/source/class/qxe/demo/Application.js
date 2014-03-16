@@ -15,14 +15,14 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qx/icon/${qx.icontheme}/16/apps/office-calendar.png)
-#asset(qxe/decoration/Modern/dialog/icon/16/information.png)
-
-#asset(qxe/demo/*)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/apps/office-calendar.png)
+ * @asset(qxe/decoration/Modern/dialog/icon/16/information.png)
+ *
+ * @asset(qxe/demo/*)
+ *
+ */
 
 /**
  * This is the main application class of your custom application "qxe StatusBar"
@@ -45,9 +45,9 @@ qx.Class.define("qxe.demo.Application",
     __frame2 : null,
 
     /**
-     * This method contains the initial application code and gets called 
+     * This method contains the initial application code and gets called
      * during startup of the application
-     * 
+     *
      * @lint ignoreDeprecated(alert)
      */
     main : function()
@@ -173,4 +173,3 @@ qx.Class.define("qxe.demo.Application",
     }
   }
 });
-

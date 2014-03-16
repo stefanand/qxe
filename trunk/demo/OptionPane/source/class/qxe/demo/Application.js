@@ -15,15 +15,15 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qxe/decoration/Modern/dialog/icon/16/message.png)
-#asset(qxe/decoration/Modern/dialog/icon/48/message.png)
-#asset(qxe/decoration/Modern/dialog/icon/48/warning.png)
-
-#asset(qxe/demo/*)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qxe/decoration/Modern/dialog/icon/16/message.png)
+ * @asset(qxe/decoration/Modern/dialog/icon/48/message.png)
+ * @asset(qxe/decoration/Modern/dialog/icon/48/warning.png)
+ *
+ * @asset(qxe/demo/*)
+ *
+ */
 
 /**
  * This is the main application class of your custom application "qxe OptionPane"
@@ -43,9 +43,9 @@ qx.Class.define("qxe.demo.Application",
   members :
   {
     /**
-     * This method contains the initial application code and gets called 
+     * This method contains the initial application code and gets called
      * during startup of the application
-     * 
+     *
      * @lint ignoreDeprecated(alert)
      */
     main : function()
@@ -113,4 +113,3 @@ qx.Class.define("qxe.demo.Application",
     }
   }
 });
-

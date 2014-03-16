@@ -15,13 +15,13 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-# asset(qxe/demo/info/LED.jpg)
-
-#asset(qxe/demo/*)
-
-************************************************************************ */
+/**
+ *
+ * @ asset(qxe/demo/info/LED.jpg)
+ *
+ * @asset(qxe/demo/*)
+ *
+ */
 
 /**
  * This is the main application class of your custom application "qxe Counter"
@@ -41,9 +41,9 @@ qx.Class.define("qxe.demo.Application",
   members :
   {
     /**
-     * This method contains the initial application code and gets called 
+     * This method contains the initial application code and gets called
      * during startup of the application
-     * 
+     *
      * @lint ignoreDeprecated(alert)
      */
     main : function()
@@ -75,4 +75,3 @@ qx.Class.define("qxe.demo.Application",
     }
   }
 });
-

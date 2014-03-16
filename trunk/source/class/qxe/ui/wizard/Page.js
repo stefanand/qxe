@@ -114,4 +114,3 @@ qx.Class.define("qxe.ui.wizard.Page",
     }
   }
 });
-

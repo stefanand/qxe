@@ -176,4 +176,3 @@ qx.Class.define("qxe.ui.statusbar.StatusBar",
     }
   }
 });
-

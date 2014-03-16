@@ -15,18 +15,18 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qxe/decoration/Modern/dialog/icon/16/information.png)
-#asset(qxe/decoration/Modern/dialog/icon/48/information.png)
-#asset(qxe/decoration/Modern/dialog/icon/16/warning.png)
-#asset(qxe/decoration/Modern/dialog/icon/48/warning.png)
-#asset(qxe/decoration/Modern/dialog/icon/16/error.png)
-#asset(qxe/decoration/Modern/dialog/icon/48/error.png)
-#asset(qxe/decoration/Modern/dialog/icon/16/message.png)
-#asset(qxe/decoration/Modern/dialog/icon/48/message.png)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qxe/decoration/Modern/dialog/icon/16/information.png)
+ * @asset(qxe/decoration/Modern/dialog/icon/48/information.png)
+ * @asset(qxe/decoration/Modern/dialog/icon/16/warning.png)
+ * @asset(qxe/decoration/Modern/dialog/icon/48/warning.png)
+ * @asset(qxe/decoration/Modern/dialog/icon/16/error.png)
+ * @asset(qxe/decoration/Modern/dialog/icon/48/error.png)
+ * @asset(qxe/decoration/Modern/dialog/icon/16/message.png)
+ * @asset(qxe/decoration/Modern/dialog/icon/48/message.png)
+ *
+ */
 
 /**
  * An option pane is an easy way of popping up a message.
@@ -54,7 +54,8 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
 
   /**
    * @param message {String} The message to display
-   * @param messageType {qx.core.Object} The message type definition
+   * @param image {qx.ui.basic.Image} The image
+   * @param buttonPane {qxe.ui.form.ButtonPane} the ButtonPane used
    */
   construct : function(message, image, buttonPane)
   {
@@ -337,4 +338,3 @@ qx.Class.define("qxe.ui.dialog.OptionPane",
     }
   }
 });
-

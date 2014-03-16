@@ -15,19 +15,19 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qx/icon/${qx.icontheme}/16/actions/*)
-#asset(qx/icon/${qx.icontheme}/16/apps/utilities-help.png)
-#asset(qx/icon/${qx.icontheme}/22/apps/preferences-users.png)
-
-#asset(qx/icon/${qx.icontheme}/16/devices/computer.png)
-#asset(qx/icon/${qx.icontheme}/16/devices/drive-harddisk.png)
-#asset(qx/icon/${qx.icontheme}/16/devices/drive-optical.png)
-
-#asset(qxe/demo/*)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/*)
+ * @asset(qx/icon/${qx.icontheme}/16/apps/utilities-help.png)
+ * @asset(qx/icon/${qx.icontheme}/22/apps/preferences-users.png)
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/devices/computer.png)
+ * @asset(qx/icon/${qx.icontheme}/16/devices/drive-harddisk.png)
+ * @asset(qx/icon/${qx.icontheme}/16/devices/drive-optical.png)
+ *
+ * @asset(qxe/demo/*)
+ *
+ */
 
 /**
  * This is the main application class of your custom application "qxe WebDesktop"
@@ -47,9 +47,9 @@ qx.Class.define("qxe.demo.Application",
   members :
   {
     /**
-     * This method contains the initial application code and gets called 
+     * This method contains the initial application code and gets called
      * during startup of the application
-     * 
+     *
      * @lint ignoreDeprecated(alert)
      */
     main : function()
@@ -387,7 +387,7 @@ qx.Class.define("qxe.demo.Application",
       ansiButton.addListener("execute", this.debugButton);
       oemButton.addListener("execute", this.debugButton);
 
-      menu.add(paragraphButton)
+      menu.add(paragraphButton);
       menu.add(spacesButton);
       menu.add(tabsButton);
       menu.addSeparator();
@@ -468,21 +468,20 @@ qx.Class.define("qxe.demo.Application",
     createContextMenu : function()
     {
       var menu = new qx.ui.menu.Menu;
- 
+
       var cutButton = new qx.ui.menu.Button("Cut", "icon/16/actions/edit-cut.png", this._cutCommand);
       var copyButton = new qx.ui.menu.Button("Copy", "icon/16/actions/edit-copy.png", this._copyCommand);
       var pasteButton = new qx.ui.menu.Button("Paste", "icon/16/actions/edit-paste.png", this._pasteCommand);
- 
+
       cutButton.addListener("execute", this.debugButton);
       copyButton.addListener("execute", this.debugButton);
       pasteButton.addListener("execute", this.debugButton);
- 
+
       menu.add(cutButton);
       menu.add(copyButton);
       menu.add(pasteButton);
- 
+
       return menu;
     }
   }
 });
-

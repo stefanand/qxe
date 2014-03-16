@@ -33,7 +33,7 @@ qx.Interface.define("qxe.ui.statusbar.IPane",
       USER API
     ---------------------------------------------------------------------------
     */
- 
+
     /**
      * Sets the value of the statusbar.
      *
@@ -45,4 +45,3 @@ qx.Interface.define("qxe.ui.statusbar.IPane",
     }
   }
 });
-

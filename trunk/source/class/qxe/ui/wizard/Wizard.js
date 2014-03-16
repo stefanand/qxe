@@ -15,18 +15,18 @@
 
 ************************************************************************ */
 
-/* ************************************************************************
-
-#asset(qx/icon/${qx.icontheme}/16/actions/go-previous.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/go-next.png)
-
-#asset(qx/icon/${qx.icontheme}/16/actions/document-send.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/document-revert.png)
-#asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
-
-#asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
-
-************************************************************************ */
+/**
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/go-previous.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/go-next.png)
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/document-send.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/document-revert.png)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/dialog-cancel.png)
+ *
+ * @asset(qx/icon/${qx.icontheme}/16/actions/help-about.png)
+ *
+ */
 
 /**
  * A wizard is a multi page view where only one page is visible at each time.
@@ -141,7 +141,7 @@ qx.Class.define("qxe.ui.wizard.Wizard",
     },
 
     /**
-     * Whether to allow to finish the wizard. 
+     * Whether to allow to finish the wizard.
      * The finish property is set to true when the validation has passed and coming to the last page.
      */
     allowFinish :
@@ -177,7 +177,6 @@ qx.Class.define("qxe.ui.wizard.Wizard",
       var layout;
       var widget;
       var tooltip;
-      var def;
 
       switch(id)
       {
@@ -624,4 +623,3 @@ qx.Class.define("qxe.ui.wizard.Wizard",
     this.__skeleton = null;
   }
 });
-

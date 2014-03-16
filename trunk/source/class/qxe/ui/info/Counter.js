@@ -172,4 +172,3 @@ qx.Class.define("qxe.ui.info.Counter",
     }
   }
 });
-

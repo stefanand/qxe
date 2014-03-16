@@ -154,4 +154,3 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
     }
   }
 });
-
