@@ -24,6 +24,8 @@ qx.Theme.define("qxe.theme.classic.Appearance",
 {
   title : "qxe classic appearance theme",
 
+  extend : qx.theme.classic.Appearance,
+
   appearances :
   {
     /*

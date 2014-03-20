@@ -17,6 +17,8 @@
 
 qx.Theme.define("qxe.theme.classic.Color",
 {
+  extend : qx.theme.classic.Color,
+
   colors :
   {
     /*

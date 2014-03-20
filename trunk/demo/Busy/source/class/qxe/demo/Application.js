@@ -198,4 +198,3 @@ qx.Class.define("qxe.demo.Application",
     }
   }
 });
-

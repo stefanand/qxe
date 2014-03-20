@@ -17,6 +17,8 @@
 
 qx.Theme.define("qxe.theme.classic.Font",
 {
+  extend : qx.theme.classic.Font,
+
   fonts :
   {
   }
