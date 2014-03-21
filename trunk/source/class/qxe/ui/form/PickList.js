@@ -13,6 +13,10 @@
    Authors:
      * Stefan Andersson (sand)
 
+  TODO:
+    - prevent moving from and to the same list
+    - sort list by getSortedSelection()
+
 ************************************************************************ */
 
 /**
@@ -79,7 +83,6 @@ qx.Class.define("qxe.ui.form.PickList",
     label :
     {
       check : "String",
-      apply : "_applyLabel",
       event : "changeLabel",
       nullable : true
     }
@@ -124,9 +127,12 @@ qx.Class.define("qxe.ui.form.PickList",
           control = new qx.ui.form.List();
           control.setToolTip(tooltip);
           control.setDraggable(true);
+          control.setDroppable(true);
           control.setSelectionMode("multi");
           control.addListener("dragstart", this._onDragStart);
           control.addListener("droprequest", this._onDropRequest);
+          control.addListener("drop", this._onDrop);
+          control.addListener("dragover", this._onDragOver);
           break;
 
         case "control-pane" :
@@ -165,7 +171,7 @@ qx.Class.define("qxe.ui.form.PickList",
 
           control = new qx.ui.form.Button(null, "qxe/icon/ui/form/move-all-right.png");
           control.setToolTip(tooltip);
-          control.addListener("execute", this._onRemoveAllButtonClick, this);
+          control.addListener("execute", this._onAddAllButtonClick, this);
           break;
 
         case "remove-all-button" :
@@ -196,8 +202,11 @@ qx.Class.define("qxe.ui.form.PickList",
 
           control = new qx.ui.form.List();
           control.setToolTip(tooltip);
+          control.setDraggable(true);
           control.setDroppable(true);
           control.setSelectionMode("multi");
+          control.addListener("dragstart", this._onDragStart);
+          control.addListener("droprequest", this._onDropRequest);
           control.addListener("drop", this._onDrop);
           control.addListener("dragover", this._onDragOver);
           break;
@@ -207,61 +216,113 @@ qx.Class.define("qxe.ui.form.PickList",
     },
 
 
-    _applyLabel : function(value, old)
-    {
-    },
+    /*
+    ---------------------------------------------------------------------------
+      EVENTS
+    ---------------------------------------------------------------------------
+    */
 
+    /**
+     * Add selected items from source to target list.
+     * 
+     * @param e {qx.event.type.Event} the event data
+     */
     _onAddButtonClick : function(e)
     {
       var source = this.getChildControl("source-list");
       var target = this.getChildControl("target-list");
 
-      var selection = source.getSelection();
-
-      for (var i=0, l=selection.length; i<l; i++)
-      {
-        target.add(selection[i]);
-        source.remove(selection[i]);
-      }
+      this._moveItems(source, target);
     },
 
+    /**
+     * Remove selected items from target to source list.
+     * 
+     * @param e {qx.event.type.Event} the event data
+     */
     _onRemoveButtonClick : function(e)
     {
       var source = this.getChildControl("source-list");
       var target = this.getChildControl("target-list");
 
-      var selection = target.getSelection();
-
-      for (var i=0, l=selection.length; i<l; i++)
-      {
-        source.add(selection[i]);
-        target.remove(selection[i]);
-      }
+      this._moveItems(target, source);
     },
 
+    /**
+     * Add all items from source to target list.
+     * 
+     * @param e {qx.event.type.Event} the event data
+     */
+    _onAddAllButtonClick : function(e)
+    {
+      var source = this.getChildControl("source-list");
+      var target = this.getChildControl("target-list");
+
+      source.selectAll();
+
+      this._moveItems(source, target);
+    },
+
+    /**
+     * Remove all items from target to source list.
+     * 
+     * @param e {qx.event.type.Event} the event data
+     */
     _onRemoveAllButtonClick : function(e)
     {
       var source = this.getChildControl("source-list");
       var target = this.getChildControl("target-list");
 
-      var children = target.getChildren();
+      target.selectAll();
 
-      for (var i=0, l=children.length; i<l; i++)
+      this._moveItems(target, source);
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      INTERNAL
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Move items from source to target list.
+     * 
+     * @param source {qx.ui.for.List} the source list
+     * @param target {qx.ui.for.List} the target list
+     */
+    _moveItems : function(source, target)
+    {
+      if(!source.isSelectionEmpty())
       {
-        source.add(children[i]);
-        target.remove(children[i]);
+        var selection = source.getSelection();
+
+        for (var i = 0, l = selection.length; i < l; i++)
+        {
+          source.remove(selection[i]);
+          target.add(selection[i]);
+        }
+      }
+      else
+      {
+        this.debug("No items selected.");
       }
     },
 
+
+    /*
+    ---------------------------------------------------------------------------
+      DRAG & DROP SUPPORT
+    ---------------------------------------------------------------------------
+    */
+
+    /**
+     * Event listener for own <code>dragstart</code> event.
+     *
+     * @param e {qx.event.type.Drag} Drag event
+     */
     _onDragStart : function(e)
     {
-      // dragstart is cancelable, you can put any runtime checks
-      // here to dynamically disallow the drag feature on a widget
-/*      if (!check.isValue())
-      {
-        e.preventDefault();
-      }
-*/
       // Register supported types
       e.addType("items");
 
@@ -269,45 +330,34 @@ qx.Class.define("qxe.ui.form.PickList",
       e.addAction("move");
     },
 
+    /**
+     * Event listener for own <code>droprequest</code> event.
+     *
+     * @param e {qx.event.type.Drag} Drag event
+     */
     _onDropRequest : function(e)
     {
       this.debug("Related of droprequest: " + e.getRelatedTarget());
 
-      var action = e.getCurrentAction();
       var type = e.getCurrentType();
-      var result;
 
-      // Copy items
-      result = this.getSelection();
-
-      if (action == "copy")
+      if(type == "items")
       {
-        var copy = [];
-
-        for (var i=0, l=result.length; i<l; i++)
-        {
-          copy[i] = result[i].clone();
-        }
-
-        result = copy;
+        // Add data to manager
+        e.addData(type, this.getSelection());
       }
-
-      // Remove selected items on move
-      var selection = this.getSelection();
-
-      for (var i=0, l=selection.length; i<l; i++)
-      {
-        this.remove(selection[i]);
-      }
-
-      // Add data to manager
-      e.addData(type, result);
     },
 
+    /**
+     * Event listener for own <code>drop</code> event.
+     *
+     * @param e {qx.event.type.Drag} Drag event
+     */
     _onDrop : function(e)
     {
       this.debug("Related of drop: " + e.getRelatedTarget());
 
+this.debug(e.getRelatedTarget() + "     " + e.getOriginalTarget());
       // Move items from source to target
       var items = e.getData("items");
 
@@ -317,6 +367,11 @@ qx.Class.define("qxe.ui.form.PickList",
       }
     },
 
+    /**
+     * Event listener for own <code>dragover</code> event.
+     *
+     * @param e {qx.event.type.Drag} Drag event
+     */
     _onDragOver : function(e)
     {
       if (!e.supportsType("items"))
@@ -325,14 +380,31 @@ qx.Class.define("qxe.ui.form.PickList",
       }
     },
 
+
+    /*
+    ---------------------------------------------------------------------------
+      USER API
+    ---------------------------------------------------------------------------
+    */
+
     /**
      * Add items to source list.
      * 
-     * @param item {qx.ui.form.ListItem} item to add too source list.
+     * @param item {qx.ui.core.Widget} item to add too source list.
      */
     add : function(item)
     {
       this.getChildControl("source-list").add(item);
+    },
+
+    /**
+     * Get the selected items.
+     * 
+     * @return {qx.ui.core.Widget[]} the selected items
+     */
+    getSelection : function()
+    {
+      return this.getChildControl("target-list").getSelection();
     }
   }
 });
