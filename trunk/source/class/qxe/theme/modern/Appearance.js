@@ -505,4 +505,3 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     "wizard-page" : "groupbox"
   }
 });
-
