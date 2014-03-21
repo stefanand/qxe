@@ -386,6 +386,26 @@ qx.Theme.define("qxe.theme.modern.Appearance",
 
     /*
     ---------------------------------------------------------------------------
+      PICK LIST
+    ---------------------------------------------------------------------------
+    */
+
+    "pick-list" : "widget",
+
+    "pick-list/source-list" : "list",
+
+    "pick-list/target-list" : "list",
+
+    "pick-list/add-button" : "button",
+
+    "pick-list/remove-button" : "button",
+
+    "pick-list/add-all-button" : "button",
+
+    "pick-list/remove-all-button" : "button",
+
+    /*
+    ---------------------------------------------------------------------------
       PROGRESSBAR
     ---------------------------------------------------------------------------
     */

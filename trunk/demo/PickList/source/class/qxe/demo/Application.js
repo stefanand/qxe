@@ -67,7 +67,11 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
-      var pickList = new qxe.ui.form.PickList();
+      var pickList = new qxe.ui.form.PickList("Name");
+
+      for (var i=0; i<20; i++) {
+        pickList.add(new qx.ui.form.ListItem("Item " + i));
+      }
 
       doc.add(pickList, {left: 100, top: 50});
     }

@@ -41,9 +41,15 @@ qx.Class.define("qxe.ui.form.PickList",
   /**
    *
    */
-  construct : function()
+  construct : function(label)
   {
     this.base(arguments);
+
+
+    if(label != null)
+    {
+      this.setLabel(label);
+    }
 
     // configure internal layout
     this._setLayout(new qx.ui.layout.HBox());
@@ -67,13 +73,22 @@ qx.Class.define("qxe.ui.form.PickList",
     {
       refine : true,
       init : "pick-list"
-    }
     },
+
+    /** List label */
+    label :
+    {
+      check : "String",
+      apply : "_applyLabel",
+      event : "changeLabel",
+      nullable : true
+    }
+  },
 
 
   /*
    *****************************************************************************
-      CONSTRUCTOR
+      MEMBERS
    *****************************************************************************
    */
 
@@ -99,7 +114,8 @@ qx.Class.define("qxe.ui.form.PickList",
           break;
 
         case "source-label" :
-          control = new qx.ui.basic.Label();
+          control = new qx.ui.basic.Label(this.getLabel());
+          control.setAlignX("center");
           break;
 
         case "source-list" :
@@ -114,12 +130,14 @@ qx.Class.define("qxe.ui.form.PickList",
           break;
 
         case "control-pane" :
-          layout = new qx.ui.layout.VBox();
+          layout = new qx.ui.layout.VBox(5, "middle");
 
           control = new qx.ui.container.Composite(layout);
+          control.setMargin(0, 5, 0, 5);
 
           control.add(this._createChildControl("add-button"));
           control.add(this._createChildControl("remove-button"));
+          control.add(new qx.ui.core.Spacer());
           control.add(this._createChildControl("add-all-button"));
           control.add(this._createChildControl("remove-all-button"));
 
@@ -129,7 +147,7 @@ qx.Class.define("qxe.ui.form.PickList",
         case "add-button" :
           tooltip = new qx.ui.tooltip.ToolTip(this.tr("Add item."));
 
-          control = new qx.ui.form.Button(null, "icon/ui/form/move-right.png");
+          control = new qx.ui.form.Button(null, "qxe/icon/ui/form/move-right.png");
           control.setToolTip(tooltip);
           control.addListener("execute", this._onAddButtonClick, this);
           break;
@@ -137,7 +155,7 @@ qx.Class.define("qxe.ui.form.PickList",
         case "remove-button" :
           tooltip = new qx.ui.tooltip.ToolTip(this.tr("Remove item."));
 
-          control = new qx.ui.form.Button(null, "icon/ui/form/move-left.png");
+          control = new qx.ui.form.Button(null, "qxe/icon/ui/form/move-left.png");
           control.setToolTip(tooltip);
           control.addListener("execute", this._onRemoveButtonClick, this);
           break;
@@ -145,7 +163,7 @@ qx.Class.define("qxe.ui.form.PickList",
         case "add-all-button" :
           tooltip = new qx.ui.tooltip.ToolTip(this.tr("Add all items."));
 
-          control = new qx.ui.form.Button(null, "icon/ui/form/move-all-right.png");
+          control = new qx.ui.form.Button(null, "qxe/icon/ui/form/move-all-right.png");
           control.setToolTip(tooltip);
           control.addListener("execute", this._onRemoveAllButtonClick, this);
           break;
@@ -153,7 +171,7 @@ qx.Class.define("qxe.ui.form.PickList",
         case "remove-all-button" :
           tooltip = new qx.ui.tooltip.ToolTip(this.tr("Remove all items."));
 
-          control = new qx.ui.form.Button(null, "icon/ui/form/move-all-left.png");
+          control = new qx.ui.form.Button(null, "qxe/icon/ui/form/move-all-left.png");
           control.setToolTip(tooltip);
           control.addListener("execute", this._onRemoveAllButtonClick, this);
           break;
@@ -169,7 +187,8 @@ qx.Class.define("qxe.ui.form.PickList",
           break;
 
         case "target-label" :
-          control = new qx.ui.basic.Label();
+          control = new qx.ui.basic.Label(this.tr("Selected"));
+          control.setAlignX("center");
           break;
 
         case "target-list" :
@@ -185,6 +204,11 @@ qx.Class.define("qxe.ui.form.PickList",
       }
 
       return control || this.base(arguments, id);
+    },
+
+
+    _applyLabel : function(value, old)
+    {
     },
 
     _onAddButtonClick : function(e)
@@ -233,17 +257,15 @@ qx.Class.define("qxe.ui.form.PickList",
     {
       // dragstart is cancelable, you can put any runtime checks
       // here to dynamically disallow the drag feature on a widget
-      if (!check.isValue())
+/*      if (!check.isValue())
       {
         e.preventDefault();
       }
-
+*/
       // Register supported types
-      e.addType("value");
       e.addType("items");
 
       // Register supported actions
-      e.addAction("copy");
       e.addAction("move");
     },
 
@@ -255,38 +277,27 @@ qx.Class.define("qxe.ui.form.PickList",
       var type = e.getCurrentType();
       var result;
 
-      switch(type)
+      // Copy items
+      result = this.getSelection();
+
+      if (action == "copy")
       {
-        case "items":
-          result = this.getSelection();
+        var copy = [];
 
-          if (action == "copy")
-          {
-            var copy = [];
+        for (var i=0, l=result.length; i<l; i++)
+        {
+          copy[i] = result[i].clone();
+        }
 
-            for (var i=0, l=result.length; i<l; i++)
-            {
-              copy[i] = result[i].clone();
-            }
-
-            result = copy;
-          }
-          break;
-
-        case "value":
-          result = this.getSelection()[0].getLabel();
-          break;
+        result = copy;
       }
 
       // Remove selected items on move
-      if (action == "move")
-      {
-        var selection = this.getSelection();
+      var selection = this.getSelection();
 
-        for (var i=0, l=selection.length; i<l; i++)
-        {
-          this.remove(selection[i]);
-        }
+      for (var i=0, l=selection.length; i<l; i++)
+      {
+        this.remove(selection[i]);
       }
 
       // Add data to manager
@@ -312,6 +323,16 @@ qx.Class.define("qxe.ui.form.PickList",
       {
         e.preventDefault();
       }
+    },
+
+    /**
+     * Add items to source list.
+     * 
+     * @param item {qx.ui.form.ListItem} item to add too source list.
+     */
+    add : function(item)
+    {
+      this.getChildControl("source-list").add(item);
     }
   }
 });
