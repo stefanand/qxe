@@ -16,6 +16,8 @@
 ************************************************************************ */
 
 /**
+ * @asset(qx/icon/Oxygen/16/actions/collapse.png)
+ * @asset(qx/icon/Oxygen/16/actions/expand.png)
  *
  * @asset(qxe/decoration/Classic/*)
  *
@@ -438,6 +440,65 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     */
 
     "taskbar" : "toolbar",
+
+
+    /*
+    ---------------------------------------------------------------------------
+      TITLEPANE
+    ---------------------------------------------------------------------------
+    */
+
+    "title-pane" :
+    {
+      style : function(states)
+      {
+        return {
+          contentPadding : [ 10, 10, 10, 10 ],
+          backgroundColor : "background",
+          decorator : !states.collapsed ? undefined : "title-pane"
+        };
+      }
+    },
+
+    "title-pane/pane" : {},
+
+    "title-pane/captionbar" :
+    {
+      style : function(states)
+      {
+        return {
+          padding : 1
+        };
+      }
+    },
+
+    "title-pane/collapse-button" :
+    {
+      include : "button",
+      alias : "button",
+
+      style : function(states)
+      {
+        return {
+          icon : "decoration/window/collapse.gif",
+          padding : states.pressed || states.abandoned ? [ 2, 1, 0, 3] : [ 1, 2 ]
+        };
+      }
+    },
+
+    "title-pane/title" :
+    {
+      style : function(states)
+      {
+        return {
+          cursor : "default",
+          font : "bold",
+          marginRight : 20,
+          alignY: "middle"
+        };
+      }
+    },
+
 
     /*
     ---------------------------------------------------------------------------

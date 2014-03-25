@@ -93,7 +93,22 @@ qx.Theme.define("qxe.theme.classic.Decoration",
         colorTop : "border-main",
         style    : "solid"
       }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
+      TITLEPANE
+    ---------------------------------------------------------------------------
+    */
+
+    "title-pane" :
+    {
+      include: "outset",
+      style : {
+        shadowLength : 1,
+        shadowBlurRadius : 2,
+        shadowColor : "shadow"
+      }
     }
   }
 });
-

@@ -90,6 +90,54 @@ qx.Theme.define("qxe.theme.modern.Decoration",
       {
         backgroundColor : "webdesktop-background"
       }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
+      TITLEPANE
+    ---------------------------------------------------------------------------
+    */
+
+    "title-pane" :
+    {
+      style : {
+        radius : [5, 5, 0, 0],
+        shadowBlurRadius : 4,
+        shadowLength : 2,
+        shadowColor : "shadow"
+      }
+    },
+
+    "title-pane-captionbar-active" :
+    {
+      style : {
+        width : 1,
+        color : "window-border",
+        colorBottom : "window-border-caption",
+        radius : [5, 5, 0, 0],
+        gradientStart : ["window-caption-active-start", 30],
+        gradientEnd : ["window-caption-active-end", 70]
+      }
+    },
+
+    "title-pane-captionbar-inactive" :
+    {
+      include : "title-pane-captionbar-active",
+      style : {
+        gradientStart : ["window-caption-inactive-start", 30],
+        gradientEnd : ["window-caption-inactive-end", 70]
+      }
+    },
+
+    "title-pane" :
+    {
+      style :
+      {
+        backgroundColor : "background-pane",
+        width : 1,
+        color : "window-border",
+        widthTop : 0
+      }
     }
   }
 });

@@ -54,15 +54,6 @@ qx.Class.define("qxe.ui.form.TitlePane",
 
     // Update captionbar
     this._updateCaptionBar();
-
-    // Activation listener
-    this.addListener("mousedown", this._onWindowMouseDown, this, true);
-
-    // Focusout listener
-    this.addListener("focusout", this._onWindowFocusOut, this);
-
-    // Initialize visibiltiy
-    this.initVisibility();
   },
 
 
@@ -94,7 +85,7 @@ qx.Class.define("qxe.ui.form.TitlePane",
     "beforeExpand" : "qx.event.type.Event",
 
     /** Fired if the title pane is expanded */
-    "expand" : "qx.event.type.Event",
+    "expand" : "qx.event.type.Event"
   },
 
 
@@ -119,6 +110,15 @@ qx.Class.define("qxe.ui.form.TitlePane",
       apply : "_applyCaptionBarChange",
       event : "changeCaption",
       nullable : true
+    },
+
+    /** Should the collapse button be shown. */
+    showCollapse :
+    {
+      check : "Boolean",
+      init : true,
+      apply : "_applyCaptionBarChange",
+      themeable : true
     },
 
     /** Allow the title pane to collapse. */
@@ -171,7 +171,7 @@ qx.Class.define("qxe.ui.form.TitlePane",
 
       switch(id)
       {
-      case "pane":
+        case "pane":
           control = new qx.ui.container.Composite();
           this._add(control, {flex: 1});
           break;
@@ -188,9 +188,12 @@ qx.Class.define("qxe.ui.form.TitlePane",
           control.addListener("dblclick", this._onCaptionMouseDblClick, this);
           break;
 
-        case "icon":
-          control = new qx.ui.basic.Image(this.getIcon());
-          this.getChildControl("captionbar").add(control, {row: 0, column:0});
+        case "collapse-button":
+          control = new qx.ui.form.Button();
+          control.setFocusable(false);
+          control.addListener("execute", this._onCollapseButtonClick, this);
+
+          this.getChildControl("captionbar").add(control, {row: 0, column: 0});
           break;
 
         case "title":
@@ -198,8 +201,7 @@ qx.Class.define("qxe.ui.form.TitlePane",
           control.setWidth(0);
           control.setAllowGrowX(true);
 
-          var captionBar = this.getChildControl("captionbar");
-          captionBar.add(control, {row: 0, column:1});
+          this.getChildControl("captionbar").add(control, {row: 0, column: 1});
           break;
       }
 
@@ -220,34 +222,28 @@ qx.Class.define("qxe.ui.form.TitlePane",
     {
       var btn;
 
-      var icon = this.getIcon();
+      if (this.getShowCollapse())
+      {
+        this._showChildControl("collapse-button");
 
-      if (icon) {
-        this.getChildControl("icon").setSource(icon);
-        this._showChildControl("icon");
-      } else {
-        this._excludeChildControl("icon");
+        btn = this.getChildControl("collapse-button");
+        this.getAllowCollapse() ? btn.resetEnabled() : btn.setEnabled(false);
+      }
+      else
+      {
+        this._excludeChildControl("collapse-button");
       }
 
       var caption = this.getCaption();
 
-      if (caption) {
+      if (caption)
+      {
         this.getChildControl("title").setValue(caption);
         this._showChildControl("title");
-      } else {
-        this._excludeChildControl("title");
-      }
-
-      if (this.getShowMinimize())
-      {
-        this._showChildControl("minimize-button");
-
-        btn = this.getChildControl("minimize-button");
-        this.getAllowMinimize() ? btn.resetEnabled() : btn.setEnabled(false);
       }
       else
       {
-        this._excludeChildControl("minimize-button");
+        this._excludeChildControl("title");
       }
     },
 
@@ -264,14 +260,17 @@ qx.Class.define("qxe.ui.form.TitlePane",
      */
     collapse : function()
     {
-      if (!this.isVisible()) {
-        return;
-      }
-
-      if (this.fireNonBubblingEvent("beforeClose", qx.event.type.Event, [false, true]))
+      if (this.fireNonBubblingEvent("beforeCollapse", qx.event.type.Event, [false, true]))
       {
-        this.hide();
-        this.fireEvent("close");
+        this.getChildControl("pane").hide();
+
+        // Add state
+        this.addState("collapsed");
+
+        // Update captionbar
+        this._updateCaptionBar();
+
+        this.fireEvent("collapse");
       }
     },
 
@@ -280,9 +279,18 @@ qx.Class.define("qxe.ui.form.TitlePane",
      */
     expand : function()
     {
-      this.show();
-      this.setActive(true);
-      this.focus();
+      if (this.fireNonBubblingEvent("beforeExpand", qx.event.type.Event, [false, true]))
+      {
+        this.getChildControl("pane").show();
+
+        // Remove state
+        this.removeState("collapsed");
+
+        // Update captionbar
+        this._updateCaptionBar();
+
+        this.fireEvent("expand");
+      }
     },
 
     /**
@@ -325,7 +333,7 @@ qx.Class.define("qxe.ui.form.TitlePane",
     */
 
     /**
-     * Collapses the title pane or expands it if it is already
+     * Collapses the title pane or expands it, if it is already
      * collapsed.
      *
      * @param e {qx.event.type.Mouse} double click event

@@ -20,6 +20,10 @@
  * @asset(qx/icon/Tango/16/actions/dialog-cancel.png)
  * @asset(qx/icon/Tango/16/actions/dialog-ok.png)
  *
+ * @asset(qx/decoration/Modern/arrows/collapse-active-hovered.png)
+ * @asset(qx/decoration/Modern/arrows/collapse-active.png)
+ * @asset(qx/decoration/Modern/arrows/collapse-inactive.png)
+ * 
  * @asset(qx/decoration/Modern/*)
  *
  */
@@ -458,6 +462,75 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     */
 
     "taskbar" : "toolbar",
+
+    /*
+    ---------------------------------------------------------------------------
+      TITLEPANE
+    ---------------------------------------------------------------------------
+    */
+
+    "title-pane" :
+    {
+      style : function(states)
+      {
+        return {
+          contentPadding : [ 10, 10, 10, 10 ],
+          margin : !states.collapsed ? 0 : [0, 5, 5, 0]
+        };
+      }
+    },
+
+    "title-pane/pane" :
+    {
+      style : function(states)
+      {
+        return {
+          decorator : "title-pane"
+        };
+      }
+    },
+
+    "title-pane/captionbar" :
+    {
+      style : function(states)
+      {
+        return {
+          decorator : (states.active ? "title-pane-captionbar-active" :
+            "title-pane-captionbar-inactive"),
+          textColor : states.active ? "title-pane-caption-active-text" : "text-gray",
+          minHeight : 26,
+          paddingRight : 2
+        };
+      }
+    },
+
+    "title-pane/collapse-button" :
+    {
+      alias : "atom",
+
+      style : function(states)
+      {
+        return {
+          icon : states.active ? states.hovered ? "decoration/window/collapse-active-hovered.png" :
+                                                  "decoration/window/collapse-active.png" :
+                                                  "decoration/window/collapse-inactive.png",
+          margin : [ 4, 8, 2, 0 ]
+        };
+      }
+    },
+
+    "title-pane/title" :
+    {
+      style : function(states)
+      {
+        return {
+          alignY      : "middle",
+          font        : "bold",
+          marginLeft  : 6,
+          marginRight : 12
+        };
+      }
+    },
 
     /*
     ---------------------------------------------------------------------------
