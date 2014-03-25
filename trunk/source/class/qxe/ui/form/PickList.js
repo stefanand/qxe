@@ -14,7 +14,6 @@
      * Stefan Andersson (sand)
 
   TODO:
-    - prevent moving from and to the same list
     - sort list by getSortedSelection()
 
 ************************************************************************ */
@@ -85,6 +84,20 @@ qx.Class.define("qxe.ui.form.PickList",
       check : "String",
       event : "changeLabel",
       nullable : true
+    },
+
+    /** List sort method
+     * "none"       - don't sort at all
+     * "original"   - keep the initial add/remove order before move
+     *                from one list to the other
+     * "ascending"  - sort alphabetically ascending
+     * "descending" - sort alphabetically descending
+     */
+    sortMethod :
+    {
+      check : [ "none", "original", "ascending", "descending" ],
+      init : "none",
+      apply : "_applySortMethod"
     }
   },
 
@@ -97,6 +110,9 @@ qx.Class.define("qxe.ui.form.PickList",
 
   members :
   {
+	/** Hash codes of objects added in source list. */
+    __list : [],
+
     // overridden
     _createChildControlImpl : function(id)
     {
@@ -133,6 +149,8 @@ qx.Class.define("qxe.ui.form.PickList",
           control.addListener("droprequest", this._onDropRequest);
           control.addListener("drop", this._onDrop);
           control.addListener("dragover", this._onDragOver);
+          control.addListener("addItem", this.__onAddItem, this);
+          control.addListener("removeItem", this.__onRemoveItem, this);
           break;
 
         case "control-pane" :
@@ -209,6 +227,8 @@ qx.Class.define("qxe.ui.form.PickList",
           control.addListener("droprequest", this._onDropRequest);
           control.addListener("drop", this._onDrop);
           control.addListener("dragover", this._onDragOver);
+          control.addListener("addItem", this.__onAddItem, this);
+          control.addListener("removeItem", this.__onRemoveItem, this);
           break;
       }
 
@@ -278,6 +298,33 @@ qx.Class.define("qxe.ui.form.PickList",
       this._moveItems(target, source);
     },
 
+    /**
+     * Event addItem from any of the lists.
+     * Separate listeners if lists are manipulated outside this API.
+     * 
+     * @param e {qx.event.type.Data} event data
+     */
+    __onAddItem : function(e)
+    {
+      this.__list.push(e.getData().toHash());
+    },
+
+    /**
+     * Event removeItem from any of the lists.
+     * Separate listeners if lists are manipulated outside this API.
+     * 
+     * @param e {qx.event.type.Data} event data
+     */
+    __onRemoveItem : function(e)
+    {
+      var index = this.__list.indexOf(e.getData().toHash());
+
+      if(index > -1)
+      {
+        this.__list.splice(index, 1);
+      }
+    },
+
 
     /*
     ---------------------------------------------------------------------------
@@ -288,8 +335,8 @@ qx.Class.define("qxe.ui.form.PickList",
     /**
      * Move items from source to target list.
      * 
-     * @param source {qx.ui.for.List} the source list
-     * @param target {qx.ui.for.List} the target list
+     * @param source {qx.ui.form.List} the source list
+     * @param target {qx.ui.form.List} the target list
      */
     _moveItems : function(source, target)
     {
@@ -302,6 +349,17 @@ qx.Class.define("qxe.ui.form.PickList",
           source.remove(selection[i]);
           target.add(selection[i]);
         }
+
+        var sortedList = this.sortList(target);
+
+        if(sortedList != null)
+        {
+          for (var i = 0, l = sortedList.length; i < l; i++)
+          {
+            target.remove(sortedList[i]);
+            target.addAt(sortedList[i], );
+          }
+        }
       }
       else
       {
@@ -309,6 +367,39 @@ qx.Class.define("qxe.ui.form.PickList",
       }
     },
 
+    /**
+     * Sorts a list in ascending order.
+     * 
+     * @param list {qx.ui.form.List} the list to be sorted
+     * @return {qx.ui.core.Widget} the sorted list
+     */
+    sortList : function(list)
+    {
+      var sel = null;
+      var sortMethod = this.getSortMethod();
+
+      if(sortMethod != null)
+      {
+        var children = list.getChildren();
+        sel = qx.lang.Object.getValues(this.__selection);
+
+        sel.sort(function(a, b) {
+          switch(sortMethod)
+          {
+            case "none":
+              return 0;
+            case "original":
+              return;
+            case "ascending":
+              return children.indexOf(a) - children.indexOf(b);
+            case "descending":
+              return children.indexOf(b) - children.indexOf(a);
+          }
+        });
+      }
+
+      return sel;
+    },
 
     /*
     ---------------------------------------------------------------------------
@@ -357,7 +448,6 @@ qx.Class.define("qxe.ui.form.PickList",
     {
       this.debug("Related of drop: " + e.getRelatedTarget());
 
-this.debug(e.getRelatedTarget() + "     " + e.getOriginalTarget());
       // Move items from source to target
       var items = e.getData("items");
 
@@ -374,7 +464,9 @@ this.debug(e.getRelatedTarget() + "     " + e.getOriginalTarget());
      */
     _onDragOver : function(e)
     {
-      if (!e.supportsType("items"))
+      // Stop if coming from inside the same list
+      // or does not support type "items"
+      if(!e.getRelatedTarget() || !e.supportsType("items"))
       {
         e.preventDefault();
       }
@@ -388,13 +480,23 @@ this.debug(e.getRelatedTarget() + "     " + e.getOriginalTarget());
     */
 
     /**
-     * Add items to source list.
+     * Add item to source list.
      * 
      * @param item {qx.ui.core.Widget} item to add too source list.
      */
     add : function(item)
     {
       this.getChildControl("source-list").add(item);
+    },
+
+    /**
+     * Remove item from source list.
+     * 
+     * @param item {qx.ui.core.Widget} item to remove from source list.
+     */
+    remove : function(item)
+    {
+      this.getChildControl("source-list").remove(item);
     },
 
     /**
