@@ -19,6 +19,9 @@
  * @asset(qx/icon/Oxygen/16/actions/collapse.png)
  * @asset(qx/icon/Oxygen/16/actions/expand.png)
  *
+ * @asset(qx/decoration/Classic/arrows/down.png)
+ * @asset(qx/decoration/Classic/arrows/up.png)
+ * 
  * @asset(qxe/decoration/Classic/*)
  *
  */
@@ -472,16 +475,17 @@ qx.Theme.define("qxe.theme.classic.Appearance",
       }
     },
 
-    "title-pane/collapse-button" :
+    "title-pane/collapse-atom" :
     {
-      include : "button",
-      alias : "button",
+      include : "image",
 
       style : function(states)
       {
         return {
-          icon : "decoration/window/collapse.gif",
-          padding : states.pressed || states.abandoned ? [ 2, 1, 0, 3] : [ 1, 2 ]
+          source : states.hovered ? states.collapsed ? "decoration/arrows/down.png" :
+                                                         "decoration/arrows/up.png" :
+                                                           null,
+          alignY : "middle"
         };
       }
     },

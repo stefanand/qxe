@@ -508,5 +508,16 @@ qx.Class.define("qxe.ui.form.PickList",
     {
       return this.getChildControl("target-list").getSelection();
     }
-  }
+  },
+
+
+  /*
+   *****************************************************************************
+      DESTRUCTOR
+   *****************************************************************************
+   */
+
+   destruct : function() {
+     this._disposeArray("__list");
+   }
 });

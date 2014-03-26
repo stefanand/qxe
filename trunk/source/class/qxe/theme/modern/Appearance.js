@@ -20,10 +20,9 @@
  * @asset(qx/icon/Tango/16/actions/dialog-cancel.png)
  * @asset(qx/icon/Tango/16/actions/dialog-ok.png)
  *
- * @asset(qx/decoration/Modern/arrows/collapse-active-hovered.png)
- * @asset(qx/decoration/Modern/arrows/collapse-active.png)
- * @asset(qx/decoration/Modern/arrows/collapse-inactive.png)
- * 
+ * @asset(qx/decoration/Modern/arrows/down.png)
+ * @asset(qx/decoration/Modern/arrows/up.png)
+ *
  * @asset(qx/decoration/Modern/*)
  *
  */
@@ -480,16 +479,6 @@ qx.Theme.define("qxe.theme.modern.Appearance",
       }
     },
 
-    "title-pane/pane" :
-    {
-      style : function(states)
-      {
-        return {
-          decorator : "title-pane"
-        };
-      }
-    },
-
     "title-pane/captionbar" :
     {
       style : function(states)
@@ -504,17 +493,18 @@ qx.Theme.define("qxe.theme.modern.Appearance",
       }
     },
 
-    "title-pane/collapse-button" :
+    "title-pane/collapse-image" :
     {
-      alias : "atom",
+      alias : "image",
 
       style : function(states)
       {
         return {
-          icon : states.active ? states.hovered ? "decoration/window/collapse-active-hovered.png" :
-                                                  "decoration/window/collapse-active.png" :
-                                                  "decoration/window/collapse-inactive.png",
-          margin : [ 4, 8, 2, 0 ]
+          source : states.hovered ? states.collapsed ? "decoration/arrows/down.png" :
+                                                  "decoration/arrows/up.png" :
+                                                  null,
+          margin : [ 4, 8, 2, 0 ],
+          alignY : "middle"
         };
       }
     },
@@ -528,6 +518,16 @@ qx.Theme.define("qxe.theme.modern.Appearance",
           font        : "bold",
           marginLeft  : 6,
           marginRight : 12
+        };
+      }
+    },
+
+    "title-pane/pane" :
+    {
+      style : function(states)
+      {
+        return {
+          decorator : "title-pane"
         };
       }
     },

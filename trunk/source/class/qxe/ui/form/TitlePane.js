@@ -16,7 +16,12 @@
 ************************************************************************ */
 
 /**
- * This is a title pane.
+ * This is a title pane which can collapse and expand.
+ * 
+ * TODO:
+ * - arrow down does not work with mouseover when collapsed
+ * - orientation must be implemented including orientation of caption
+ * - barBottom, barLeft, barTop, barRight
  */
 qx.Class.define("qxe.ui.form.TitlePane",
 {
@@ -37,7 +42,7 @@ qx.Class.define("qxe.ui.form.TitlePane",
   /**
    * @param caption {String} The caption.
    */
-  construct : function(caption)
+  construct : function(caption, orientation)
   {
     this.base(arguments);
 
@@ -50,6 +55,13 @@ qx.Class.define("qxe.ui.form.TitlePane",
 
     if (caption != null) {
       this.setCaption(caption);
+    }
+
+    // Initialize orientation
+    if (orientation) {
+      this.setOrientation(orientation);
+    } else {
+      this.initOrientation();
     }
 
     // Update captionbar
@@ -112,6 +124,16 @@ qx.Class.define("qxe.ui.form.TitlePane",
       nullable : true
     },
 
+    /**
+     * The orientation of the accordion View control.
+     */
+    orientation :
+    {
+      init  : "horizontal",
+      check : [ "horizontal", "vertical" ],
+      apply : "_applyCaptionBarChange"
+    },
+
     /** Should the collapse button be shown. */
     showCollapse :
     {
@@ -161,6 +183,7 @@ qx.Class.define("qxe.ui.form.TitlePane",
      */
     _forwardStates :
     {
+      'hovered' : true,
       'collapsed' : true
     },
 
@@ -171,29 +194,18 @@ qx.Class.define("qxe.ui.form.TitlePane",
 
       switch(id)
       {
-        case "pane":
-          control = new qx.ui.container.Composite();
-          this._add(control, {flex: 1});
-          break;
-
         case "captionbar":
           // captionbar
           var layout = new qx.ui.layout.Grid();
           layout.setRowFlex(0, 1);
-          layout.setColumnFlex(1, 1);
+          layout.setColumnFlex(0, 1);
           control = new qx.ui.container.Composite(layout);
           this._add(control);
 
           // captionbar events
-          control.addListener("dblclick", this._onCaptionMouseDblClick, this);
-          break;
-
-        case "collapse-button":
-          control = new qx.ui.form.Button();
-          control.setFocusable(false);
-          control.addListener("execute", this._onCollapseButtonClick, this);
-
-          this.getChildControl("captionbar").add(control, {row: 0, column: 0});
+          control.addListener("mouseover", this._onMouseOver, this);
+          control.addListener("mouseout", this._onMouseOut, this);
+          control.addListener("click", this._onCaptionMouseClick, this);
           break;
 
         case "title":
@@ -201,8 +213,19 @@ qx.Class.define("qxe.ui.form.TitlePane",
           control.setWidth(0);
           control.setAllowGrowX(true);
 
-          this.getChildControl("captionbar").add(control, {row: 0, column: 1});
+          this.getChildControl("captionbar").add(control, {row: 0, column: 0});
           break;
+
+        case "collapse-image":
+            control = new qx.ui.basic.Image();
+
+            this.getChildControl("captionbar").add(control, {row: 0, column: 1});
+            break;
+
+        case "pane":
+            control = new qx.ui.container.Composite();
+            this._add(control, {flex: 1});
+            break;
       }
 
       return control || this.base(arguments, id);
@@ -220,18 +243,13 @@ qx.Class.define("qxe.ui.form.TitlePane",
      */
     _updateCaptionBar : function()
     {
-      var btn;
-
       if (this.getShowCollapse())
       {
-        this._showChildControl("collapse-button");
-
-        btn = this.getChildControl("collapse-button");
-        this.getAllowCollapse() ? btn.resetEnabled() : btn.setEnabled(false);
+        this._showChildControl("collapse-image");
       }
       else
       {
-        this._excludeChildControl("collapse-button");
+        this._excludeChildControl("collapse-image");
       }
 
       var caption = this.getCaption();
@@ -281,7 +299,7 @@ qx.Class.define("qxe.ui.form.TitlePane",
     {
       if (this.fireNonBubblingEvent("beforeExpand", qx.event.type.Event, [false, true]))
       {
-        this.getChildControl("pane").show();
+    	this.getChildControl("pane").show();
 
         // Remove state
         this.removeState("collapsed");
@@ -336,32 +354,45 @@ qx.Class.define("qxe.ui.form.TitlePane",
      * Collapses the title pane or expands it, if it is already
      * collapsed.
      *
-     * @param e {qx.event.type.Mouse} double click event
+     * @param e {qx.event.type.Mouse} click event
      */
-    _onCaptionMouseDblClick : function(e)
+    _onCaptionMouseClick : function(e)
     {
       if (this.getAllowCollapse()) {
         this.isCollapsed() ? this.expand() : this.collapse();
       }
     },
 
-  
-    /*
-    ---------------------------------------------------------------------------
-      EVENTS FOR CAPTIONBAR BUTTONS
-    ---------------------------------------------------------------------------
-    */
+    /**
+     * Listener for <code>mouseover</code> event
+     *
+     * @param e {qx.event.type.Mouse} mouseover event
+     */
+    _onMouseOver : function(e)
+    {
+      // Captured listener
+      // Whole stop for event, do not let the
+      // inner buttons know about this event.
+      e.stopPropagation();
+
+      // Add hover state, is forwarded to the buttons
+      this.addState("hovered");
+    },
 
     /**
-     * Collapses the title pane, removes all states from the collapse button and
-     * stops the further propagation of the event (calling {@link qx.event.type.Event#stopPropagation}).
+     * Listener for <code>mouseout</code> event
      *
-     * @param e {qx.event.type.Mouse} mouse click event
+     * @param e {qx.event.type.Mouse} mouseout event
      */
-    _onCollapseButtonClick : function(e)
+    _onMouseOut : function(e)
     {
-      this.collapse();
-      this.getChildControl("collapse-button").reset();
+      // Captured listener
+      // Whole stop for event, do not let the
+      // inner buttons know about this event.
+      e.stopPropagation();
+
+      // Finally remove state
+      this.removeState("hovered");
     }
   }
 });
