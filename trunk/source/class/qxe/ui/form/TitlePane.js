@@ -17,6 +17,9 @@
 
 /**
  * This is a title pane which can collapse and expand.
+ *
+ * @childControl bar {qx.ui.basic.Label} label of the title pane's caption bar
+ * @childControl bar {qx.ui.basic.Image} image of the title pane's caption bar
  * 
  * TODO:
  * - arrow down does not work with mouseover when collapsed
