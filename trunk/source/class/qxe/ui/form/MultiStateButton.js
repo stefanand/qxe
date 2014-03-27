@@ -335,5 +335,17 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
     getSelectables: function(all) {
       return this.__atoms;
     }
-  }
+  },
+
+
+  /*
+   *****************************************************************************
+      DESTRUCTOR
+   *****************************************************************************
+   */
+
+   destruct : function()
+   {
+     this._disposeObjects("__selection", "__atoms", "__maxSize");
+   }
 });

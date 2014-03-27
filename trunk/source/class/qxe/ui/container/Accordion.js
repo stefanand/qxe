@@ -16,20 +16,49 @@
 ************************************************************************ */
 
 /**
- * An accordion is a multi page view where one or more page is visible
- * at each moment. It is possible to switch the pages using the
+ * An accordion is a multi-pane view where one or more pane is visible
+ * at each moment. It is possible to switch the panes by clicking on the
  * caption bars rendered by each pane.
  *
- * http://www.siteexperts.com/tips/html/ts14/demo/default.htm
+ * The Outlook Category Bar can be rendered as in:
+ *   http://www.siteexperts.com/tips/html/ts14/demo/default.htm
  *
  * @childControl bar {qx.ui.container.SlideBar} slidebar for all tab buttons
  * @childControl pane {qx.ui.container.Stack} stack container to show one tab page
  */
+//collapseAll
+//expandAll
+//togglePane
+// multiselect (many open) or uniselect (one open) of title panes
+// which panel is active/expanded? one or more!
+
+/*
+ * When focus is on a header, the following key commands are available:
+
+    UP/LEFT - Move focus to the previous header. If on first header, moves focus to last header.
+    DOWN/RIGHT - Move focus to the next header. If on last header, moves focus to first header.
+    HOME - Move focus to the first header.
+    END - Move focus to the last header.
+    SPACE/ENTER - Activate panel associated with focused header.
+    
+   When focus is in a panel:
+
+    CTRL+UP: Move focus to associated header.
+*/
 qx.Class.define("qxe.ui.container.Accordion",
 {
-  extend : qx.ui.core.Widget,
-  implement : qx.ui.core.ISingleSelection,
-  include : qx.ui.core.MContentPadding,
+  extend : qx.ui.core.scroll.AbstractScrollArea,
+  implement : [
+    qx.ui.core.IMultiSelection,
+    qx.ui.form.IForm,
+    qx.ui.form.IModelSelection
+  ],
+  include : [
+    qx.ui.core.MRemoteChildrenHandling,
+    qx.ui.core.MMultiSelectionHandling,
+    qx.ui.form.MForm,
+    qx.ui.form.MModelSelection
+  ],
 
 
   /*
@@ -39,26 +68,36 @@ qx.Class.define("qxe.ui.container.Accordion",
   */
 
   /**
-   * @param orientation {String} The orientation of the accordion View control.
-   * Allowed values are "horizontal" (default) and "vertical".
+   * @param orientation {String} The orientation of the accordion widget.
+   *                             Allowed values are "barBottom", "barLeft", "barTop"
+   *                             and "barRight".
    */
   construct : function(orientation)
   {
     this.base(arguments);
 
-    this._createChildControl("pane");
+    // Create content
+    var content = this.__content = this._createListItemContainer();
 
-    // Create manager
-    var mgr = this.__radioGroup = new qx.ui.form.RadioGroup;
-    mgr.setWrap(false);
-    mgr.addListener("changeSelection", this._onChangeSelection, this);
+    // Used to fire item add/remove events
+    content.addListener("addChildWidget", this._onAddChild, this);
+    content.addListener("removeChildWidget", this._onRemoveChild, this);
 
-    // Initialize orientation
-    if (orientation) {
+    // Add to scrollpane
+    this.getChildControl("pane").add(content);
+
+    // Apply orientation
+    if (orientation != null)
+    {
       this.setOrientation(orientation);
-    } else {
+    }
+    else
+    {
       this.initOrientation();
     }
+
+    // Add keypress listener
+    this.addListener("keypress", this._onKeyPress);
   },
 
 
@@ -70,8 +109,19 @@ qx.Class.define("qxe.ui.container.Accordion",
 
   events :
   {
-    /** Fires after the selection was modified */
-    "changeSelection" : "qx.event.type.Data"
+    /**
+     * This event is fired after a list item was added to the list. The
+     * {@link qx.event.type.Data#getData} method of the event returns the
+     * added item.
+     */
+    addItem : "qx.event.type.Data",
+
+    /**
+     * This event is fired after a list item has been removed from the list.
+     * The {@link qx.event.type.Data#getData} method of the event returns the
+     * removed item.
+     */
+    removeItem : "qx.event.type.Data"
   },
 
 
@@ -90,6 +140,13 @@ qx.Class.define("qxe.ui.container.Accordion",
       init : "accordion"
     },
 
+    // overridden
+    focusable :
+    {
+      refine : true,
+      init : true
+    },
+
     /**
      * The orientation of the accordion View control.
      */
@@ -99,6 +156,8 @@ qx.Class.define("qxe.ui.container.Accordion",
       init  : "barTop",
       apply : "_applyOrientation"
     }
+// collapsible
+// collapsed bars moved to the end of the container? like in outlook..
   },
 
 
@@ -110,8 +169,11 @@ qx.Class.define("qxe.ui.container.Accordion",
 
   members :
   {
-    /** {qx.ui.form.RadioGroup} instance containing the radio group */
-    __radioGroup : null,
+    /** @type {qx.ui.core.Widget} The children container */
+    __content : null,
+
+    /** @type {Class} Pointer to the selection manager to use */
+    SELECTION_MANAGER : qx.ui.core.selection.ScrollArea,
 
 
     /*
@@ -121,358 +183,122 @@ qx.Class.define("qxe.ui.container.Accordion",
     */
 
     // overridden
-    _createChildControlImpl : function(id)
-    {
-      var control;
-
-      switch(id)
-      {
-        case "pane":
-          var layout;
-
-          if(qx.util.Validate.inArray(["barBottom", "barTop"])(this.getOrientation()))
-          {
-            layout = qx.ui.layout.VBox();
-          }
-          else
-          {
-            layout = qx.ui.layout.HBox();
-          }
-
-          control = new qx.ui.container.SlideBar(layout);
-
-          this._add(control);
-          break;
-      }
-
-      return control || this.base(arguments, id);
+    getChildrenContainer : function() {
+      return this.__content;
     },
 
     /**
-     * Returns the element, to which the content padding should be applied.
+     * Handle child widget adds on the content pane
      *
-     * @return {qx.ui.core.Widget} The content padding target.
+     * @param e {qx.event.type.Data} the event instance
      */
-/*    _getContentPaddingTarget : function() {
-      return this.getChildControl("pane");
-    },
-*/
-
-    /*
-    ---------------------------------------------------------------------------
-      CHILDREN HANDLING
-    ---------------------------------------------------------------------------
-    */
-
-
-    /**
-     * Adds a page to the accordion including its needed button
-     * (contained in the page).
-     *
-     * @param page {qxe.ui.form.TitlePane} The page which should be added.
-     */
-    add : function(pane)
-    {
-      if (qx.core.Environment.get("qx.debug"))
-      {
-        if (!(page instanceof qxe.ui.form.TitlePane)) {
-          throw new Error("Incompatible child for accordion: " + page);
-        }
-      }
-
-      pane.collapse();
-
-      this.getChildControl("pane").add(pane);
-
-      // Register pane
-      this.__radioGroup.add(pane);
-
-      // Add state to pane
-      pane.setOrientation(this.getOrientation());
+    _onAddChild : function(e) {
+      this.fireDataEvent("addItem", e.getData());
     },
 
     /**
-     * Removes a page (and its corresponding button) from the accordion View.
+     * Handle child widget removes on the content pane
      *
-     * @param page {qx.ui.form.TitlePane} The page to be removed.
+     * @param e {qx.event.type.Data} the event instance
      */
-    remove : function(pane)
-    {
-      var pane = this.getChildControl("pane");
-      var children = pane.getChildren();
-
-      // Try to select next page
-      if (this.getSelection()[0] == page)
-      {
-        var index = children.indexOf(page);
-        if (index == 0)
-        {
-          if (children[1]) {
-            this.setSelection([children[1]]);
-          } else {
-            this.resetSelection();
-          }
-        }
-        else
-        {
-          this.setSelection([children[index-1]]);
-        }
-      }
-
-      // Remove the button from the radio group
-      this.__radioGroup.remove(pane);
-    },
-
-    /**
-     * Returns accordion View's children widgets.
-     *
-     * @return {qx.ui.accordion.Page[]} List of children.
-     */
-    getChildren : function() {
-      return this.getChildControl("pane").getChildren();
+    _onRemoveChild : function(e) {
+      this.fireDataEvent("removeItem", e.getData());
     },
 
 
     /*
     ---------------------------------------------------------------------------
-      APPLY ROUTINES
+      PUBLIC API
     ---------------------------------------------------------------------------
     */
 
-    /** {Map} Maps the bar orientation to an appearance state */
-    __barOrientationToState : null,
-    __isHorizontal : null,
+    /**
+     * Used to route external <code>keypress</code> events to the list
+     * handling (in fact the manager of the list)
+     *
+     * @param e {qx.event.type.KeySequence} KeyPress event
+     */
+    handleKeyPress : function(e)
+    {
+      if (!this._onKeyPress(e)) {
+        this._getManager().handleKeyPress(e);
+      }
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      PROTECTED API
+    ---------------------------------------------------------------------------
+    */
 
     /**
-     * Apply method for the placeBarOnTop-Property.
+     * This container holds the list item widgets.
      *
-     * Passes the desired value to the layout of the accordion View so
-     * that the layout can handle it.
-     * It also sets the states to all buttons so they know the
-     * position of the bar.
-     *
-     * @param value {boolean} The new value.
-     * @param old {boolean} The old value.
+     * @return {qx.ui.container.Composite} Container for the list item widgets
      */
+    _createListItemContainer : function() {
+      return new qx.ui.container.Composite;
+    },
+
+    /*
+    ---------------------------------------------------------------------------
+      PROPERTY APPLY ROUTINES
+    ---------------------------------------------------------------------------
+    */
+
+    // property apply
     _applyOrientation : function(value, old)
     {
-      var bar = this.getChildControl("bar");
+      // Create new layout
+      var horizontal = value === "barLeft" || value === "barRight";
+      var layout = horizontal ? new qx.ui.layout.HBox() : new qx.ui.layout.VBox();
 
-      var horizontal = value == "left" || value == "right";
-
-      var layoutClass = horizontal ? qx.ui.layout.HBox : qx.ui.layout.VBox;
-
-      var layout = this._getLayout();
-      if (layout && layout instanceof layoutClass) {
-        // pass
-      } else {
-        this._setLayout(layout = new layoutClass);
-      }
-
-      // Sync orientation to bar
-      bar.setOrientation(horizontal ? "vertical" : "horizontal");
-
-      // Read children
-      var children = this.getChildren();
-
-      // Toggle state to bar
-      if (old)
-      {
-        // Update bar
-        bar.removeState(old);
-
-        // Update pages
-        for (var i=0, l=children.length; i<l; i++) {
-          children[i].removeState(old);
-					children[i].getChildControl("button").removeState(old);
-        }
-      }
-
-      if (value)
-      {
-        // Update bar
-        bar.addState(value);
-
-        // Update pages
-        for (var i=0, l=children.length; i<l; i++) {
-          children[i].addState(value);
-					children[i].getChildControl("button").addState(value);
-        }
-      }
+      // Configure content
+      var content = this.__content;
+      content.setLayout(layout);
+      content.setAllowGrowX(!horizontal);
+      content.setAllowGrowY(horizontal);
     },
 
-
+    
     /*
     ---------------------------------------------------------------------------
-      SELECTION API
+      EVENT HANDLER
     ---------------------------------------------------------------------------
     */
 
     /**
-     * Returns an array of currently selected items.
+     * Event listener for <code>keypress</code> events.
      *
-     * Note: The result is only a set of selected items, so the order can
-     * differ from the sequence in which the items were added.
-     *
-     * @return {qx.ui.accordion.Page[]} List of items.
+     * @param e {qx.event.type.KeySequence} KeyPress event
+     * @return {Boolean} Whether the event was processed
      */
-    getSelection : function() {
-      var buttons = this.__radioGroup.getSelection();
-      var result = [];
-
-      for (var i = 0; i < buttons.length; i++) {
-        result.push(buttons[i].getUserData("page"));
-      }
-
-      return result;
-    },
-
-    /**
-     * Replaces current selection with the given items.
-     *
-     * @param items {qx.ui.accordion.Page[]} Items to select.
-     * @throws an exception if one of the items is not a child element and if
-     *    items contains more than one elements.
-     */
-    setSelection : function(items) {
-      var buttons = [];
-
-      for (var i = 0; i < items.length; i++) {
-        buttons.push(items[i].getChildControl("button"));
-      }
-      this.__radioGroup.setSelection(buttons);
-    },
-
-    /**
-     * Clears the whole selection at once.
-     */
-    resetSelection : function() {
-      this.__radioGroup.resetSelection();
-    },
-
-    /**
-     * Detects whether the given item is currently selected.
-     *
-     * @param item {qx.ui.accordion.Page} Any valid selectable item.
-     * @return {Boolean} Whether the item is selected.
-     * @throws an exception if one of the items is not a child element.
-     */
-    isSelected : function(item) {
-      var button = item.getChildControl("button");
-      return this.__radioGroup.isSelected(button);
-    },
-
-    /**
-     * Whether the selection is empty.
-     *
-     * @return {Boolean} Whether the selection is empty.
-     */
-    isSelectionEmpty : function() {
-      return this.__radioGroup.isSelectionEmpty();
-    },
-
-    /**
-     * Returns all elements which are selectable.
-     *
-     * @return {qx.ui.accordion.Page[]} The contained items.
-     */
-    getSelectables: function() {
-      var buttons = this.__radioGroup.getSelectables();
-      var result = [];
-
-      for (var i = 0; i <buttons.length; i++) {
-        result.push(buttons[i].getUserData("page"));
-      }
-
-      return result;
-    },
-
-    /**
-     * Event handler for <code>changeSelection</code>.
-     *
-     * @param e {qx.event.type.Data} Data event.
-     */
-    _onChangeSelection : function(e)
+    _onKeyPress : function(e)
     {
-      var pane = this.getChildControl("pane");
-      var button = e.getData()[0];
-
-      if (button)
+      // Execute action on press <ENTER>
+      if (e.getKeyIdentifier() == "Enter" && !e.isAltPressed())
       {
-        pane.setSelection([button.getUserData("page")]);
-        button.focus();
-        this.scrollChildIntoView(button, null, null, false);
+        var items = this.getSelection();
+        for (var i=0; i<items.length; i++) {
+          items[i].fireEvent("action");
+        }
+
+        return true;
       }
-      else
-      {
-        pane.resetSelection();
-      }
 
-      var value = pane.getSelection();
-      var old = e.getOldData();
-
-      this.fireDataEvent("changeSelection", value, old);
-    },
-
-    /**
-     * Event handler for <code>beforeChangeSelection</code>.
-     *
-     * @param e {qx.event.type.Event} Data event.
-     */
-    _onBeforeChangeSelection : function(e)
-    {
-      if (!this.fireNonBubblingEvent("beforeChangeSelection",
-          qx.event.type.Event, [false, true])) {
-        e.preventDefault();
-      }
-    },
-
-
-    /*
-    ---------------------------------------------------------------------------
-      EVENT LISTENERS
-    ---------------------------------------------------------------------------
-    */
-
-
-    /**
-     * Event handler for the change of the selected item of the radio group.
-     * @param e {qx.event.type.Data} The data event
-     */
-    _onRadioChangeSelection : function(e) {
-      var element = e.getData()[0];
-      if (element) {
-        this.setSelection([element.getUserData("page")]);
-      } else {
-        this.resetSelection();
-      }
-    },
-
-
-    /**
-     * Removes the Page widget on which the close button was clicked.
-     *
-     * @param e {qx.event.type.Mouse} mouse click event
-     */
-    _onPageClose : function(e) {
-      this.remove(e.getTarget());
+      return false;
     }
-
-//collapseAll
-//expandAll
-//togglePane
-// multiselect (many open) or uniselect (one open) of title panes
   },
 
 
   /*
-  *****************************************************************************
-     DESTRUCTOR
-  *****************************************************************************
-  */
+   *****************************************************************************
+      DESTRUCTOR
+   *****************************************************************************
+   */
 
-
-  destruct : function() {
-    this._disposeObjects("__radioGroup");
-  }
+   destruct : function() {
+     this._disposeObjects("__content");
+   }
 });

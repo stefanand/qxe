@@ -25,6 +25,7 @@
  * - arrow down does not work with mouseover when collapsed
  * - orientation must be implemented including orientation of caption
  * - barBottom, barLeft, barTop, barRight
+ * - necessary to implement qx.ui.form.IForm.js / MForm.js ?
  */
 qx.Class.define("qxe.ui.form.TitlePane",
 {

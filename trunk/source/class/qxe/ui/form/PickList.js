@@ -3,7 +3,7 @@
    qxe - qooxdoo extension framework
 
    Copyright:
-     2010-2011 Cost Savers, http://www.cost-savers.net
+     2010-2014 Cost Savers, http://www.cost-savers.net
 
    License:
      LGPL: http://www.gnu.org/licenses/lgpl.html
@@ -86,18 +86,19 @@ qx.Class.define("qxe.ui.form.PickList",
       nullable : true
     },
 
-    /** List sort method
+    /** List sort order
      * "none"       - don't sort at all
      * "original"   - keep the initial add/remove order before move
      *                from one list to the other
      * "ascending"  - sort alphabetically ascending
      * "descending" - sort alphabetically descending
      */
-    sortMethod :
+    sortOrder :
     {
       check : [ "none", "original", "ascending", "descending" ],
       init : "none",
-      apply : "_applySortMethod"
+      nullable : false,
+      apply : "_applySortOrder"
     }
   },
 
@@ -110,7 +111,10 @@ qx.Class.define("qxe.ui.form.PickList",
 
   members :
   {
-	/** Hash codes of objects added in source list. */
+	/**
+	 * Hash codes of objects added in source list to store original
+	 * order of children.
+	 */
     __list : [],
 
     // overridden
@@ -243,6 +247,22 @@ qx.Class.define("qxe.ui.form.PickList",
     */
 
     /**
+     * Apply new sort order by sorting both source and target lists.
+     */
+    _applySortOrder : function(value, old)
+    {
+      this._sort(this.getChildControl("source-list"));
+      this._sort(this.getChildControl("target-list"));
+    },
+
+
+    /*
+    ---------------------------------------------------------------------------
+      EVENTS
+    ---------------------------------------------------------------------------
+    */
+
+    /**
      * Add selected items from source to target list.
      * 
      * @param e {qx.event.type.Event} the event data
@@ -306,7 +326,7 @@ qx.Class.define("qxe.ui.form.PickList",
      */
     __onAddItem : function(e)
     {
-      this.__list.push(e.getData().toHash());
+      this.__list.push(e.getData().toHashCode());
     },
 
     /**
@@ -317,7 +337,7 @@ qx.Class.define("qxe.ui.form.PickList",
      */
     __onRemoveItem : function(e)
     {
-      var index = this.__list.indexOf(e.getData().toHash());
+      var index = this.__list.indexOf(e.getData().toHashCode());
 
       if(index > -1)
       {
@@ -342,6 +362,7 @@ qx.Class.define("qxe.ui.form.PickList",
     {
       if(!source.isSelectionEmpty())
       {
+    	// Add the source list items selected to target list
         var selection = source.getSelection();
 
         for (var i = 0, l = selection.length; i < l; i++)
@@ -350,14 +371,17 @@ qx.Class.define("qxe.ui.form.PickList",
           target.add(selection[i]);
         }
 
-        var sortedList = this.sortList(target);
+        // Sort target list according to sort method
+        var sortedList = this._sort(target);
 
+        // Add the sorted list
         if(sortedList != null)
         {
+          target.removeAll();
+
           for (var i = 0, l = sortedList.length; i < l; i++)
           {
-            target.remove(sortedList[i]);
-            target.addAt(sortedList[i], );
+            target.add(sortedList[i]);
           }
         }
       }
@@ -368,38 +392,37 @@ qx.Class.define("qxe.ui.form.PickList",
     },
 
     /**
-     * Sorts a list in ascending order.
+     * Sorts according to sortOrder.
      * 
      * @param list {qx.ui.form.List} the list to be sorted
-     * @return {qx.ui.core.Widget} the sorted list
+     * @return {qx.ui.core.Widget[]} the sorted list
      */
-    sortList : function(list)
+    _sort : function(list)
     {
-      var sel = null;
-      var sortMethod = this.getSortMethod();
+      var sortOrder = this.getSortOrder();
+      var children = list.getChildren();
+      var sel = qx.lang.Object.getValues(children);
 
-      if(sortMethod != null)
-      {
-        var children = list.getChildren();
-        sel = qx.lang.Object.getValues(this.__selection);
+      sel.sort(function(a, b) {
+        switch(sortOrder)
+        {
+          case "none":
+            return 0;
 
-        sel.sort(function(a, b) {
-          switch(sortMethod)
-          {
-            case "none":
-              return 0;
-            case "original":
-              return;
-            case "ascending":
-              return children.indexOf(a) - children.indexOf(b);
-            case "descending":
-              return children.indexOf(b) - children.indexOf(a);
-          }
-        });
-      }
+          case "original":
+            return children.indexOf(a) - this.__list.indexOf(b);
+
+          case "ascending":
+            return children.indexOf(a) - children.indexOf(b);
+
+          case "descending":
+            return children.indexOf(b) - children.indexOf(a);
+        }
+      });
 
       return sel;
     },
+
 
     /*
     ---------------------------------------------------------------------------

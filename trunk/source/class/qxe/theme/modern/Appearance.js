@@ -36,6 +36,59 @@ qx.Theme.define("qxe.theme.modern.Appearance",
   {
     /*
     ---------------------------------------------------------------------------
+      ACCORDION
+    ---------------------------------------------------------------------------
+    */
+
+    "accordion" :
+    {
+      alias : "scrollarea",
+
+      style : function(states)
+      {
+        var decorator;
+
+        var focused = !!states.focused;
+        var invalid = !!states.invalid;
+        var disabled = !!states.disabled;
+
+        if (focused && invalid && !disabled) {
+            decorator = "input-focused-invalid";
+          } else if (focused && !invalid && !disabled) {
+            decorator = "input-focused";
+          } else if (disabled) {
+            decorator = "input-disabled";
+          } else if (!focused && invalid && !disabled) {
+            decorator = "border-invalid";
+          } else {
+            decorator = "input";
+          }
+
+          return {
+            backgroundColor : "background-light",
+            decorator : decorator
+          };
+        }
+      },
+
+      "accordion/pane" : "widget",
+/*
+      "listitem" :
+      {
+        alias : "atom",
+
+        style : function(states)
+        {
+          return {
+            padding   : states.dragover ? [4, 4, 2, 4] : 4,
+            textColor : states.selected ? "text-selected" : undefined,
+            decorator : states.selected ? "selected" : undefined
+          };
+        }
+      },
+*/
+	/*
+    ---------------------------------------------------------------------------
       ANALOG CLOCK
     ---------------------------------------------------------------------------
     */

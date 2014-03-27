@@ -295,5 +295,17 @@ qx.Class.define("qxe.ui.control.PageControl",
         this.getChildControl("next-page-button").setEnabled(true);
       }
     }
-  }
+  },
+
+
+  /*
+   *****************************************************************************
+      DESTRUCTOR
+   *****************************************************************************
+   */
+
+   destruct : function()
+   {
+     this._disposeObjects("__pageContainer");
+   }
 });
