@@ -221,15 +221,15 @@ qx.Class.define("qxe.ui.form.TitlePane",
           break;
 
         case "collapse-image":
-            control = new qx.ui.basic.Image();
+          control = new qx.ui.basic.Image();
 
-            this.getChildControl("captionbar").add(control, {row: 0, column: 1});
-            break;
+          this.getChildControl("captionbar").add(control, {row: 0, column: 1});
+          break;
 
         case "pane":
-            control = new qx.ui.container.Composite();
-            this._add(control, {flex: 1});
-            break;
+          control = new qx.ui.container.Composite();
+          this._add(control, {flex: 1});
+          break;
       }
 
       return control || this.base(arguments, id);

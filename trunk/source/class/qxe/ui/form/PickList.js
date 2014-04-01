@@ -42,7 +42,7 @@ qx.Class.define("qxe.ui.form.PickList",
    */
 
   /**
-   *
+   * @param label {String} the label of the source pane.
    */
   construct : function(label)
   {
@@ -78,7 +78,7 @@ qx.Class.define("qxe.ui.form.PickList",
       init : "pick-list"
     },
 
-    /** List label */
+    /** Source pane label */
     label :
     {
       check : "String",
@@ -86,7 +86,7 @@ qx.Class.define("qxe.ui.form.PickList",
       nullable : true
     },
 
-    /** List sort order
+    /** Lists' sort order
      * "none"       - don't sort at all
      * "original"   - keep the initial add/remove order before move
      *                from one list to the other
