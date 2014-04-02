@@ -33,7 +33,7 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
 
   /**
    * @param caption {string} The caption
-   * @param optionPane {qxe.ui.dialog.OptionPane} The option pane
+   * @param optionPane {qxe.ui.pane.OptionPane} The option pane
    */
   construct : function(caption, optionPane)
   {
@@ -62,8 +62,8 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
      * The json structure looks like this:
      * {
      *   caption : "a title",
-     *   optionPane : qxe.ui.dialog.OptionPane.INFO,
-     *   message : "This is an info dialoga"
+     *   optionPane : qxe.ui.pane.OptionPane.INFO,
+     *   message : "This is an info dialog"
      * }
      *
      * @param json {object} The new value.
@@ -118,7 +118,7 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
     /**
      * Set option pane for dialog.
      *
-     * @param optionPane {qxe.ui.dialog.OptionPane} The option pane object or json definition.
+     * @param optionPane {qxe.ui.pane.OptionPane} The option pane object or json definition.
      */
     setOptionPane : function(optionPane)
     {
@@ -130,9 +130,9 @@ qx.Class.define("qxe.ui.dialog.OptionDialog",
         }
       }
 
-      if(!(optionPane instanceof qxe.ui.dialog.OptionPane))
+      if(!(optionPane instanceof qxe.ui.pane.OptionPane))
       {
-        optionPane = qxe.ui.dialog.OptionPane.getInstance(optionPane);
+        optionPane = qxe.ui.pane.OptionPane.getInstance(optionPane);
       }
 
       this.add(optionPane);

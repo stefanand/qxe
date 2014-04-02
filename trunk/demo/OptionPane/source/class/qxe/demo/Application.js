@@ -84,7 +84,7 @@ qx.Class.define("qxe.demo.Application",
         }
       };
 
-      var optionPane = new qxe.ui.dialog.OptionPane("This is a warning!", "qxe/decoration/Modern/dialog/icon/48/warning.png", buttonPane);
+      var optionPane = new qxe.ui.pane.OptionPane("This is a warning!", "qxe/decoration/Modern/dialog/icon/48/warning.png", buttonPane);
       optionPane.setBackgroundColor("white");
 
       return optionPane;
@@ -103,10 +103,10 @@ qx.Class.define("qxe.demo.Application",
         caption : qx.locale.Manager.marktr("Message"),
         image : "qxe/decoration/Modern/dialog/icon/48/message.png",
         message : "This is a message!",
-        buttons : buttonPane
+        buttonPane : buttonPane
       };
 
-      var optionPane = new qxe.ui.dialog.OptionPane.getInstance(def);
+      var optionPane = new qxe.ui.pane.OptionPane.getInstance(def);
       optionPane.setBackgroundColor("white");
 
       return optionPane;

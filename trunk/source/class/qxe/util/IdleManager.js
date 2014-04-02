@@ -17,7 +17,7 @@
 
 /**
  * An idle manager keeping track on mouse, screen and keyboard activity.
- * Three available states: active, idle or away.
+ * Three available states: active, idle, away or logout.
  * 
  * TODO: how can the number of events fired at activity calling this.reset
  *       be minimized? with a threshold level to restart the timer?
@@ -80,7 +80,10 @@ qx.Class.define("qxe.util.IdleManager",
     "idle" : "qx.event.type.Data",
 
 	/** Event fired when away. */
-    "away" : "qx.event.type.Data"
+    "away" : "qx.event.type.Data",
+
+  	/** Event fired when automatic logout. */
+    "logout" : "qx.event.type.Data"
   },
 
 
@@ -108,6 +111,16 @@ qx.Class.define("qxe.util.IdleManager",
       init : 30000,
       apply : "_applyAwayTimeout",
       event : "changeAvayTimeout"
+    },
+
+    /** The automatic logout timeout */
+    logoutTimeout :
+    {
+      check : "Integer",
+      init : null,
+      nullable : true,
+      apply : "_applyLogoutTimeout",
+      event : "changeLogoutTimeout"
     }
   },
 
@@ -170,29 +183,46 @@ qx.Class.define("qxe.util.IdleManager",
       {
       	var idleTimeout = this.getIdleTimeout();
     	var awayTimeout = this.getAwayTimeout();
+    	var logoutTimeout = this.getLogoutTimeout();
 
         var timer = this.__timer;
 
         timer.stop(timerId);
 
-        if(userData.state == "idle")
+        switch(userData.state)
         {
-          var data = {
-            timeout : idleTimeout
-          };
+          case "idle":
+            var data = {
+              timeout : idleTimeout
+            };
 
-          this.fireDataEvent("idle", data);
+            this.fireDataEvent("idle", data);
 
-          // One shot timer
-          this.__timerId = timer.start(this._timeout, 0, this, {state : "away"}, awayTimeout - idleTimeout);
-        }
-        else if(userData.state == "away")
-        {
-          var data = {
-            timeout : awayTimeout
-          };
+            // One shot timer
+            this.__timerId = timer.start(this._timeout, 0, this, {state : "away"}, awayTimeout - idleTimeout);
+            break;
 
-          this.fireDataEvent("away", data);
+          case "away":
+            var data = {
+              timeout : awayTimeout
+            };
+
+            this.fireDataEvent("away", data);
+
+            if(logoutTimeout != null)
+            {
+              // One shot timer
+              this.__timerId = timer.start(this._timeout, 0, this, {state : "logout"}, awayTimeout - idleTimeout - logoutTimeout);
+            }
+            break;
+
+          case "logout":
+            var data = {
+              timeout : logoutTimeout
+            };
+
+            this.fireDataEvent("logout", data);
+            break;
         }
       }
     },
@@ -290,6 +320,10 @@ qx.Class.define("qxe.util.IdleManager",
     },
 
     _applyAwayTimeout : function(value, old)
+    {
+    },
+
+    _applyLogoutTimeout : function(value, old)
     {
     }
   }

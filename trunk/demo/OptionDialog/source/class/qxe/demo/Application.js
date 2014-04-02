@@ -88,7 +88,7 @@ qx.Class.define("qxe.demo.Application",
             }
           };
 
-          var optionPane = new qxe.ui.dialog.OptionPane("This is a warning!", "qxe/decoration/Modern/dialog/icon/48/warning.png", buttonPane);
+          var optionPane = new qxe.ui.pane.OptionPane("This is a warning!", "qxe/decoration/Modern/dialog/icon/48/warning.png", buttonPane);
 
           optionDialog = new qxe.ui.dialog.OptionDialog("Testing option dialog", optionPane);
           optionDialog.setHeight(100);
@@ -109,7 +109,7 @@ qx.Class.define("qxe.demo.Application",
       button2.addListener("execute", function(e) {
         if(optionDialog == null)
         {
-          var optionPane = qxe.ui.dialog.OptionPane.getInstance(qxe.ui.dialog.OptionPane.INFO);
+          var optionPane = qxe.ui.pane.OptionPane.getInstance(qxe.ui.pane.OptionPane.INFO);
           optionPane.setMessage("This is information!");
 
           optionDialog = new qxe.ui.dialog.OptionDialog("Testing option dialog", optionPane);
@@ -133,7 +133,7 @@ qx.Class.define("qxe.demo.Application",
         {
           var def = {
             caption : "a title",
-            optionPane : qxe.ui.dialog.OptionPane.ERR,
+            optionPane : qxe.ui.pane.OptionPane.ERR,
             message : "This is an info dialog"
           };
 
