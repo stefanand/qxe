@@ -24,6 +24,8 @@
         - By breaking up the DateChooser we will also be able to choose
           different calendars complying with the selected locale after
           it has been implemented.
+        - Supports implementation of different chronology of different
+          calendars.
 
 ************************************************************************ */
 
@@ -68,13 +70,10 @@ qx.Class.define("qxe.ui.control.DateChooser",
 {
   extend : qx.ui.core.Widget,
   include : [
-    qx.ui.core.MExecutable,
     qx.ui.form.MForm
   ],
   implement : [
-    qx.ui.form.IExecutable,
-    qx.ui.form.IForm,
-    qx.ui.form.IDateForm
+    qx.ui.form.IForm
   ],
 
 
@@ -88,9 +87,14 @@ qx.Class.define("qxe.ui.control.DateChooser",
    * @param date {Date ? null} The initial date to show. If <code>null</code>
    * the current day (today) is shown.
    */
-  construct : function(date)
+  construct : function(calendar)
   {
     this.base(arguments);
+
+    if(calendar != null)
+    {
+      this.setCalendar(calendar);
+    }
 
     // set the layout
     var layout = new qx.ui.layout.VBox();
@@ -105,13 +109,10 @@ qx.Class.define("qxe.ui.control.DateChooser",
 
     // initialize format - moved from statics{} to constructor due to [BUG #7149]
     var DateChooser = qx.ui.control.DateChooser;
+
     if (!DateChooser.MONTH_YEAR_FORMAT) {
         DateChooser.MONTH_YEAR_FORMAT = qx.locale.Date.getDateTimeFormat("yyyyMMMM", "MMMM yyyy");
     }
-
-    // Show the right date
-    var shownDate = (date != null) ? date : new Date();
-    this.showMonth(shownDate.getMonth(), shownDate.getFullYear());
 
     // listen for locale changes
     if (qx.core.Environment.get("qx.dynlocale")) {
@@ -169,32 +170,12 @@ qx.Class.define("qxe.ui.control.DateChooser",
       init : 150
     },
 
-    /** The currently shown month. 0 = january, 1 = february, and so on. */
-    shownMonth :
+    /** The calendar to be used. Defaults to the ISO calendar. */
+    calendar :
     {
-      check : "Integer",
-      init : null,
-      nullable : true,
-      event : "changeShownMonth"
-    },
-
-    /** The currently shown year. */
-    shownYear :
-    {
-      check : "Integer",
-      init : null,
-      nullable : true,
-      event : "changeShownYear"
-    },
-
-    /** The date value of the widget. */
-    value :
-    {
-      check : "Date",
-      init : null,
-      nullable : true,
-      event : "changeValue",
-      apply : "_applyValue"
+      check : "Object",
+      init : new qxe.ui.control.ISOCalendar(),
+      event : "changeCalendar"
     }
   },
 
@@ -270,6 +251,12 @@ qx.Class.define("qxe.ui.control.DateChooser",
           control.addListener("tap", this._onNavButtonTap, this);
           break;
 
+        case "month-year-label":
+          control = new qx.ui.basic.Label();
+          control.setAllowGrowX(true);
+          control.setAnonymous(true);
+          break;
+
         case "next-month-button-tooltip":
           control = new qx.ui.tooltip.ToolTip(this.tr("Next month"));
           break;
@@ -294,14 +281,8 @@ qx.Class.define("qxe.ui.control.DateChooser",
           control.addListener("tap", this._onNavButtonTap, this);
           break;
 
-        case "month-year-label":
-          control = new qx.ui.basic.Label();
-          control.setAllowGrowX(true);
-          control.setAnonymous(true);
-          break;
-
         case "date-pane":
-          control = new qxe.ui.control.Calendar();
+          control = this.getCalendar();
 
           this._add(control);
           break;
@@ -309,45 +290,6 @@ qx.Class.define("qxe.ui.control.DateChooser",
 
       return control || this.base(arguments, id);
     },
-
-
-    // apply methods
-    _applyValue : function(value, old)
-    {
-      if ((value != null) && (this.getShownMonth() != value.getMonth() || this.getShownYear() != value.getFullYear()))
-      {
-        // The new date is in another month -> Show that month
-        this.showMonth(value.getMonth(), value.getFullYear());
-      }
-      else
-      {
-        // The new date is in the current month -> Just change the states
-        var newDay = (value == null) ? -1 : value.getDate();
-
-        for (var i=0; i<6*7; i++)
-        {
-          var dayLabel = this.__dayLabelArr[i];
-
-          if (dayLabel.hasState("otherMonth"))
-          {
-            if (dayLabel.hasState("selected")) {
-              dayLabel.removeState("selected");
-            }
-          }
-          else
-          {
-            var day = parseInt(dayLabel.getValue(), 10);
-
-            if (day == newDay) {
-              dayLabel.addState("selected");
-            } else if (dayLabel.hasState("selected")) {
-              dayLabel.removeState("selected");
-            }
-          }
-        }
-      }
-    },
-
 
 
     /*
@@ -380,8 +322,9 @@ qx.Class.define("qxe.ui.control.DateChooser",
      */
     _onNavButtonTap : function(evt)
     {
-      var year = this.getShownYear();
-      var month = this.getShownMonth();
+      var calendar = this.getCalendar();
+      var year = calendar.getShownYear();
+      var month = calendar.getShownMonth();
 
       switch(evt.getCurrentTarget())
       {
@@ -416,27 +359,7 @@ qx.Class.define("qxe.ui.control.DateChooser",
           break;
       }
 
-      this.showMonth(month, year);
-    },
-
-
-    /**
-     * Event handler. Called when a day has been tapped.
-     *
-     * @param evt {qx.event.type.Data} The event.
-     */
-    _onDayTap : function(evt)
-    {
-      var time = evt.getCurrentTarget().dateTime;
-      this.setValue(new Date(time));
-    },
-
-
-    /**
-     * Event handler. Called when a day has been double-tapped.
-     */
-    _onDayDblTap : function() {
-      this.execute();
+      calendar.showMonth(month, year);
     },
 
 
@@ -447,6 +370,8 @@ qx.Class.define("qxe.ui.control.DateChooser",
      */
     _onKeyPress : function(evt)
     {
+      var calendar = this.getCalendar();
+
       var dayIncrement = null;
       var monthIncrement = null;
       var yearIncrement = null;
@@ -480,9 +405,9 @@ qx.Class.define("qxe.ui.control.DateChooser",
             break;
 
           case "Escape":
-            if (this.getValue() != null)
+            if (calendar.getValue() != null)
             {
-              this.setValue(null);
+              calendar.setValue(null);
               return;
             }
 
@@ -490,8 +415,8 @@ qx.Class.define("qxe.ui.control.DateChooser",
 
           case "Enter":
           case "Space":
-            if (this.getValue() != null) {
-              this.execute();
+            if (calendar.getValue() != null) {
+              calendar.execute();
             }
 
             return;
@@ -513,7 +438,7 @@ qx.Class.define("qxe.ui.control.DateChooser",
 
       if (dayIncrement != null || monthIncrement != null || yearIncrement != null)
       {
-        var date = this.getValue();
+        var date = calendar.getValue();
 
         if (date != null) {
           date = new Date(date.getTime());
@@ -529,32 +454,7 @@ qx.Class.define("qxe.ui.control.DateChooser",
           if (yearIncrement != null){date.setFullYear(date.getFullYear() + yearIncrement);}
         }
 
-        this.setValue(date);
-      }
-    },
-
-
-    /**
-     * Shows a certain month.
-     *
-     * @param month {Integer ? null} the month to show (0 = january). If not set
-     *      the month will remain the same.
-     * @param year {Integer ? null} the year to show. If not set the year will
-     *      remain the same.
-     */
-    showMonth : function(month, year)
-    {
-      if ((month != null && month != this.getShownMonth()) || (year != null && year != this.getShownYear()))
-      {
-        if (month != null) {
-          this.setShownMonth(month);
-        }
-
-        if (year != null) {
-          this.setShownYear(year);
-        }
-
-        this._updateDatePane();
+        calendar.setValue(date);
       }
     },
 
@@ -574,10 +474,16 @@ qx.Class.define("qxe.ui.control.DateChooser",
      */
     _updateDatePane : function()
     {
+      var calendar = this.getCalendar();
+
+      // update the calendar
+      calendar._updateDatePane();
+
+      // update the label
       var DateChooser = qx.ui.control.DateChooser;
 
       // Create a help date that points to the first of the current month
-      var helpDate = new Date(this.getShownYear(), this.getShownMonth(), 1);
+      var helpDate = new Date(calendar.getShownYear(), calendar.getShownMonth(), 1);
 
       var monthYearFormat = new qx.util.format.DateFormat(DateChooser.MONTH_YEAR_FORMAT);
       this.getChildControl("month-year-label").setValue(monthYearFormat.format(helpDate));

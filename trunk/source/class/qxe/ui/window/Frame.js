@@ -255,7 +255,7 @@ qx.Class.define("qxe.ui.window.Frame",
         case "minimize-button":
           control = new qx.ui.form.Button();
           control.setFocusable(false);
-          control.addListener("execute", this._onMinimizeButtonClick, this);
+          control.addListener("execute", this._onMinimizeButtonTap, this);
 
           this.getChildControl("captionbar").add(control, {row: 0, column: 2});
           break;
@@ -263,7 +263,7 @@ qx.Class.define("qxe.ui.window.Frame",
         case "restore-button":
           control = new qx.ui.form.Button();
           control.setFocusable(false);
-          control.addListener("execute", this._onRestoreButtonClick, this);
+          control.addListener("execute", this._onRestoreButtonTap, this);
 
           this.getChildControl("captionbar").add(control, {row: 0, column: 3});
           break;
@@ -271,7 +271,7 @@ qx.Class.define("qxe.ui.window.Frame",
         case "maximize-button":
           control = new qx.ui.form.Button();
           control.setFocusable(false);
-          control.addListener("execute", this._onMaximizeButtonClick, this);
+          control.addListener("execute", this._onMaximizeButtonTap, this);
 
           this.getChildControl("captionbar").add(control, {row: 0, column: 4});
           break;
@@ -563,7 +563,7 @@ qx.Class.define("qxe.ui.window.Frame",
      *
      * @param e {qx.event.type.Mouse} mouse click event
      */
-    _onMinimizeButtonClick : function(e)
+    _onMinimizeButtonTap : function(e)
     {
       this.minimize();
       this.getChildControl("minimize-button").reset();
@@ -576,7 +576,7 @@ qx.Class.define("qxe.ui.window.Frame",
      *
      * @param e {qx.event.type.Mouse} mouse click event
      */
-    _onRestoreButtonClick : function(e)
+    _onRestoreButtonTap : function(e)
     {
       this.restore();
       this.getChildControl("restore-button").reset();
@@ -589,7 +589,7 @@ qx.Class.define("qxe.ui.window.Frame",
      *
      * @param e {qx.event.type.Mouse} mouse click event
      */
-    _onMaximizeButtonClick : function(e)
+    _onMaximizeButtonTap : function(e)
     {
       this.maximize();
       this.getChildControl("maximize-button").reset();

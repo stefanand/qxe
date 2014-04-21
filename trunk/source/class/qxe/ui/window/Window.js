@@ -71,7 +71,7 @@ qx.Class.define("qxe.ui.window.Window",
     this._createChildControl("pane");
 
     // Activation listener
-    this.addListener("mousedown", this._onWindowMouseDown, this, true);
+    this.addListener("pointerdown", this._onWindowPointerDown, this, true);
 
     // Focusout listener
     this.addListener("focusout", this._onWindowFocusOut, this);
@@ -414,7 +414,7 @@ qx.Class.define("qxe.ui.window.Window",
      *
      * @param e {qx.event.type.Mouse} mouse down event
      */
-    _onWindowMouseDown : function(e) {
+    _onWindowPointerDown : function(e) {
       this.setActive(true);
     },
 

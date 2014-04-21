@@ -295,73 +295,67 @@ qx.Class.define("qxe.ui.scheduler.Year",
           case "Right":
             dayIncrement = 1;
             break;
-          case "Up":
-              dayIncrement = -7;
-              break;
 
-            case "Down":
-              dayIncrement = 7;
-              break;
+          case "PageUp":
+            monthIncrement = -1;
+            break;
 
-            case "PageUp":
-              monthIncrement = -1;
-              break;
+          case "PageDown":
+            monthIncrement = 1;
+            break;
 
-            case "PageDown":
-              monthIncrement = 1;
-              break;
-
-            case "Escape":
-              if (this.getValue() != null)
-              {
-                this.setValue(null);
-                return;
-              }
-              break;
-
-            case "Enter":
-            case "Space":
-              if (this.getValue() != null) {
-                this.execute();
-              }
-
+          case "Escape":
+            if (this.getValue() != null)
+            {
+              this.setValue(null);
               return;
-          }
+            }
+            break;
+
+          case "Enter":
+          case "Space":
+            if (this.getValue() != null)
+            {
+              this.execute();
+            }
+
+            return;
         }
-        else if (evt.isShiftPressed())
+      }
+      else if (evt.isShiftPressed())
+      {
+        switch(evt.getKeyIdentifier())
         {
-          switch(evt.getKeyIdentifier())
-          {
-            case "PageUp":
-              yearIncrement = -1;
-              break;
+          case "PageUp":
+            yearIncrement = -1;
+            break;
 
-            case "PageDown":
-              yearIncrement = 1;
-              break;
-          }
+          case "PageDown":
+            yearIncrement = 1;
+            break;
         }
+      }
 
-        if (dayIncrement != null || monthIncrement != null || yearIncrement != null)
+      if (yearIncrement != null)
+      {
+        var date = this.getValue();
+
+        if (date != null)
         {
-          var date = this.getValue();
-
-          if (date != null) {
-            date = new Date(date.getTime());
-          }
-
-          if (date == null) {
-            date = new Date();
-          }
-          else
-          {
-            if (dayIncrement != null){date.setDate(date.getDate() + dayIncrement);}
-            if (monthIncrement != null){date.setMonth(date.getMonth() + monthIncrement);}
-            if (yearIncrement != null){date.setFullYear(date.getFullYear() + yearIncrement);}
-          }
-
-          this.setValue(date);
+          date = new Date(date.getTime());
         }
+
+        if (date == null)
+        {
+          date = new Date();
+        }
+        else
+        {
+          date.setFullYear(date.getFullYear() + yearIncrement);
+        }
+
+        this.setValue(date);
+      }
     },
 
     /**

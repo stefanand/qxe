@@ -67,13 +67,9 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
-      var dateChooser = new qxe.ui.control.DateChooser();
+      var calendar = new qxe.ui.control.ISOCalendar();
 
-      doc.add(dateChooser, {left: 350, top: 150});
-
-      var dateChooserOrg = new qx.ui.control.DateChooser();
-
-      doc.add(dateChooserOrg, {left: 600, top: 150});
+      doc.add(calendar, {left: 350, top: 150});
     }
   }
 });

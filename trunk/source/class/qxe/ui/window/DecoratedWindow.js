@@ -197,7 +197,7 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
           this._addBefore(control, this.getChildControl("pane"));
 
           // captionbar events
-          control.addListener("dblclick", this._onCaptionMouseDblClick, this);
+          control.addListener("dbltap", this._onCaptionPointerDblTap, this);
 
           // register as move handle
           this._activateMoveHandle(control);
@@ -219,7 +219,7 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
         case "close-button":
           control = new qx.ui.form.Button();
           control.setFocusable(false);
-          control.addListener("execute", this._onCloseButtonClick, this);
+          control.addListener("execute", this._onCloseButtonTap, this);
 
           this.getChildControl("captionbar").add(control, {row: 0, column:6});
           break;
@@ -295,7 +295,7 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
      *
      * @param e {qx.event.type.Mouse} double click event
      */
-    _onCaptionMouseDblClick : function(e)
+    _onCaptionPointerDblTap : function(e)
     {
       if (this.getAllowMaximize()) {
         this.isMaximized() ? this.restore() : this.maximize();
@@ -314,7 +314,7 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
      *
      * @param e {qx.event.type.Mouse} mouse click event
      */
-    _onCloseButtonClick : function(e)
+    _onCloseButtonTap : function(e)
     {
       this.close();
       this.getChildControl("close-button").reset();
