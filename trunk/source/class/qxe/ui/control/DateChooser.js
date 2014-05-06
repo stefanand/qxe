@@ -190,16 +190,6 @@ qx.Class.define("qxe.ui.control.DateChooser",
 
   members :
   {
-    // overridden
-    /**
-     * @lint ignoreReferenceField(_forwardStates)
-     */
-    _forwardStates :
-    {
-      invalid : true
-    },
-
-
     /*
     ---------------------------------------------------------------------------
       WIDGET INTERNALS

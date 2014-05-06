@@ -40,7 +40,7 @@ qx.Class.define("qxe.ui.scheduler.Year",
    * @param date {Date ? null} The year of date to show. If <code>null</code>
    * the current year of today (today) is shown.
    */
-  construct : function(date)
+  construct : function(calendar)
   {
     this.base(arguments);
 
