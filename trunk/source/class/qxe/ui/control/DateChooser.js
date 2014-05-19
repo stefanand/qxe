@@ -104,16 +104,6 @@ qx.Class.define("qxe.ui.control.DateChooser",
     this._createChildControl("navigation-bar");
     this._createChildControl("date-pane");
 
-    // Support for key events
-    this.addListener("keypress", this._onKeyPress);
-
-    // initialize format - moved from statics{} to constructor due to [BUG #7149]
-    var DateChooser = qx.ui.control.DateChooser;
-
-    if (!DateChooser.MONTH_YEAR_FORMAT) {
-        DateChooser.MONTH_YEAR_FORMAT = qx.locale.Date.getDateTimeFormat("yyyyMMMM", "MMMM yyyy");
-    }
-
     // listen for locale changes
     if (qx.core.Environment.get("qx.dynlocale")) {
       qx.locale.Manager.getInstance().addListener("changeLocale", this._updateDatePane, this);
@@ -122,23 +112,11 @@ qx.Class.define("qxe.ui.control.DateChooser",
     // register pointer up and down handler
     this.addListener("pointerdown", this._onPointerUpDown, this);
     this.addListener("pointerup", this._onPointerUpDown, this);
+
+    // Needs to be run after adding the calendar to change label etc.
+    this._updateDatePane();
   },
 
-
-
-  /*
-  *****************************************************************************
-     STATICS
-  *****************************************************************************
-  */
-
-  statics :
-  {
-    /**
-     * @type {string} The format for the date year label at the top center.
-     */
-    MONTH_YEAR_FORMAT : null
-  },
 
 
   /*
@@ -354,112 +332,6 @@ qx.Class.define("qxe.ui.control.DateChooser",
 
 
     /**
-     * Event handler. Called when a key was pressed.
-     *
-     * @param evt {qx.event.type.Data} The event.
-     */
-    _onKeyPress : function(evt)
-    {
-      var calendar = this.getCalendar();
-
-      var dayIncrement = null;
-      var monthIncrement = null;
-      var yearIncrement = null;
-
-      if (evt.getModifiers() == 0)
-      {
-        switch(evt.getKeyIdentifier())
-        {
-          case "Left":
-            dayIncrement = -1;
-            break;
-
-          case "Right":
-            dayIncrement = 1;
-            break;
-
-          case "Up":
-            dayIncrement = -7;
-            break;
-
-          case "Down":
-            dayIncrement = 7;
-            break;
-
-          case "PageUp":
-            monthIncrement = -1;
-            break;
-
-          case "PageDown":
-            monthIncrement = 1;
-            break;
-
-          case "Escape":
-            if (calendar.getValue() != null)
-            {
-              calendar.setValue(null);
-              return;
-            }
-
-            break;
-
-          case "Enter":
-          case "Space":
-            if (calendar.getValue() != null) {
-              calendar.execute();
-            }
-
-            return;
-        }
-      }
-      else if (evt.isShiftPressed())
-      {
-        switch(evt.getKeyIdentifier())
-        {
-          case "PageUp":
-            yearIncrement = -1;
-            break;
-
-          case "PageDown":
-            yearIncrement = 1;
-            break;
-        }
-      }
-
-      if (dayIncrement != null || monthIncrement != null || yearIncrement != null)
-      {
-        var date = calendar.getValue();
-
-        if (date != null) {
-          date = new Date(date.getTime());
-        }
-
-        if (date == null) {
-          date = new Date();
-        }
-        else
-        {
-          if (dayIncrement != null){date.setDate(date.getDate() + dayIncrement);}
-          if (monthIncrement != null){date.setMonth(date.getMonth() + monthIncrement);}
-          if (yearIncrement != null){date.setFullYear(date.getFullYear() + yearIncrement);}
-        }
-
-        calendar.setValue(date);
-      }
-    },
-
-
-    /**
-     * Event handler. Used to handle the key events.
-     *
-     * @param e {qx.event.type.Data} The event.
-     */
-    handleKeyPress : function(e) {
-      this._onKeyPress(e);
-    },
-
-
-    /**
      * Updates the date pane.
      */
     _updateDatePane : function()
@@ -468,17 +340,6 @@ qx.Class.define("qxe.ui.control.DateChooser",
 
       // update the calendar
       calendar._updateDatePane();
-
-      // update the label
-      var DateChooser = qx.ui.control.DateChooser;
-
-      // Create a help date that points to the first of the current month
-      var helpDate = new Date(calendar.getShownYear(), calendar.getShownMonth(), 1);
-
-      var monthYearFormat = new qx.util.format.DateFormat(DateChooser.MONTH_YEAR_FORMAT);
-      this.getChildControl("month-year-label").setValue(monthYearFormat.format(helpDate));
-
-      monthYearFormat.dispose();
     }
   },
 

@@ -22,7 +22,7 @@
  * @childControl last-year-button {qx.ui.form.Button} button to jump to the last year
  * @childControl next-year-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the next year button
  * @childControl next-year-button {qx.ui.form.Button} button to jump to the next year
- * @childControl month-year-label {qx.ui.basic.Label} shows the current month and year
+ * @childControl year-label {qx.ui.basic.Label} shows the current month and year
  * @childControl year-pane {qx.ui.container.Composite} the pane used to position the calendars of the year
  */
 qx.Class.define("qxe.ui.scheduler.Year",
@@ -56,9 +56,9 @@ qx.Class.define("qxe.ui.scheduler.Year",
     this.addListener("keypress", this._onKeyPress);
 
     // initialize format - moved from statics{} to constructor due to [BUG #7149]
-    var DateChooser = qx.ui.control.DateChooser;
-    if (!DateChooser.MONTH_YEAR_FORMAT) {
-        DateChooser.MONTH_YEAR_FORMAT = qx.locale.Date.getDateTimeFormat("yyyyMMMM", "MMMM yyyy");
+    var Year = qxe.ui.scheduler.Year;
+    if (!Year.YEAR_FORMAT) {
+        Year.YEAR_FORMAT = qx.locale.Date.getDateTimeFormat("yyyy", "yyyy");
     }
 
     // Show the right date
@@ -74,6 +74,22 @@ qx.Class.define("qxe.ui.scheduler.Year",
     this.addListener("pointerdown", this._onPointerUpDown, this);
     this.addListener("pointerup", this._onPointerUpDown, this);
   },
+
+  
+  /*
+   *****************************************************************************
+      STATICS
+   *****************************************************************************
+   */
+
+   statics :
+   {
+     /**
+      * @type {string} The format for the date year label at the top center.
+      */
+     YEAR_FORMAT : null
+   },
+
 
   /*
    *****************************************************************************
@@ -137,7 +153,7 @@ qx.Class.define("qxe.ui.scheduler.Year",
 
           // Add the navigation bar elements
           control.add(this.getChildControl("last-year-button"));
-          control.add(this.getChildControl("month-year-label"), {flex: 1});
+          control.add(this.getChildControl("year-label"), {flex: 1});
           control.add(this.getChildControl("next-year-button"));
 
           this._add(control);
@@ -155,7 +171,7 @@ qx.Class.define("qxe.ui.scheduler.Year",
           control.addListener("tap", this._onNavButtonTap, this);
           break;
 
-        case "month-year-label":
+        case "year-label":
           control = new qx.ui.basic.Label();
           control.setAllowGrowX(true);
           control.setAnonymous(true);
@@ -174,13 +190,13 @@ qx.Class.define("qxe.ui.scheduler.Year",
           break;
 
         case "year-pane":
-          control = new qx.ui.container.Composite(new qx.ui.layout.Grid(5, 5));
+          control = new qx.ui.container.Composite(new qx.ui.layout.Grid());
 
           var date = 12;
 
           for(var month = 0; month < 12; month++)
           {
-            control.add(new qxe.ui.control.Calendar(date), {column: month % 4, row: Math.floor(month / 4)});
+            control.add(new qxe.ui.control.ISOCalendar(date), {column: month % 4, row: Math.floor(month / 4)});
           }
 
           this._add(control);
@@ -245,7 +261,7 @@ qx.Class.define("qxe.ui.scheduler.Year",
       var target = e.getTarget();
 
       if (target == this.getChildControl("navigation-bar") ||
-          target == this.getChildControl("date-pane")) {
+          target == this.getChildControl("year-pane")) {
         e.stopPropagation();
         return;
       }
@@ -259,7 +275,6 @@ qx.Class.define("qxe.ui.scheduler.Year",
     _onNavButtonTap : function(evt)
     {
       var year = this.getShownYear();
-      var month = this.getShownMonth();
 
       switch(evt.getCurrentTarget())
       {
@@ -272,7 +287,7 @@ qx.Class.define("qxe.ui.scheduler.Year",
           break;
       }
 
-      this.showMonth(month, year);
+      this.showYear(year);
     },
 
     /**
