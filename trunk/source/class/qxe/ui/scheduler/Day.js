@@ -18,14 +18,14 @@
 /**
  * 
  * @childControl navigation-bar {qx.ui.container.Composite} container for the navigation bar controls
- * @childControl previous-year-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the previous year button
- * @childControl previous-year-button {qx.ui.form.Button} button to jump to the previous year
- * @childControl next-year-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the next year button
- * @childControl next-year-button {qx.ui.form.Button} button to jump to the next year
- * @childControl year-label {qx.ui.basic.Label} shows the current month and year
- * @childControl year-pane {qx.ui.container.Composite} the pane used to position the calendars of the year
+ * @childControl last-day-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the last year button
+ * @childControl last-day-button {qx.ui.form.Button} button to jump to the last year
+ * @childControl next-day-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the next year button
+ * @childControl next-day-button {qx.ui.form.Button} button to jump to the next year
+ * @childControl day-month-year-label {qx.ui.basic.Label} shows the current day, month and year
+ * @childControl day-pane {qx.ui.container.Composite} the pane used to position the calendars of the day
  */
-qx.Class.define("qxe.ui.scheduler.Year",
+qx.Class.define("qxe.ui.scheduler.Day",
 {
   extend : qx.ui.core.Widget,
 
@@ -50,15 +50,15 @@ qx.Class.define("qxe.ui.scheduler.Year",
 
     // create the child controls
     this._createChildControl("navigation-bar");
-    this._createChildControl("year-pane");
+    this._createChildControl("day-pane");
 
     // Support for key events
     this.addListener("keypress", this._onKeyPress);
 
     // initialize format - moved from statics{} to constructor due to [BUG #7149]
-    var Year = qxe.ui.scheduler.Year;
-    if (!Year.YEAR_FORMAT) {
-        Year.YEAR_FORMAT = qx.locale.Date.getDateTimeFormat("yyyy", "yyyy");
+    var Day = qxe.ui.scheduler.Day;
+    if (!Day.DAY_MONTH_YEAR_FORMAT) {
+        Day.DAY_MOtH_YEAR_FORMAT = qx.locale.Date.getDateTimeFormat("yyyyMMMM", "MMMM yyyy");
     }
 
     // Show the right date
@@ -87,7 +87,7 @@ qx.Class.define("qxe.ui.scheduler.Year",
      /**
       * @type {string} The format for the date year label at the top center.
       */
-     YEAR_FORMAT : null
+     DAY_MONTH_YEAR_FORMAT : null
    },
 
 
@@ -152,44 +152,44 @@ qx.Class.define("qxe.ui.scheduler.Year",
           control = new qx.ui.container.Composite(new qx.ui.layout.HBox());
 
           // Add the navigation bar elements
-          control.add(this.getChildControl("previous-year-button"));
-          control.add(this.getChildControl("year-label"), {flex: 1});
-          control.add(this.getChildControl("next-year-button"));
+          control.add(this.getChildControl("previous-day-button"));
+          control.add(this.getChildControl("day-month-year-label"), {flex: 1});
+          control.add(this.getChildControl("next-day-button"));
 
           this._add(control);
           break;
 
-        case "previous-year-button-tooltip":
-          control = new qx.ui.tooltip.ToolTip(this.tr("Previous year"));
+        case "previous-day-button-tooltip":
+          control = new qx.ui.tooltip.ToolTip(this.tr("Previous day"));
           break;
 
-        case "previous-year-button":
+        case "previous-day-button":
           control = new qx.ui.toolbar.Button();
-          control.addState("previousYear");
+          control.addState("previousDay");
           control.setFocusable(false);
-          control.setToolTip(this.getChildControl("previous-year-button-tooltip"));
+          control.setToolTip(this.getChildControl("previous-day-button-tooltip"));
           control.addListener("tap", this._onNavButtonTap, this);
           break;
 
-        case "year-label":
+        case "day-month-year-label":
           control = new qx.ui.basic.Label();
           control.setAllowGrowX(true);
           control.setAnonymous(true);
           break;
 
-        case "next-year-button-tooltip":
-          control = new qx.ui.tooltip.ToolTip(this.tr("Next year"));
+        case "next-day-button-tooltip":
+          control = new qx.ui.tooltip.ToolTip(this.tr("Next day"));
           break;
 
-        case "next-year-button":
+        case "next-day-button":
           control = new qx.ui.toolbar.Button();
-          control.addState("nextYear");
+          control.addState("nextDay");
           control.setFocusable(false);
-          control.setToolTip(this.getChildControl("next-year-button-tooltip"));
+          control.setToolTip(this.getChildControl("next-day-button-tooltip"));
           control.addListener("tap", this._onNavButtonTap, this);
           break;
 
-        case "year-pane":
+        case "day-pane":
           control = new qx.ui.container.Composite(new qx.ui.layout.Grid());
 
           var date = 12;
