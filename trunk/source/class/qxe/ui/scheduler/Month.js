@@ -66,7 +66,7 @@
  * @childControl date-pane {qx.ui.container.Composite} the pane used to position the week, weekday and day labels
  *
  */
-qx.Class.define("qxe.ui.control.DateChooser",
+qx.Class.define("qxe.ui.scheduler.Month",
 {
   extend : qx.ui.core.Widget,
   include : [

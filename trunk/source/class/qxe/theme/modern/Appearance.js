@@ -211,6 +211,40 @@ qx.Theme.define("qxe.theme.modern.Appearance",
 
     "datechooser/date-pane" : "calendar",
 
+    "datechooser/previous-year-button-tooltip" : "tooltip",
+    "datechooser/previous-month-button-tooltip" : "tooltip",
+
+    "datechooser/previous-year-button" : "datechooser/nav-button",
+    "datechooser/previous-month-button" : "datechooser/nav-button",
+
+    /*
+    ---------------------------------------------------------------------------
+      DAY
+    ---------------------------------------------------------------------------
+    */
+
+    "day" : "datechooser",
+
+    "day/previous-day-button-tooltip" : "tooltip",
+    "day/next-day-button-tooltip" : "tooltip",
+
+    "day/previous-day-button"  : "datechooser/button",
+    "day/next-day-button"  : "datechooser/button",
+
+    "day/day-pane/activity" :
+    {
+      style : function(states)
+      {
+        return {
+          backgroundColor: states.selected ?
+            "table-row-background-selected" :
+            "table-row-background-even",
+          textColor: states.selected ? "text-selected" : "text",
+          padding: [3, 6]
+        }
+      }
+    },
+ 
     /*
     ---------------------------------------------------------------------------
       DECORATED WINDOW
@@ -575,6 +609,15 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     // Inherits from respective parent
     "wizard" : "widget",
 
-    "wizard-page" : "groupbox"
+    "wizard-page" : "groupbox",
+
+  
+    /*
+    ---------------------------------------------------------------------------
+      YEAR
+    ---------------------------------------------------------------------------
+    */
+
+    "year" : "datechooser"
   }
 });

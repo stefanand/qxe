@@ -29,19 +29,71 @@ To be loaded from a database, data items should have one more mandatory property
     id - (string, number) the event id.
  */
 
+/*
+ * display_marked_timespans	defines whether the marked(blocked) time spans should be highlighted in the scheduler
+check_limits	activates/disables checking of limits
+mark_now	enables/disables the marker displaying the current time
+limit_end	sets the right border of the allowable date range
+limit_start	sets the left border of the allowable date range
+limit_view	limits viewing events
+
+Related sample:  Current time marking
+ */
+ /*
+  * display_marked_timespans	defines whether the marked(blocked) time spans should be highlighted in the scheduler
+check_limits	activates/disables checking of limits
+mark_now	enables/disables the marker displaying the current time
+limit_end	sets the right border of the allowable date range
+limit_start	sets the left border of the allowable date range
+limit_view	limits viewing events
+
+Related sample:  Current time marking
+  */
+/*
+ * addMarkedTimespan	marks dates, but with certain settings makes blocking (unlike blockTime() allows setting custom styling for the limit)
+markTimespan	marks and/or blocks date(s) by applying the default or a custom style to them. Marking is cancelled right after any internal update occurs in the app. Can be used for highlighting
+
+ */
+/*
+ * deleteMarkedTimespan	removes marking/blocking, set by the addMarkedTimespan() and blockTime() methods
+unmarkTimespan	removes marking/blocking, set by the markTimespan() method
+unblockTime	removes blocking, set by the blockTime() method
+ */
+/*
+ * Blocking priority
+
+When you call the 'blocking' methods several times and block different ranges, blocking will follow this priority (from highest to lowest):
+
+    Dates specified through Date() objects for certain items;
+    Dates for certain items (when the sections parameter is defined);
+    Dates specified through Date() objects;
+    Other dates.
+
+    A blocking/marking with the higher priority will overwrite ones with the lower priority.
+    Several blocking/marking methods with the same priority (located in the same time slot) will be applied simultaneously.
+
+For example:
+
+scheduler.addMarkedTimespan({ // blocks 4th July,2012 (this is Wednesday).
+    days:  new Date(2012,7,4),
+    zones: "fullday", 
+    type:  "dhx_time_block",
+    css:   "red_section"
+});
+ */
 /**
  *
  * @asset(qxe/icon/ui/scheduler/clock_small.gif)
  *
  * @childControl navigation-bar {qx.ui.container.Composite} container for the navigation bar controls
- * @childControl previous-day-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the previous year button
- * @childControl previous-day-button {qx.ui.form.Button} button to jump to the previous year
- * @childControl next-day-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the next year button
- * @childControl next-day-button {qx.ui.form.Button} button to jump to the next year
- * @childControl day-month-year-label {qx.ui.basic.Label} shows the current day, month and year
- * @childControl day-pane {qx.ui.container.Composite} the pane used to position the calendars of the day
+ * @childControl previous-week-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the previous week button
+ * @childControl previous-week-button {qx.ui.form.Button} button to jump to the previous week
+ * @childControl next-week-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the next week button
+ * @childControl next-week-button {qx.ui.form.Button} button to jump to the next week
+ * @childControl week-label {qx.ui.basic.Label} shows the current week
+ * @childControl week-pane {qx.ui.container.Composite} the pane used to position the calendars of the week
  */
-qx.Class.define("qxe.ui.scheduler.Day",
+qx.Class.define("qxe.ui.scheduler.Week",
 {
   extend : qx.ui.core.Widget,
 
@@ -66,8 +118,8 @@ qx.Class.define("qxe.ui.scheduler.Day",
 
     // create the child controls
     this._createChildControl("navigation-bar");
-    this._createChildControl("spanning-day-pane");
-    this._createChildControl("day-pane");
+    this._createChildControl("spanning-week-pane");
+    this._createChildControl("week-pane");
 /*
     // Support for key events
     this.addListener("keypress", this._onKeyPress);
@@ -176,44 +228,44 @@ qx.Class.define("qxe.ui.scheduler.Day",
           control = new qx.ui.container.Composite(new qx.ui.layout.HBox());
 
           // Add the navigation bar elements
-          control.add(this.getChildControl("previous-day-button"));
-          control.add(this.getChildControl("day-month-year-label"), {flex: 1});
-          control.add(this.getChildControl("next-day-button"));
+          control.add(this.getChildControl("previous-week-button"));
+          control.add(this.getChildControl("week-label"), {flex: 1});
+          control.add(this.getChildControl("next-week-button"));
 
           this._add(control);
           break;
 
-        case "previous-day-button-tooltip":
-          control = new qx.ui.tooltip.ToolTip(this.tr("Previous day"));
+        case "previous-week-button-tooltip":
+          control = new qx.ui.tooltip.ToolTip(this.tr("Previous week"));
           break;
 
-        case "previous-day-button":
+        case "previous-week-button":
           control = new qx.ui.toolbar.Button();
-          control.addState("previousDay");
+          control.addState("previousWeek");
           control.setFocusable(false);
-          control.setToolTip(this.getChildControl("previous-day-button-tooltip"));
+          control.setToolTip(this.getChildControl("previous-week-button-tooltip"));
           control.addListener("tap", this._onNavButtonTap, this);
           break;
 
-        case "day-month-year-label":
+        case "week-label":
           control = new qx.ui.basic.Label();
           control.setAllowGrowX(true);
           control.setAnonymous(true);
           break;
 
-        case "next-day-button-tooltip":
-          control = new qx.ui.tooltip.ToolTip(this.tr("Next day"));
+        case "next-week-button-tooltip":
+          control = new qx.ui.tooltip.ToolTip(this.tr("Next week"));
           break;
 
-        case "next-day-button":
+        case "next-week-button":
           control = new qx.ui.toolbar.Button();
-          control.addState("nextDay");
+          control.addState("nextWeek");
           control.setFocusable(false);
-          control.setToolTip(this.getChildControl("next-day-button-tooltip"));
+          control.setToolTip(this.getChildControl("next-week-button-tooltip"));
           control.addListener("tap", this._onNavButtonTap, this);
           break;
 
-        case "spanning-day-pane":
+        case "spanning-week-pane":
           control = new qx.ui.container.Composite(new qx.ui.layout.HBox());
           control.add(this.getChildControl("clock-image"));
           control.add(this.getChildControl("spanning-label"), {flex : 1});
@@ -247,7 +299,7 @@ qx.Class.define("qxe.ui.scheduler.Day",
 //          control.addListener("dbltap", this._onDayDblTap, this);
           break;
 
-        case "day-pane":
+        case "week-pane":
           var controlLayout = new qx.ui.layout.Grid();
           control = new qx.ui.container.Composite(controlLayout);
 

@@ -37,6 +37,7 @@
 qx.Class.define("qxe.ui.table.Table",
 {
   extend : qx.ui.core.Widget,
+  include : qx.ui.core.MDragDropScrolling,
 
 
 
@@ -210,7 +211,12 @@ qx.Class.define("qxe.ui.table.Table",
     this.__focusedCol = null;
     this.__focusedRow = null;
 
-    this.initShowStatusBar();
+    // add an event listener which updates the table content on locale change
+    if (qx.core.Environment.get("qx.dynlocale")) {
+      qx.locale.Manager.getInstance().addListener("changeLocale", this._onChangeLocale, this);
+    }
+
+    this.initStatusBarVisible();
 
     // If the table model has an init() method...
     tableModel = this.getTableModel();
@@ -262,14 +268,14 @@ qx.Class.define("qxe.ui.table.Table",
     "verticalScrollBarChanged" : "qx.event.type.Data",
 
     /**
-     * Dispatched when a data cell has been clicked.
+     * Dispatched when a data cell has been tapped.
      */
-    "cellClick" : "qx.ui.table.pane.CellEvent",
+    "cellTap" : "qx.ui.table.pane.CellEvent",
 
     /**
-     * Dispatched when a data cell has been clicked.
+     * Dispatched when a data cell has been tapped.
      */
-    "cellDblclick" : "qx.ui.table.pane.CellEvent",
+    "cellDbltap" : "qx.ui.table.pane.CellEvent",
 
     /**
      * Dispatched when the context menu is needed in a data cell
@@ -301,7 +307,7 @@ qx.Class.define("qxe.ui.table.Table",
   statics :
   {
     /** Events that must be redirected to the scrollers. */
-    __redirectEvents : { cellClick: 1, cellDblclick: 1, cellContextmenu: 1 }
+    __redirectEvents : { cellTap: 1, cellDbltap: 1, cellContextmenu: 1 }
   },
 
 
@@ -435,11 +441,11 @@ qx.Class.define("qxe.ui.table.Table",
 
 
     /** Whether to show the status bar */
-    showStatusBar :
+    statusBarVisible :
     {
       check : "Boolean",
       init : true,
-      apply : "_applyShowStatusBar"
+      apply : "_applyStatusBarVisible"
     },
 
 
@@ -454,7 +460,7 @@ qx.Class.define("qxe.ui.table.Table",
 
 
     /**
-     * {Integer[]} The number of columns per meta column. If the last array entry is -1,
+     * @type {Integer[]} The number of columns per meta column. If the last array entry is -1,
      * this meta column will get the remaining columns.
      */
     metaColumnCounts :
@@ -465,14 +471,14 @@ qx.Class.define("qxe.ui.table.Table",
 
 
     /**
-     * Whether the focus should moved when the mouse is moved over a cell. If false
-     * the focus is only moved on mouse clicks.
+     * Whether the focus should moved when the pointer is moved over a cell. If false
+     * the focus is only moved on pointer taps.
      */
-    focusCellOnMouseMove :
+    focusCellOnPointerMove :
     {
       check : "Boolean",
       init : false,
-      apply : "_applyFocusCellOnMouseMove"
+      apply : "_applyFocusCellOnPointerMove"
     },
 
     /**
@@ -535,17 +541,17 @@ qx.Class.define("qxe.ui.table.Table",
 
 
     /**
-     * Whether to reset the selection when a header cell is clicked. Since
+     * Whether to reset the selection when a header cell is tapped. Since
      * most data models do not have provisions to retain a selection after
      * sorting, the default is to reset the selection in this case. Some data
      * models, however, do have the capability to retain the selection, so
      * when using those, this property should be set to false.
      */
-    resetSelectionOnHeaderClick :
+    resetSelectionOnHeaderTap :
     {
       check : "Boolean",
       init : true,
-      apply : "_applyResetSelectionOnHeaderClick"
+      apply : "_applyResetSelectionOnHeaderTap"
     },
 
 
@@ -572,7 +578,6 @@ qx.Class.define("qxe.ui.table.Table",
      *   It contains the following properties:
      *       col, row, xPos, value
      *
-     * @return {void}
      */
     modalCellEditorPreOpenFunction :
     {
@@ -710,6 +715,7 @@ qx.Class.define("qxe.ui.table.Table",
 
     __selectionManager : null,
 
+    __additionalStatusBarText : null,
     __lastRowCount : null,
     __internalChange : null,
 
@@ -729,20 +735,20 @@ qx.Class.define("qxe.ui.table.Table",
 
       switch(id)
       {
-      case "statusbar":
-        control = new qxe.ui.statusbar.StatusBar();
-        control.setAllowGrowX(true);
-        this._add(control);
-        break;
+        case "statusbar":
+          control = new qxe.ui.statusbar.StatusBar();
+          control.setAllowGrowX(true);
+          this._add(control);
+          break;
 
-      case "column-button":
-        control = this.getNewColumnMenu()();
-        control.set({
-          focusable : false
-        });
+        case "column-button":
+          control = this.getNewColumnMenu()();
+          control.set({
+            focusable : false
+          });
 
-        // Create the initial menu too
-        var menu = control.factory("menu", { table : this });
+          // Create the initial menu too
+          var menu = control.factory("menu", { table : this });
 
         // Add a listener to initialize the column menu when it becomes visible
         menu.addListener(
@@ -788,9 +794,16 @@ qx.Class.define("qxe.ui.table.Table",
     {
       var scrollerArr = this._getPaneScrollerArr();
 
-      for (var i=0; i<scrollerArr.length; i++)
-      {
-        scrollerArr[i]._excludeChildControl("header");
+      for (var i=0; i<scrollerArr.length; i++) {
+        if (value) {
+          scrollerArr[i]._showChildControl("header");
+        } else {
+          scrollerArr[i]._excludeChildControl("header");
+        }
+      }
+      // also hide the column visibility button
+      if(this.getColumnVisibilityButtonVisible()) {
+        this._applyColumnVisibilityButtonVisible(value);
       }
     },
 
@@ -906,7 +919,7 @@ qx.Class.define("qxe.ui.table.Table",
 
 
     // property modifier
-    _applyShowStatusBar : function(value, old)
+    _applyStatusBarVisible : function(value, old)
     {
       if (value) {
         this._showChildControl("statusbar");
@@ -1089,12 +1102,12 @@ qx.Class.define("qxe.ui.table.Table",
 
 
     // property modifier
-    _applyFocusCellOnMouseMove : function(value, old)
+    _applyFocusCellOnPointerMove : function(value, old)
     {
       var scrollerArr = this._getPaneScrollerArr();
 
       for (var i=0; i<scrollerArr.length; i++) {
-        scrollerArr[i].setFocusCellOnMouseMove(value);
+        scrollerArr[i].setFocusCellOnPointerMove(value);
       }
     },
 
@@ -1133,12 +1146,12 @@ qx.Class.define("qxe.ui.table.Table",
 
 
     // property modifier
-    _applyResetSelectionOnHeaderClick : function(value, old)
+    _applyResetSelectionOnHeaderTap : function(value, old)
     {
       var scrollerArr = this._getPaneScrollerArr();
 
       for (var i=0; i<scrollerArr.length; i++) {
-        scrollerArr[i].setResetSelectionOnHeaderClick(value);
+        scrollerArr[i].setResetSelectionOnHeaderTap(value);
       }
     },
 
@@ -1180,7 +1193,6 @@ qx.Class.define("qxe.ui.table.Table",
      * @param fromMetaColumn {Integer} the first meta column to clean up. All following
      *      meta columns will be cleaned up, too. All previous meta columns will
      *      stay unchanged. If 0 all meta columns will be cleaned up.
-     * @return {void}
      */
     _cleanUpMetaColumns : function(fromMetaColumn)
     {
@@ -1200,7 +1212,6 @@ qx.Class.define("qxe.ui.table.Table",
      * Event handler. Called when the locale has changed.
      *
      * @param evt {Event} the event.
-     * @return {void}
      */
     _onChangeLocale : function(evt)
     {
@@ -1211,11 +1222,20 @@ qx.Class.define("qxe.ui.table.Table",
     },
 
 
+    // overridden
+    _onChangeTheme : function() {
+      this.base(arguments);
+
+      this.getDataRowRenderer().initThemeValues();
+      this.updateContent();
+      this._updateStatusBar();
+    },
+
+
     /**
      * Event handler. Called when the selection has changed.
      *
      * @param evt {Map} the event.
-     * @return {void}
      */
     _onSelectionChanged : function(evt)
     {
@@ -1233,7 +1253,6 @@ qx.Class.define("qxe.ui.table.Table",
      * Event handler. Called when the table model meta data has changed.
      *
      * @param evt {Map} the event.
-     * @return {void}
      */
     _onTableModelMetaDataChanged : function(evt)
     {
@@ -1251,7 +1270,6 @@ qx.Class.define("qxe.ui.table.Table",
      * Event handler. Called when the table model data has changed.
      *
      * @param evt {Map} the event.
-     * @return {void}
      */
     _onTableModelDataChanged : function(evt)
     {
@@ -1273,7 +1291,6 @@ qx.Class.define("qxe.ui.table.Table",
      * @param lastColumn {Integer} The model index of the last column that has changed.
      * @param removeStart {Integer ? null} The first index of the interval (including), to remove selection.
      * @param removeCount {Integer ? null} The count of the interval, to remove selection.
-     * @return {void}
      */
     _updateTableData : function(firstRow, lastRow, firstColumn, lastColumn, removeStart, removeCount)
     {
@@ -1312,7 +1329,6 @@ qx.Class.define("qxe.ui.table.Table",
      * Event handler. Called when a TablePaneScroller has been scrolled vertically.
      *
      * @param evt {Map} the event.
-     * @return {void}
      */
     _onScrollY : function(evt)
     {
@@ -1336,7 +1352,6 @@ qx.Class.define("qxe.ui.table.Table",
      * Event handler. Called when a key was pressed.
      *
      * @param evt {qx.event.type.KeySequence} the event.
-     * @return {void}
      */
     _onKeyPress : function(evt)
     {
@@ -1481,7 +1496,6 @@ qx.Class.define("qxe.ui.table.Table",
      * Event handler. Called when the table gets the focus.
      *
      * @param evt {Map} the event.
-     * @return {void}
      */
     _onFocusChanged : function(evt)
     {
@@ -1497,7 +1511,6 @@ qx.Class.define("qxe.ui.table.Table",
      * Event handler. Called when the visibility of a column has changed.
      *
      * @param evt {Map} the event.
-     * @return {void}
      */
     _onColVisibilityChanged : function(evt)
     {
@@ -1522,7 +1535,6 @@ qx.Class.define("qxe.ui.table.Table",
      * Event handler. Called when the width of a column has changed.
      *
      * @param evt {Map} the event.
-     * @return {void}
      */
     _onColWidthChanged : function(evt)
     {
@@ -1543,7 +1555,6 @@ qx.Class.define("qxe.ui.table.Table",
      * Event handler. Called when the column order has changed.
      *
      * @param evt {Map} the event.
-     * @return {void}
      */
     _onColOrderChanged : function(evt)
     {
@@ -1581,7 +1592,6 @@ qx.Class.define("qxe.ui.table.Table",
      * @param row {Integer?null} the model index of the focused cell's row.
      * @param scrollVisible {Boolean ? false} whether to scroll the new focused cell
      *          visible.
-     * @return {void}
      */
     setFocusedCell : function(col, row, scrollVisible)
     {
@@ -1600,7 +1610,7 @@ qx.Class.define("qxe.ui.table.Table",
           scrollerArr[i].setFocusedCell(col, row);
         }
 
-        if (col !== null && scrollVisible) {
+        if (col != null && scrollVisible) {
           this.scrollCellVisible(col, row);
         }
       }
@@ -1649,7 +1659,6 @@ qx.Class.define("qxe.ui.table.Table",
      * @param bHighlight {Boolean}
      *   Flag indicating whether the focused row should be highlighted.
      *
-     * @return {void}
      */
     highlightFocusedRow : function(bHighlight)
     {
@@ -1662,13 +1671,12 @@ qx.Class.define("qxe.ui.table.Table",
      *
      * This is used to temporarily remove the highlighting of the currently
      * focused row, and is expected to be used most typically by adding a
-     * listener on the "mouseout" event, so that the focus highlighting is
-     * suspended when the mouse leaves the table:
+     * listener on the "pointerout" event, so that the focus highlighting is
+     * suspended when the pointer leaves the table:
      *
-     *     table.addListener("mouseout", table.clearFocusedRowHighlight);
+     *     table.addListener("pointerout", table.clearFocusedRowHighlight);
      *
-     * @param evt {qx.event.type.Mouse} Incoming mouse event
-     * @return {void}
+     * @param evt {qx.event.type.Pointer} Incoming pointer event
      */
     clearFocusedRowHighlight : function(evt)
     {
@@ -1701,7 +1709,6 @@ qx.Class.define("qxe.ui.table.Table",
      *
      * @param deltaX {Integer} The delta by which the focus should be moved on the x axis.
      * @param deltaY {Integer} The delta by which the focus should be moved on the y axis.
-     * @return {void}
      */
     moveFocusedCell : function(deltaX, deltaY)
     {
@@ -1737,7 +1744,6 @@ qx.Class.define("qxe.ui.table.Table",
      *
      * @param col {Integer} the model index of the column the cell belongs to.
      * @param row {Integer} the model index of the row the cell belongs to.
-     * @return {void}
      */
     scrollCellVisible : function(col, row)
     {
@@ -1859,9 +1865,9 @@ qx.Class.define("qxe.ui.table.Table",
     {
       var scrollerArr = this._getPaneScrollerArr();
       for (var i=0; i<scrollerArr.length; i++) {
-        scrollerArr[i].getHeader().getBlocker().unblockContent();
+        scrollerArr[i].getHeader().getBlocker().unblock();
       }
-      this.getChildControl("column-button").getBlocker().unblockContent();
+      this.getChildControl("column-button").getBlocker().unblock();
     },
 
     /**
@@ -1877,7 +1883,7 @@ qx.Class.define("qxe.ui.table.Table",
 
       for (var i=0; i<scrollerArr.length; i++)
       {
-        var pos = scrollerArr[i].getContainerLocation();
+        var pos = scrollerArr[i].getContentLocation();
 
         if (pageX >= pos.left && pageX <= pos.right) {
           return i;
@@ -1919,20 +1925,20 @@ qx.Class.define("qxe.ui.table.Table",
      */
     _updateStatusBar : function()
     {
-      if (this.getShowStatusBar())
+      var tableModel = this.getTableModel();
+
+      if (this.getStatusBarVisible())
       {
         var selectedRowCount = this.getSelectionModel().getSelectedCount();
-        var rowCount = this.getTableModel().getRowCount();
+        var rowCount = tableModel.getRowCount();
+
+        var text;
 
         if (rowCount >= 0)
         {
-          var text;
-
           if (selectedRowCount == 0) {
             text = this.trn("one row", "%1 rows", rowCount, rowCount);
           } else {
-            // More logical to use figures instead of text as plural is.
-//            text = this.trn("1 of 1 row", "%1 of %2 rows", rowCount, selectedRowCount, rowCount);
             text = this.trn("one of one row", "%1 of %2 rows", rowCount, selectedRowCount, rowCount);
           }
 
@@ -2111,7 +2117,6 @@ qx.Class.define("qxe.ui.table.Table",
      *
      * @param col {Integer} the model index of column.
      * @param width {Integer} the new width in pixels.
-     * @return {void}
      */
     setColumnWidth : function(col, width) {
       this.getTableColumnModel().setColumnWidth(col, width);
@@ -2206,6 +2211,11 @@ qx.Class.define("qxe.ui.table.Table",
 
   destruct : function()
   {
+    // remove the event listener which handled the locale change
+    if (qx.core.Environment.get("qx.dynlocale")) {
+      qx.locale.Manager.getInstance().removeListener("changeLocale", this._onChangeLocale, this);
+    }
+
     // we allocated these objects on init so we have to clean them up.
     var selectionModel = this.getSelectionModel();
     if (selectionModel) {

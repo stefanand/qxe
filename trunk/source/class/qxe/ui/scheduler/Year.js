@@ -13,9 +13,21 @@
    Authors:
      * Stefan Andersson (sand)
 
+     - should not be able to click and get focus on any day/only one day at a time?
+       and arrow key functionality between months etc ?
+     - control panel fix with arrows and label
+     - days with bookings should have a different colour
+     - pointing (not clicking) on a day with bookings a popup should show the
+       bookings, both activities with time and day spanning activities without
+       time.
+     - a today/current year button in the control panel
+     - copy object/getByName to create calendar?
+
 ************************************************************************ */
 
 /**
+ *
+ * @require(qxe.ui.control.ISOCalendar)
  * 
  * @childControl navigation-bar {qx.ui.container.Composite} container for the navigation bar controls
  * @childControl previous-year-button-tooltip {qx.ui.tooltip.ToolTip} tooltip for the previous year button
@@ -44,6 +56,15 @@ qx.Class.define("qxe.ui.scheduler.Year",
   {
     this.base(arguments);
 
+    if(calendar)
+    {
+      this.setCalendar(calendar);
+    }
+    else
+    {
+      this.initCalendar();
+    }
+
     // set the layout
     var layout = new qx.ui.layout.VBox();
     this._setLayout(layout);
@@ -56,14 +77,9 @@ qx.Class.define("qxe.ui.scheduler.Year",
     this.addListener("keypress", this._onKeyPress);
 
     // initialize format - moved from statics{} to constructor due to [BUG #7149]
-    var Year = qxe.ui.scheduler.Year;
-    if (!Year.YEAR_FORMAT) {
-        Year.YEAR_FORMAT = qx.locale.Date.getDateTimeFormat("yyyy", "yyyy");
-    }
-
-    // Show the right date
-    var shownDate = (date != null) ? date : new Date();
-    this.showMonth(shownDate.getMonth(), shownDate.getFullYear());
+//    if (!calendar.YEAR_FORMAT) {
+//        calendar.YEAR_FORMAT = qx.locale.Date.getDateTimeFormat("yyyy", "yyyy");
+//    }
 
     // listen for locale changes
     if (qx.core.Environment.get("qx.dynlocale")) {
@@ -76,21 +92,6 @@ qx.Class.define("qxe.ui.scheduler.Year",
   },
 
   
-  /*
-   *****************************************************************************
-      STATICS
-   *****************************************************************************
-   */
-
-   statics :
-   {
-     /**
-      * @type {string} The format for the date year label at the top center.
-      */
-     YEAR_FORMAT : null
-   },
-
-
   /*
    *****************************************************************************
       PROPERTIES
@@ -106,23 +107,12 @@ qx.Class.define("qxe.ui.scheduler.Year",
       init   : "year"
     },
 
-    /** The currently shown year. */
-    shownYear :
+    /** The calendar to be used. Defaults to the ISO calendar. */
+    calendar :
     {
-      check : "Integer",
-      init : null,
-      nullable : true,
-      event : "changeShownYear"
-    },
-
-    /** The date value of the widget. */
-    value :
-    {
-      check : "Date",
-      init : null,
-      nullable : true,
-      event : "changeValue",
-      apply : "_applyValue"
+      check : "Object",
+      init : new qxe.ui.control.ISOCalendar(),
+      event : "changeCalendar"
     }
   },
 
@@ -190,13 +180,16 @@ qx.Class.define("qxe.ui.scheduler.Year",
           break;
 
         case "year-pane":
-          control = new qx.ui.container.Composite(new qx.ui.layout.Grid());
+          control = new qx.ui.container.Composite(new qx.ui.layout.Grid(5, 5));
 
-          var date = 12;
+          var calendar = this.getCalendar();
+          var year = calendar.getShownYear();
+          var clazz = qx.Class.getByName(calendar.classname);
 
           for(var month = 0; month < 12; month++)
           {
-            control.add(new qxe.ui.control.ISOCalendar(date), {column: month % 4, row: Math.floor(month / 4)});
+            var date = new Date(year, month, 1);
+            control.add(new clazz(date), {column: month % 4, row: Math.floor(month / 4)});
           }
 
           this._add(control);
@@ -206,44 +199,6 @@ qx.Class.define("qxe.ui.scheduler.Year",
       return control || this.base(arguments, id);
     },
 
-    // apply methods
-    _applyValue : function(value, old)
-    {
-      if ((value != null) && (this.getShownYear() != value.getFullYear()))
-      {
-        // The new date is in another month -> Show that month
-        this.showMonth(value.getMonth(), value.getFullYear());
-      }
-      else
-      {
-        // The new date is in the current month -> Just change the states
-        var newDay = (value == null) ? -1 : value.getDate();
-
-        for (var i=0; i<6*7; i++)
-        {
-          var dayLabel = this.__dayLabelArr[i];
-
-          if (dayLabel.hasState("otherMonth"))
-          {
-            if (dayLabel.hasState("selected")) {
-              dayLabel.removeState("selected");
-
-              dayLabel.removeState("selected");
-            }
-          }
-          else
-          {
-            var day = parseInt(dayLabel.getValue(), 10);
-
-            if (day == newDay) {
-              dayLabel.addState("selected");
-            } else if (dayLabel.hasState("selected")) {
-              dayLabel.removeState("selected");
-            }
-          }
-        }
-      }
-    },
 
     /*
     ---------------------------------------------------------------------------
@@ -278,7 +233,7 @@ qx.Class.define("qxe.ui.scheduler.Year",
 
       switch(evt.getCurrentTarget())
       {
-        case this.getChildControl("last-year-button"):
+        case this.getChildControl("previous-year-button"):
           year--;
           break;
 
@@ -297,6 +252,7 @@ qx.Class.define("qxe.ui.scheduler.Year",
      */
     _onKeyPress : function(evt)
     {
+/*
       var yearIncrement = null;
 
       if (evt.getModifiers() == 0)
@@ -371,6 +327,7 @@ qx.Class.define("qxe.ui.scheduler.Year",
 
         this.setValue(date);
       }
+*/
     },
 
     /**
