@@ -207,9 +207,9 @@ qx.Class.define("qxe.ui.form.TitlePane",
           this._add(control);
 
           // captionbar events
-          control.addListener("mouseover", this._onMouseOver, this);
-          control.addListener("mouseout", this._onMouseOut, this);
-          control.addListener("click", this._onCaptionMouseClick, this);
+          control.addListener("pointerover", this._onPointerOver, this);
+          control.addListener("pointerout", this._onPointerOut, this);
+          control.addListener("tap", this._onCaptionPointerTap, this);
           break;
 
         case "title":

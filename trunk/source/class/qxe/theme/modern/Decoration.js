@@ -80,7 +80,7 @@ qx.Theme.define("qxe.theme.modern.Decoration",
 
     /*
     ---------------------------------------------------------------------------
-      WEBDESKTOP
+       WEBDESKTOP
     ---------------------------------------------------------------------------
     */
 
@@ -137,6 +137,30 @@ qx.Theme.define("qxe.theme.modern.Decoration",
         width : 1,
         color : "window-border",
         widthTop : 0
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
+       WINDOW
+    ---------------------------------------------------------------------------
+    */
+
+    "window" :
+    {
+      style : {
+        shadowLength : 2,
+        shadowColor : "shadow"
+      }
+    },
+
+    "window-pane" :
+    {
+      style :
+      {
+        backgroundColor : "background-pane",
+        width : 1,
+        color : "window-border"
       }
     }
   }

@@ -250,6 +250,8 @@ qx.Theme.define("qxe.theme.classic.Appearance",
 
     "decorated-window" : "window",
 
+    "decorated-window-resize-frame" : "resize-frame",
+
     "decorated-window/captionbar" : "window/captionbar",
 
     "decorated-window/icon" : "window/icon",
@@ -323,8 +325,8 @@ qx.Theme.define("qxe.theme.classic.Appearance",
 
     "frame" :
     {
-      include : "window",
-      alias : "window",
+      include : "decorated-window",
+      alias : "decorated-window",
 
       style : function(states)
       {
@@ -339,6 +341,8 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     "frame/restore-button" : "window/restore-button",
 
     "frame/maximize-button" : "window/maximize-button",
+
+    "frame/statusbar" : "statusbar",
 
     /*
     ---------------------------------------------------------------------------
@@ -433,7 +437,9 @@ qx.Theme.define("qxe.theme.classic.Appearance",
       }
     },
 
-    "statusbar/message" : "label",
+    "statusbar/message" : {},
+
+    "statusbar/message/text" : "label",
 
     /*
     ---------------------------------------------------------------------------
@@ -560,7 +566,8 @@ qx.Theme.define("qxe.theme.classic.Appearance",
       {
         return {
           contentPadding : [ 10, 10, 10, 10 ],
-          backgroundColor : "background"
+          backgroundColor : "background",
+          decorator : "window"
         };
       }
     },

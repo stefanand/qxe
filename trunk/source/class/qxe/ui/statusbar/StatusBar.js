@@ -38,7 +38,7 @@ qx.Class.define("qxe.ui.statusbar.StatusBar",
 
     this._setLayout(new qx.ui.layout.HBox());
 
-		this._createChildControl("message");
+    this._createChildControl("message");
   },
 
 
@@ -91,11 +91,11 @@ qx.Class.define("qxe.ui.statusbar.StatusBar",
       switch(id)
       {
         case "message":
-					control = new qxe.ui.statusbar.Message();
+          control = new qxe.ui.statusbar.Message();
 
-					this._add(control);
+          this._add(control);
           break;
-			}
+      }
 
       return control || this.base(arguments, id);
     },
@@ -176,3 +176,4 @@ qx.Class.define("qxe.ui.statusbar.StatusBar",
     }
   }
 });
+

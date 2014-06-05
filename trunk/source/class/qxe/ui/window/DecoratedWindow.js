@@ -293,7 +293,7 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
      * Maximizes the window or restores it if it is already
      * maximized.
      *
-     * @param e {qx.event.type.Mouse} double click event
+     * @param e {qx.event.type.Pointer} double tap event
      */
     _onCaptionPointerDblTap : function(e)
     {
@@ -312,7 +312,7 @@ qx.Class.define("qxe.ui.window.DecoratedWindow",
      * Closes the window, removes all states from the close button and
      * stops the further propagation of the event (calling {@link qx.event.type.Event#stopPropagation}).
      *
-     * @param e {qx.event.type.Mouse} mouse click event
+     * @param e {qx.event.type.Pointer} pointer tap event
      */
     _onCloseButtonTap : function(e)
     {

@@ -26,11 +26,10 @@
          Window and open up for different window manager classes.
        ! Try to remove Table's dependence on Window
        -----
-       - Window class split into two classes; Window, DecoratedWindow and Frame,
+       - Window class split into three classes; Window, DecoratedWindow and Frame,
          and a creation of a new class Dialog.
       * TODO: Need to fix
               - Unresponsive on clicking to get focus and move on top.
-              - Irresizable frame.
 
 ************************************************************************ */
 
@@ -412,7 +411,7 @@ qx.Class.define("qxe.ui.window.Window",
     /**
      * Focuses the window instance.
      *
-     * @param e {qx.event.type.Mouse} mouse down event
+     * @param e {qx.event.type.Pointer} pointer down event
      */
     _onWindowPointerDown : function(e) {
       this.setActive(true);

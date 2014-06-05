@@ -216,7 +216,7 @@ qx.Class.define("qxe.ui.table.Table",
       qx.locale.Manager.getInstance().addListener("changeLocale", this._onChangeLocale, this);
     }
 
-    this.initStatusBarVisible();
+    this.initShowStatusBar();
 
     // If the table model has an init() method...
     tableModel = this.getTableModel();
@@ -441,11 +441,11 @@ qx.Class.define("qxe.ui.table.Table",
 
 
     /** Whether to show the status bar */
-    statusBarVisible :
+    showStatusBar :
     {
       check : "Boolean",
       init : true,
-      apply : "_applyStatusBarVisible"
+      apply : "_applyShowStatusBar"
     },
 
 
@@ -919,7 +919,7 @@ qx.Class.define("qxe.ui.table.Table",
 
 
     // property modifier
-    _applyStatusBarVisible : function(value, old)
+    _applyShowStatusBar : function(value, old)
     {
       if (value) {
         this._showChildControl("statusbar");
@@ -1927,7 +1927,7 @@ qx.Class.define("qxe.ui.table.Table",
     {
       var tableModel = this.getTableModel();
 
-      if (this.getStatusBarVisible())
+      if (this.getShowStatusBar())
       {
         var selectedRowCount = this.getSelectionModel().getSelectedCount();
         var rowCount = tableModel.getRowCount();

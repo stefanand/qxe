@@ -27,7 +27,7 @@
          Window and open up for different window manager classes.
        ! Try to remove Table's dependence on Window
        -----
-       - Window class split into two classes; Window and a superclass of Frame,
+       - Window class split into three classes; Window and a superclass of Frame,
          and a creation of a new class Dialog.
 
 ************************************************************************ */
@@ -561,7 +561,7 @@ qx.Class.define("qxe.ui.window.Frame",
      * Minimizes the window, removes all states from the minimize button and
      * stops the further propagation of the event (calling {@link qx.event.type.Event#stopPropagation}).
      *
-     * @param e {qx.event.type.Mouse} mouse click event
+     * @param e {qx.event.type.Pointer} pointer tap event
      */
     _onMinimizeButtonTap : function(e)
     {
@@ -574,7 +574,7 @@ qx.Class.define("qxe.ui.window.Frame",
      * Restores the window, removes all states from the restore button and
      * stops the further propagation of the event (calling {@link qx.event.type.Event#stopPropagation}).
      *
-     * @param e {qx.event.type.Mouse} mouse click event
+     * @param e {qx.event.type.Pointer} pointer tab event
      */
     _onRestoreButtonTap : function(e)
     {
@@ -587,7 +587,7 @@ qx.Class.define("qxe.ui.window.Frame",
      * Maximizes the window, removes all states from the maximize button and
      * stops the further propagation of the event (calling {@link qx.event.type.Event#stopPropagation}).
      *
-     * @param e {qx.event.type.Mouse} mouse click event
+     * @param e {qx.event.type.Pointer} pointer tap event
      */
     _onMaximizeButtonTap : function(e)
     {

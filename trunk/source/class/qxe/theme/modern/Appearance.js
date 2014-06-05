@@ -253,6 +253,8 @@ qx.Theme.define("qxe.theme.modern.Appearance",
 
     "decorated-window" : "window",
 
+    "decorated-window-resize-frame" : "window-resize-frame",
+
     "decorated-window/captionbar" : "window/captionbar",
 
     "decorated-window/icon" : "window/icon",
@@ -336,12 +338,13 @@ qx.Theme.define("qxe.theme.modern.Appearance",
 
     "frame" :
     {
-      include : "window",
-      alias : "window",
+      include : "decorated-window",
+      alias : "decorated-window",
 
       style : function(states)
       {
         return {
+          decorator : states.showStatusbar ? "window-incl-statusbar" : "window",
           margin : states.maximized ? 0 : [0, 5, 5, 0]
         };
       }
@@ -352,6 +355,8 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     "frame/restore-button" : "window/restore-button",
 
     "frame/maximize-button" : "window/maximize-button",
+
+    "frame/statusbar" : "statusbar",
 
     /*
     ---------------------------------------------------------------------------
@@ -439,18 +444,17 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     {
       style : function(states)
       {
-        var useCSS = qx.core.Environment.get("css.borderradius") &&
-          qx.core.Environment.get("css.gradients") &&
-          qx.core.Environment.get("css.boxshadow");
         return {
           padding   : [ 2, 6 ],
-          decorator : useCSS ? "window-statusbar-css" : "window-statusbar",
+          decorator : "window-statusbar",
           minHeight : 18
         };
       }
     },
 
-    "statusbar/message" :
+    "statusbar/message" : {},
+
+    "statusbar/message/text" :
     {
       style : function(states)
       {
@@ -594,8 +598,19 @@ qx.Theme.define("qxe.theme.modern.Appearance",
       style : function(states)
       {
         return {
-          decorator : states.showStatusbar ? "window-incl-statusbar" : "window",
-          contentPadding : [ 10, 10, 10, 10 ]
+          decorator : "window",
+          contentPadding : [ 10, 10, 10, 10 ],
+          margin : [0, 5, 5, 0]
+        };
+      }
+    },
+
+    "window/pane" :
+    {
+      style : function(states)
+      {
+        return {
+          decorator : "window-pane"
         };
       }
     },

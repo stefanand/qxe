@@ -156,16 +156,16 @@ qx.Class.define("qxe.ui.form.MultiStateButton",
     */
 
     /**
-     * Listener method for "mouseup" event
+     * Listener method for "pointerup" event
      * <ul>
      * <li>Removes "pressed" state (if set)</li>
      * <li>Removes "abandoned" state (if set)</li>
      * <li>Adds "hovered" state (if "abandoned" state is not set)</li>
      *</ul>
      *
-     * @param e {qx.event.type.Event} - Mouse event
+     * @param e {qx.event.type.Event} - Pointer event
      */
-    _onMouseUp : function(e)
+    _onPointerUp : function(e)
     {
       this.base(arguments, e);
 
