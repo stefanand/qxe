@@ -23,6 +23,36 @@ qx.Theme.define("qxe.theme.modern.Decoration",
   {
     /*
     ---------------------------------------------------------------------------
+      BREADCRUMB
+    ---------------------------------------------------------------------------
+    */
+
+    "breadcrumb" :
+    {
+      style :
+      {
+        gradientStart : ["menubar-start", 0],
+        gradientEnd : ["menu-end", 100],
+
+        width : 1,
+        color : "border-separator"
+      }
+    },
+
+    "breadcrumb-separator" :
+    {
+      style :
+      {
+        widthTop    : 1,
+        colorTop    : "menu-separator-top",
+
+        widthBottom : 1,
+        colorBottom : "menu-separator-bottom"
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
       CALENDAR
     ---------------------------------------------------------------------------
     */

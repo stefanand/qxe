@@ -105,6 +105,50 @@ qx.Theme.define("qxe.theme.modern.Appearance",
 
     /*
     ---------------------------------------------------------------------------
+      BREADCRUMB
+    ---------------------------------------------------------------------------
+    */
+
+   "breadcrumb" :
+   {
+     style : function(states)
+     {
+       return {
+         decorator : "breadcrumb"
+       };
+     }
+   },
+
+   "breadcrumb-link" :
+   {
+     alias : "atom",
+
+     style : function(states)
+     {
+       var decorator = (states.pressed || states.hovered) && !states.disabled ? "selected" : undefined;
+
+       return {
+         decorator : decorator,
+         textColor : states.pressed || states.hovered ? "text-selected" : undefined,
+         padding   : [ 3, 8 ]
+       };
+     }
+   },
+
+    "breadcrumb-separator" :
+    {
+      style : function(states)
+      {
+        return {
+          height : 0,
+          decorator : "breadcrumb-separator",
+          margin    : [ 4, 2 ]
+        };
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
       BUSY INDICATOR
     ---------------------------------------------------------------------------
     */
@@ -373,6 +417,14 @@ qx.Theme.define("qxe.theme.modern.Appearance",
     */
 
     "led-clock" : "widget",
+
+    /*
+    ---------------------------------------------------------------------------
+      MENUATOM
+    ---------------------------------------------------------------------------
+    */
+
+    "menuatom" : "atom",
 
     /*
     ---------------------------------------------------------------------------

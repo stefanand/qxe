@@ -102,6 +102,37 @@ qx.Theme.define("qxe.theme.classic.Appearance",
 
     /*
     ---------------------------------------------------------------------------
+      BREADCRUMB
+    ---------------------------------------------------------------------------
+    */
+
+    "breadcrumb" :
+    {
+      style : function(states)
+      {
+        return {
+          backgroundColor : "background",
+          decorator       : "outset"
+        };
+      }
+    },
+
+    "breadcrumb-link" :
+    {
+      alias : "atom",
+
+      style : function(states)
+      {
+        return {
+          padding : [ 2, 6 ],
+          backgroundColor : states.pressed || states.hovered && !states.disabled ? "background-selected" : undefined,
+          textColor : states.pressed || states.hovered ? "text-selected" : undefined
+        };
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
       BUSY INDICATOR
     ---------------------------------------------------------------------------
     */
@@ -359,6 +390,14 @@ qx.Theme.define("qxe.theme.classic.Appearance",
     */
 
     "led-clock" : "widget",
+
+    /*
+    ---------------------------------------------------------------------------
+      MENUATOM
+    ---------------------------------------------------------------------------
+    */
+
+    "menuatom" : "atom",
 
     /*
     ---------------------------------------------------------------------------

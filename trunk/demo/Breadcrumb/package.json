@@ -1,0 +1,8 @@
+{
+  "name": "qxe Breadcrumb Demo",
+  "version": "0.6.0",
+  "repository" : {},
+  "devDependencies": {
+    "grunt": "~0.4.2"
+  }
+}
