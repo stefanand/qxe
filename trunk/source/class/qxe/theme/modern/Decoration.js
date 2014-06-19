@@ -15,6 +15,11 @@
 
 ************************************************************************ */
 
+/**
+ *
+ * @asset(qxe/decoration/navigation/separator.gif)
+ *
+ */
 qx.Theme.define("qxe.theme.modern.Decoration",
 {
   extend : qx.theme.modern.Decoration,
@@ -31,11 +36,11 @@ qx.Theme.define("qxe.theme.modern.Decoration",
     {
       style :
       {
-        gradientStart : ["menubar-start", 0],
-        gradientEnd : ["menu-end", 100],
+//        gradientStart : ["menubar-start", 0],
+//        gradientEnd : ["menu-end", 100],
 
-        width : 1,
-        color : "border-separator"
+//        width : 1,
+//        color : "border-separator"
       }
     },
 
@@ -43,11 +48,7 @@ qx.Theme.define("qxe.theme.modern.Decoration",
     {
       style :
       {
-        widthTop    : 1,
-        colorTop    : "menu-separator-top",
-
-        widthBottom : 1,
-        colorBottom : "menu-separator-bottom"
+        backgroundImage  : "decoration/navigation/separator.gif"
       }
     },
 

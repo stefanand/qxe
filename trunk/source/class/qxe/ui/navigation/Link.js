@@ -33,9 +33,6 @@ qx.Class.define("qxe.ui.navigation.Link",
   construct : function(label, icon, menu)
   {
     this.base(arguments, label, icon, menu);
-
-    this.removeListener("keydown", this._onKeyDown);
-    this.removeListener("keyup", this._onKeyUp);
   },
 
 
@@ -65,8 +62,35 @@ qx.Class.define("qxe.ui.navigation.Link",
     {
       refine : true,
       init : false
+    },
+
+    /** Parameters enables collapsing of link text. */
+    collapsible :
+    {
+      check : "Boolean",
+      init : false,
+      nullable : false,
+      event : "changeCollapsible"
+    },
+
+    /** Width of collapsed level. */
+    collapseWidth :
+    {
+      check : "Integer",
+      init : 10,
+      nullable : true,
+      event : "changeCollapseWidth"
+    },
+
+    /** Active menu attached to the link items. */
+    menuActive :
+    {
+      check : "Boolean",
+      init : false,
+      nullable : false,
+      event : "changeMenuActive"
     }
-  },
+   },
 
 
 
@@ -95,10 +119,9 @@ qx.Class.define("qxe.ui.navigation.Link",
       var parent = this;
       while (parent)
       {
-/*kols ... remove*/
-        /* this method is also used by toolbar.MenuButton, so we need to check
-           for a ToolBar instance. */
-        if (parent instanceof qx.ui.toolbar.ToolBar) {
+        /* this method is also used by breadcrumb.MenuAtom, so we need to check
+           for a Breadcrumb instance. */
+        if (parent instanceof qxe.ui.navigation.Breadcrumb) {
           return parent;
         }
 

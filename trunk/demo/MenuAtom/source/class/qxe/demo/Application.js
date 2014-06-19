@@ -17,8 +17,10 @@
 
 /**
  *
- * @asset(qxe/demo/*)
+ * @asset(qx/icon/${qx.icontheme}/16/actions/*)
  *
+ * @asset(qxe/demo/*)
+ * @asset(qxe/icon/ui/navigation/home.gif)
  */
 
 /**
@@ -67,9 +69,32 @@ qx.Class.define("qxe.demo.Application",
       // Document is the application root
       var doc = this.getRoot();
 
-      var menuAtom = new qxe.ui.form.MenuAtom("Fruits", null, null);
+      var menuAtom = new qxe.ui.form.MenuAtom("File", "qxe/icon/ui/navigation/home.gif", this.getFileMenu());
 
-      doc.add(menuAtom, {left: 0, top: 0});
+      doc.add(menuAtom, {left: 20, top: 20});
+    },
+
+    getFileMenu : function()
+    {
+      var menu = new qx.ui.menu.Menu;
+
+      var newButton = new qx.ui.menu.Button("New", "icon/16/actions/document-new.png");
+      var openButton = new qx.ui.menu.Button("Open", "icon/16/actions/document-open.png");
+      var closeButton = new qx.ui.menu.Button("Close");
+      var saveButton = new qx.ui.menu.Button("Save", "icon/16/actions/document-save.png");
+      var saveAsButton = new qx.ui.menu.Button("Save as...", "icon/16/actions/document-save-as.png");
+      var printButton = new qx.ui.menu.Button("Print", "icon/16/actions/document-print.png");
+      var exitButton = new qx.ui.menu.Button("Exit", "icon/16/actions/application-exit.png");
+
+      menu.add(newButton);
+      menu.add(openButton);
+      menu.add(closeButton);
+      menu.add(saveButton);
+      menu.add(saveAsButton);
+      menu.add(printButton);
+      menu.add(exitButton);
+
+      return menu;
     }
   }
 });

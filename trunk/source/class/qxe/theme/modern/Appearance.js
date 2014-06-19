@@ -114,7 +114,8 @@ qx.Theme.define("qxe.theme.modern.Appearance",
      style : function(states)
      {
        return {
-         decorator : "breadcrumb"
+         decorator : "breadcrumb",
+         spacing : 2
        };
      }
    },
@@ -420,11 +421,47 @@ qx.Theme.define("qxe.theme.modern.Appearance",
 
     /*
     ---------------------------------------------------------------------------
+      LINK
+    ---------------------------------------------------------------------------
+    */
+
+    "link" : {
+      include : "button",
+      alias : "button",
+
+      style : function(states) {
+        return {
+          icon : "decoration/navigation/separator.gif",
+          iconPosition : "right"
+        };
+      }
+    },
+
+    /*
+    ---------------------------------------------------------------------------
       MENUATOM
     ---------------------------------------------------------------------------
     */
 
-    "menuatom" : "atom",
+    "menuatom" :
+    {
+      alias : "atom",
+      include : "atom",
+
+      style : function(states)
+      {
+        var decorator = states.hovered ? "selected" : undefined;
+        return {
+          decorator : decorator,
+          textColor : states.hovered ? "text-hovered" : undefined
+        };
+      }
+    },
+
+// unvisited link a:link
+// visited link a:visited
+// mouse over link a:hover
+// selected link a:active
 
     /*
     ---------------------------------------------------------------------------

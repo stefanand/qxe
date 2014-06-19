@@ -13,6 +13,14 @@
    Authors:
      * Stefan Andersson (sand)
 
+   TODO:
+     - current link item shall be hi-lighted (bold)
+     - current link item hovered shall be hi-lighted (bold) and blue
+     - any non-current link item hovered shall become blue
+
+     - collapsible: true/false,
+       showEffect: "slide"/fade,
+
 ************************************************************************ */
 
 /**
@@ -20,7 +28,7 @@
  */
 qx.Class.define("qxe.ui.form.MenuAtom",
 {
-  extend : qx.ui.basic.Atom,
+  extend : qx.ui.form.Button,
 
 
 
@@ -63,13 +71,46 @@ qx.Class.define("qxe.ui.form.MenuAtom",
       init : "menuatom"
     },
 
-  /** The menu instance to show when hovering on the atom */
+    /** The menu instance to show when hovering on the atom */
     menu :
     {
       check : "qx.ui.menu.Menu",
       nullable : true,
       apply : "_applyMenu",
       event : "changeMenu"
+    },
+
+    /** Action to activate menu. */
+    menuAction :
+    {
+      check : ["click", "hover"],
+      init : "hover",
+      nullable : false,
+      event : "changeMenuAction"
+    },
+    
+    /**
+     * The time in milliseconds of menu to open.
+     * If null then no transition is used.
+     */
+    menuOpenTime :
+    {
+      check : "Integer",
+      init : 800,
+      nullable : true,
+      event : "changeMenuOpenTime"
+    },
+
+    /**
+     * The time in milliseconds of menu to close.
+     * If null then no transition is used.
+     */
+    menuCloseTime :
+    {
+      check : "Integer",
+      init : 100,
+      nullable : true,
+      event : "changeMenuCloseTime"
     }
   },
 
@@ -146,6 +187,7 @@ qx.Class.define("qxe.ui.form.MenuAtom",
         // Open the attached menu
         menu.setOpener(this);
         menu.open();
+        menu.fadeIn(this.getMenuOpenTime());
 
         // Select first item
         if (selectFirst)
@@ -190,7 +232,7 @@ qx.Class.define("qxe.ui.form.MenuAtom",
       this.base(arguments, e);
 
       // only open on left clicks [BUG #5125]
-      if(e.getButton() != "left") {
+      if(e.getButton() != "left" || this.getMenuAction() != "click") {
         return;
       }
 
@@ -200,7 +242,13 @@ qx.Class.define("qxe.ui.form.MenuAtom",
         if (!menu.isVisible()) {
           this.open();
         } else {
-          menu.exclude();
+          var menuCloseTime = this.getMenuCloseTime();
+          menu.fadeOut(menuCloseTime);
+
+          // Delay exclusion to after fadeOut
+          window.setTimeout(function(userData, timerId) {
+        	menu.exclude();
+          }, menuCloseTime);
         }
 
         // Event is processed, stop it for others
@@ -224,6 +272,22 @@ qx.Class.define("qxe.ui.form.MenuAtom",
     _onPointerOver : function(e) {
       // Add hovered state
       this.addState("hovered");
+
+      if(this.getMenuAction() != "hover")
+      {
+        return;
+      }
+
+      var menu = this.getMenu();
+      if (menu) {
+        // Toggle sub menu visibility
+        if (!menu.isVisible()) {
+          this.open();
+        }
+
+        // Event is processed, stop it for others
+        e.stopPropagation();
+      }
     },
 
 
@@ -231,38 +295,28 @@ qx.Class.define("qxe.ui.form.MenuAtom",
     _onPointerOut : function(e) {
       // Just remove the hover state
       this.removeState("hovered");
-    },
 
-
-    // overridden
-/*
-    _onKeyDown : function(e)
-    {
-      switch(e.getKeyIdentifier())
+      if(this.getMenuAction() != "hover")
       {
-        case "Enter":
-          this.removeState("abandoned");
-          this.addState("pressed");
-
-          var menu = this.getMenu();
-          if (menu)
-          {
-            // Toggle sub menu visibility
-            if (!menu.isVisible()) {
-              this.open();
-            } else {
-              menu.exclude();
-            }
-          }
-
-          e.stopPropagation();
+        return;
       }
-    },
-*/
 
-    // overridden
-    _onKeyUp : function(e) {
-      // no action required here
+      var menu = this.getMenu();
+      if (menu) {
+        // Toggle sub menu visibility
+        if (menu.isVisible()) {
+          var menuCloseTime = this.getMenuCloseTime();
+          menu.fadeOut(menuCloseTime);
+
+          // Delay exclusion to after fadeOut
+          window.setTimeout(function(userData, timerId) {
+        	menu.exclude();
+          }, menuCloseTime);
+        }
+
+        // Event is processed, stop it for others
+        e.stopPropagation();
+      }
     }
   }
 });

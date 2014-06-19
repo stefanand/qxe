@@ -48,6 +48,83 @@ qx.Class.define("qxe.ui.navigation.Breadcrumb",
     {
       refine : true,
       init : "breadcrumb"
+    },
+
+    /**
+     * There are three main types of breadcrumb trails that can be classified as:
+     * 
+     * 1. path
+     * 
+     * It displays the actual route taken by the user to reach the current page.
+     * It is dynamic in that it displays the pages the user has visited before
+     * arriving on the current page.
+     * 
+     * 2. attribute
+     * 
+     * It displays information that categorizes the current page and may also
+     * provide several routes by which the current page can be reached.
+     * 
+     * 3. location
+     * 
+     * This is the commonest form of breadcrumb and show the user where they are
+     * in the website’s hierarchy. They are typically used for navigation schemes
+     * that have multiple levels (usually more than two levels).
+     */
+    type :
+    {
+      check : ["location", "path", "attribute"],
+      init : "location",
+      nullable : true,
+      event : "changeType"
+    },
+
+    /** separator: → or / or > or -> */
+    separator :
+    {
+      check : "String",
+      init : "",
+      nullable : true,
+      event : "changeSeparator"
+    },
+
+	 /** precrumb - a character before */
+    precrumb :
+    {
+      check : "String",
+      init : "",
+      nullable : true,
+      event : "changePrecrumb"
+    },
+
+    /** postcrumb - a character after */
+
+    postcrumb :
+    {
+      check : "String",
+      init : "",
+      nullable : true,
+      event : "changePostcrumb"
+    }
+  },
+
+  members :
+  {
+    /**
+     * Convenience method to add a separator to the breadcrumb.
+     */
+    addSeparator : function()
+    {
+      this.add(new qxe.ui.navigation.Separator());
+    },
+
+    /**
+     * Returns the the root (first) item of the breadcrumb.
+     * 
+     * @return {qxe.ui.navigation.Link}
+     */
+    getRootname : function()
+    {
+      return this.getChildren()[0];
     }
   }
 });
@@ -122,17 +199,6 @@ function breadcrumbs(home,name){
 */
 
 /*
-qx.Class.define("qxe.ui.navigation.Breadcrumb",
-{
-  extend : qx.ui.core.Widget,
-*/
-
-
-  /*
-  *****************************************************************************
-     CONSTRUCTOR
-  *****************************************************************************
-  */
 
   /**
    * 
@@ -161,146 +227,6 @@ qx.Class.define("qxe.ui.navigation.Breadcrumb",
 	  plugin: html, directory, path, custom
 */
 
-  /*
-   *****************************************************************************
-      PROPERTIES
-   *****************************************************************************
-   */
-
-/*
-   properties :
-   {
-     // overridden
-     appearance :
-     {
-       refine : true,
-       init   : "breadcrumb"
-     },
-*/
-     /**
-      * There are three main types of breadcrumb trails that can be classified as:
-      * 
-      * 1. path
-      * 
-      * It displays the actual route taken by the user to reach the current page.
-      * It is dynamic in that it displays the pages the user has visited before
-      * arriving on the current page.
-      * 
-      * 2. attribute
-      * 
-      * It displays information that categorizes the current page and may also
-      * provide several routes by which the current page can be reached.
-      * 
-      * 3. location
-      * 
-      * This is the commonest form of breadcrumb and show the user where they are
-      * in the website’s hierarchy. They are typically used for navigation schemes
-      * that have multiple levels (usually more than two levels).
-      */
-/*
-     type :
-     {
-       check : ["location", "path", "attribute"],
-       init : "location",
-       nullable : true,
-       event : "changeType"
-     },
-*/
-     /** separator: → or / or > or -> */
-/*
-     separator :
-     {
-       check : "String",
-       init : "",
-       nullable : true,
-       event : "changeSeparator"
-     },
-*/
-	 /** precrumb - a character before */
-/*
-     precrumb :
-     {
-       check : "String",
-       init : "",
-       nullable : true,
-       event : "changePrecrumb"
-     },
-*/
-     /** postcrumb - a character after */
-/*
-     postcrumb :
-     {
-       check : "String",
-       init : "",
-       nullable : true,
-       event : "changePostcrumb"
-     },
-*/
-     /**
-      * Numeric value in milliseconds or jQuery string value ’fast’, ‘normal’, ’slow’.
-      * The parameter sets speed of sub level to appear.
-      * If empty then no transition is used.
-      */
-/*
-     showSpeed :
-     {
-       check : ["fast", "normal", "slow"],
-       init : "fast",
-       nullable : true,
-       event : "changeShowSpeed"
-     },
-*/
-     /**
-      * Numeric value in milliseconds or jQuery string value ’fast’, ‘normal’, ’slow’.
-      * The parameter sets speed of sub level to hide.
-      * If empty then no transition is used.
-      */
-/*
-     hideSpeed :
-     {
-       check : ["fast", "normal", "slow"],
-       init : "",
-       nullable : true,
-       event : "changeHideSpeed"
-     },
-*/
-     /** Parameters enables collapsing of upper levels. */
-     /*
-     collapsible :
-     {
-       check : "Boolean",
-       init : false,
-       nullable : false,
-       event : "changeCollapsible"
-     },
-*/
-     /** Width of collapsed level. */
-     /*
-     collapseWidth :
-     {
-       check : "Integer",
-       init : 10,
-       nullable : true,
-       event : "changeCollapseWidth"
-     },
-*/
-     /** Multi-level is where the path items have subitems. */
-/*
-     multiLevel :
-     {
-       check : "Boolean",
-       init : false,
-       nullable : false,
-       event : "changeMultiLevel"
-     }
-   },
-*/
-
-  /*
-   *****************************************************************************
-      MEMBERS
-   *****************************************************************************
-   */
 /*
   members :
   {
@@ -313,11 +239,6 @@ qx.Class.define("qxe.ui.navigation.Breadcrumb",
         "<i>L</i>" +
         " Text" +
       "</div>";
-var embed1 = new qx.ui.embed.Html(html1);
-embed1.setWidth(300);
-embed1.setHeight(20);
-embed1.setDecorator("main");
-container.add(embed1);
 
       if(this.isCollapsible())
       {
@@ -420,94 +341,7 @@ container.add(embed1);
     _subLevelExists : function(obj)
     {
       return obj.children('UL').length > 0;
-    },
-
-    getRootname : function()
-    {
     }
   }
 });
 */ 
-
-/*
-.xbreadcrumbs {
-position: relative;
-z-index: 1000;
-}
-.xbreadcrumbs LI UL {
-position: absolute;
-float: left;
-}
-.xbreadcrumbs, .xbreadcrumbs LI, .xbreadcrumbs UL, .xbreadcrumbs UL LI {
-list-style: none;
-margin: 0;
-padding: 0;
-}
-.xbreadcrumbs { clear: both; }
-.xbreadcrumbs, .xbreadcrumbs LI {
-float: left;
-}
-.xbreadcrumbs UL {
-display: none;
-}
-*/
-/* Base style of xBreadcrumbs */
-/* Top Level */
-/*
-.xbreadcrumbs {
-background: #F0F0F0;
-width: 100%;
-}
-.xbreadcrumbs LI {
-padding: 5px;
-border-right: 1px solid #CECECE;
-height: 16px;
-}
-.xbreadcrumbs LI.current {
-border-right: none;
-}
-.xbreadcrumbs LI A {
-font-size: 11px;
-color: #666666;
-text-decoration: none;
-}
-.xbreadcrumbs LI A:HOVER, .xbreadcrumbs LI.hover A {
-color: #0A8ECC;
-}
-*/
-/* Top Level - Current Page */
-/*
-.xbreadcrumbs LI.current A {
-color: #333333;
-font-weight: bold;
-}
-*/
-/* Sub-level */
-/*
-.xbreadcrumbs LI UL {
-padding: 3px;
-background: #333333;
-font-size: 11px;
-width: 180px;
-top: 25px;
-}
-.xbreadcrumbs LI UL LI {
-float: left;
-width: 100%;
-border-right: none;
-height: auto;
-}
-.xbreadcrumbs LI UL LI A {
-text-decoration: none;
-color: #CCCCCC !important;
-display: block;
-padding: 4px;
-border-bottom: 1px dotted #666666;
-}
-.xbreadcrumbs LI UL LI:last-child A {
-border-bottom: none;
-}
-.xbreadcrumbs LI UL LI A:HOVER {
-background: #444444;
-}
-*/
