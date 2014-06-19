@@ -180,43 +180,50 @@ qx.Bootstrap.define("qxe.ui.website.Breadcrumb", {
           }
         }
 
-        breadcrumb.find("> ul").removeClasses([cssPrefix + "-justify", cssPrefix + "-right"]);
-
-        var align = breadcrumb.getConfig("align");
-        if (align == "justify") {
-          breadcrumb.find("> ul").addClass(cssPrefix + "-justify");
-        } else if (align == "right") {
-          breadcrumb.find("> ul").addClass(cssPrefix + "-right");
-        }
-
         var links = breadcrumb.getChildren("ul").getFirst()
-          .getChildren("li").not("." + cssPrefix + "-page");
+          .getChildren("li").not("." + cssPrefix + "-menu");
         links._forEachElementWrapped(function(link) {
-          var pageSelector = link.getData(cssPrefix + "-page");
-          if (!pageSelector) {
+          var menuSelector = link.getData(cssPrefix + "-menu");
+          if (!menuSelector) {
             return;
           }
           link.addClass(cssPrefix + "-link")
-            .$onFirstCollection("tap", this._onTap, tabs);
+            .$onFirstCollection("tap", this._onTap, breadcrumb);
+
+          var menu = breadcrumb._getMenu(link);
+          if (menu.length > 0) {
+            menu.addClass(cssPrefix + "-menu");
+          }
+
+          this._showMenu(null, link);
         }.bind(this));
 
         // ignore pageless buttons
         links = links.filter("." + cssPrefix + "-link");
 
-        if (align == "right") {
+        if (this.getConfig("align") == "right" &&
+          q.env.get("engine.name") == "mshtml" &&
+          q.env.get("browser.documentmode") < 10)
+        {
           links.remove();
           for (var i=links.length - 1; i>=0; i--) {
             breadcrumb.find("> ul").append(links[i]);
           }
         }
 
-        var active = linkss.filter("." + cssPrefix + "-link-active");
+        var active = links.filter("." + cssPrefix + "-link-active");
         var preselected = this.getConfig("preselected");
         if (active.length === 0 && typeof preselected == "number") {
           active = links.eq(preselected).addClass(cssPrefix + "-link-active");
         }
 
-        breadcrumb.getChildren("ul").getFirst().$onFirstCollection("keydown", this._onKeyDown, this);
+        if (active.length > 0) {
+          this._showMenu(active, null);
+        }
+
+//        breadcrumb.getChildren("ul").getFirst().$onFirstCollection("keydown", this._onKeyDown, this);
+
+        this._applyAlignment(breadcrumb);
       }.bind(this));
 
       return true;
@@ -228,7 +235,7 @@ qx.Bootstrap.define("qxe.ui.website.Breadcrumb", {
       this._forEachElementWrapped(function(breadcrumb) {
         var content = [];
         var menus= [];
-        var selected;
+        var selected = null;
         breadcrumb.find("> ul > ." + cssPrefix + "-link")._forEachElementWrapped(function(li) {
           li.$offFirstCollection("tap", breadcrumb._onTap, breadcrumb);
           menus.push(li.getData(cssPrefix + "-menu"));
@@ -240,35 +247,33 @@ qx.Bootstrap.define("qxe.ui.website.Breadcrumb", {
 
         breadcrumb.find("> ul").setHtml("");
 
-        var toRight = this.getConfig("align") == "right" && !breadcrumb.find("> ul").hasClass(cssPrefix + "-right");
-        var fromRight = this.getConfig("align") != "right" && breadcrumb.find("> ul").hasClass(cssPrefix + "-right");
-        if (toRight || fromRight) {
-          content.reverse();
-          menus.reverse();
-          selected = content.length - 1 - selected;
+        if (q.env.get("engine.name") == "mshtml" && q.env.get("browser.documentmode") < 10) {
+          var toRight = this.getConfig("align") == "right" && !breadcrumb.find("> ul").hasClass(cssPrefix + "-right");
+          var fromRight = this.getConfig("align") != "right" && breadcrumb.find("> ul").hasClass(cssPrefix + "-right");
+          if (toRight || fromRight) {
+            content.reverse();
+            menus.reverse();
+            selected = content.length - 1 - selected;
+          }
         }
+
 
         breadcrumb.find("> ul").removeClasses([cssPrefix + "-justify", cssPrefix + "-right"]);
 
         content.forEach(function(content, i) {
-          breadcrumb.addButton(content, pages[i]);
-          var menu = menus._getMenu(breadcrumb.find("> ul > ." + cssPrefix + "-link:last-child"));
+          breadcrumb.addLink(content, menus[i]);
+          var menu = breadcrumb._getMenu(breadcrumb.find("> ul > ." + cssPrefix + "-link:last-child"));
           if (i == selected) {
             breadcrumb.find("> ul > ." + cssPrefix + "-link:first-child").removeClass(cssPrefix + "-link-active");
             breadcrumb.find("> ul > ." + cssPrefix + "-link:last-child").addClass(cssPrefix + "-link-active");
-            breadcrumb._switchPages(null, menu);
+            breadcrumb._switchMenus(null, menu);
           } else {
             breadcrumb._switchMenus(menu, null);
           }
         });
 
-        var align = breadcrumb.getConfig("align");
-        if (align == "justify") {
-          breadcrumb.find("> ul").addClass(cssPrefix + "-justify");
-
-        } else if (align == "right") {
-          breadcrumb.find("> ul").addClass(cssPrefix + "-right");
-        }
+        this._applyAlignment(breadcrumb);
+        this.setEnabled(this.getEnabled());
       });
 
       return this;
@@ -301,7 +306,7 @@ qx.Bootstrap.define("qxe.ui.website.Breadcrumb", {
         }
 
         link.$onFirstCollection("tap", this._onTap, item)
-        .addClass(cssPrefix + "-button");
+        .addClass(cssPrefix + "-link");
         if (item.find("> ul ." + cssPrefix + "-link").length === 1) {
           link.addClass(cssPrefix + "-link-active");
         }
@@ -311,9 +316,9 @@ qx.Bootstrap.define("qxe.ui.website.Breadcrumb", {
           var menu = this._getMenu(link);
           menu.addClass(cssPrefix + "-menu");
           if (link.hasClass(cssPrefix + "-link-active")) {
-            this._switchPages(null, menu);
+            this._switchMenus(null, menu);
           } else {
-            this._switchPages(menu, null);
+            this._switchMenus(menu, null);
           }
         }
       }, this);
@@ -363,14 +368,14 @@ qx.Bootstrap.define("qxe.ui.website.Breadcrumb", {
         }
         oldLink.removeClass(cssPrefix + "-link-active");
 
-        var newLink;
+        var newLink = null;
         var links = breadcrumb.find("> ul > ." + cssPrefix + "-link")
-        ._forEachElementWrapped(function(link) {
+          ._forEachElementWrapped(function(link) {
           if (tappedLink === link[0]) {
             newLink = link;
           }
         });
-        breadcrumb._showPage(newLink, oldLink);
+        breadcrumb._showMenu(newLink, oldLink);
         newLink.addClass(cssPrefix + "-link-active");
         var index = links.indexOf(newLink[0]);
         if (this.getConfig("align") == "right") {
@@ -401,8 +406,8 @@ qx.Bootstrap.define("qxe.ui.website.Breadcrumb", {
     /**
      * Executes a menu switch
      *
-     * @param oldMenu {qxWeb} the previously selected Menu
-     * @param newMenu {qxWeb} the newly selected Menu
+     * @param oldMenu {qxWeb} the previously selected menu
+     * @param newMenu {qxWeb} the newly selected menu
      */
     _switchMenus : function(oldMenu, newMenu) {
       if (oldMenu) {
@@ -422,11 +427,56 @@ qx.Bootstrap.define("qxe.ui.website.Breadcrumb", {
      * @return {qxWeb} breadcrumb menu
      */
     _getMenu : function(link) {
-      var menuSelector;
+      var menuSelector = null;
       if (link) {
         menuSelector = link.getData(this.getCssPrefix() + "-menu");
       }
       return qxWeb(menuSelector);
+    },
+
+
+    /**
+     * Apply the CSS classes for the alignment
+     *
+     * @param tabs {qx.ui.website.Tabs[]} tabs collection
+     */
+    _applyAlignment : function(tabs) {
+      var align = breadcrumb.getConfig("align");
+      var cssPrefix = this.getCssPrefix();
+      var links = breadcrumb.find("ul > li");
+
+      if (q.env.get("engine.name") == "mshtml" && q.env.get("browser.documentmode") < 10) {
+    	breadcrumb.addClass(cssPrefix + "-float");
+
+        if (align == "justify") {
+          breadcrumb.addClass(cssPrefix + "-justify");
+        } else {
+          breadcrumb.removeClass(cssPrefix + "-justify");
+        }
+
+        if (align == "right") {
+          breadcrumb.addClass(cssPrefix + "-right");
+        } else {
+          breadcrumb.removeClass(cssPrefix + "-right");
+        }
+      } else {
+        links
+          .getChildren("li").not("." + cssPrefix + "-menu")
+          .filter("." + cssPrefix + "-link");
+
+        breadcrumb.addClass("qx-flex-ready").find("> ul").addClass("qx-hbox");
+        if (align == "justify") {
+          links.addClass("qx-flex1");
+        } else {
+          links.removeClass("qx-flex1");
+        }
+
+        if (align == "right") {
+          breadcrumb.find("> ul").addClass("qx-flex-justify-end");
+        } else {
+          breadcrumb.find("> ul").removeClass("qx-flex-justify-end");
+        }
+      }
     },
 
 
