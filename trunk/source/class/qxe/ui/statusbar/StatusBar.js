@@ -18,14 +18,33 @@
 /**
  * A status bar showing different kind of information from different sources.
  *
- * The following features exist in the status bar:
- * - adding different status bar plugins.
- * - timeout or focus out removing of message (animation).
+ * Native browser status bar
+ * -------------------------
+ * First of all, its appearence is not uniform throughout browsers, and
+ * secondly, that functionality has been disabled for a long time by default
+ * on most browsers for security reasons.
+ * 
+ * window.status = text;
+ * 
+ * NB!
+ * After IE6 (tested IE7/8) you do it in the same way, but you need also
+ * to adapt the browser security options by turning the feature on: Tools -
+ * Internet Options - Security - Custom Level
+ */
+
+/**
+ * Text plugin:
+ * Multi-line status display
+ * Additive status messages with messages added top or bottom
+ * Show an optional close 'button'
+ * Message history
+ * Expandable by double clicking
  */
 qx.Class.define("qxe.ui.statusbar.StatusBar",
 {
   extend : qx.ui.core.Widget,
 
+  
   /*
   *****************************************************************************
      CONSTRUCTOR
@@ -38,7 +57,7 @@ qx.Class.define("qxe.ui.statusbar.StatusBar",
 
     this._setLayout(new qx.ui.layout.HBox());
 
-    this._createChildControl("message");
+    this._createChildControl("bar");
   },
 
 
@@ -58,14 +77,17 @@ qx.Class.define("qxe.ui.statusbar.StatusBar",
     },
 
     /**
-     * The spacing between panes.
+     * The spacing between items.
      */
     spacing :
     {
       check : "Integer",
       init : 4,
       apply : "_applySpacing"
-    }
+    },
+
+    activeType/collapsible
+    hover/always/click
   },
 
 
@@ -90,7 +112,7 @@ qx.Class.define("qxe.ui.statusbar.StatusBar",
 
       switch(id)
       {
-        case "message":
+        case "bar":
           control = new qxe.ui.statusbar.Message();
 
           this._add(control);

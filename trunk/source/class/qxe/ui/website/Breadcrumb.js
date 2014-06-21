@@ -126,6 +126,7 @@ qx.Bootstrap.define("qxe.ui.website.Breadcrumb", {
 
     /**
      * *preselected*
+     * 
      * The index of the menu that should be opened after initial
      * rendering, or <code>null</code> if no menu should be opened.
      *

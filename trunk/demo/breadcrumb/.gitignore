@@ -1,0 +1,7 @@
+# .gitignore template for skeleton-based apps
+/api/
+/script/
+/test/script/
+
+# node-related files
+/node_modules

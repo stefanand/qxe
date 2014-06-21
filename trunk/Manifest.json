@@ -19,7 +19,7 @@
     ],
 
     "version" : "trunk",
-    "qooxdoo-versions": ["3.6"],
+    "qooxdoo-versions": ["4.0"],
 
     "download" : "",
     "checksum" : ""
